@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="ru">
-<head>
-  <meta charset="UTF-8" />
+<head>  <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>РАКУРС NEWS — Все новости</title>
   <meta name="yandex-verification" content="8e3a5a0a7520b3b8" />
@@ -14,8 +13,7 @@
         --bg-color: #1a1a1a;
         --text-color: #f0f0f0;
         --accent-color: #e09f7d;
-        --card-bg: #222222;
-        --menu-bg: #2c2c2c;
+        --card-bg: #222222;        --menu-bg: #2c2c2c;
         --footer-height: 80px;
         --border-color: #333333;
     }
@@ -33,11 +31,8 @@
         min-height: 100vh;
         display: flex;
         flex-direction: column;
-    }
-
-    h1, h2, h3,
-    .logo, .nav-link, .site-logo-img,
-    #siteSearch, .category-tag,
+    }    h1, h2, h3,
+    .logo, .nav-link, .site-logo-img,#siteSearch, .category-tag,
     .author, .publish-date, .publish-time,
     .copyright, .social-icon {
         font-family: 'Montserrat', sans-serif;
@@ -53,8 +48,7 @@
     header {
         position: fixed;
         top: 0;
-        left: 0;
-        width: 100%;
+        left: 0;        width: 100%;
         height: 60px;
         background-color: rgba(26, 26, 26, 0.8);
         backdrop-filter: blur(10px);
@@ -80,31 +74,27 @@
     .site-logo-img {
         height: 35px;
         width: auto;
-    }
-
-    .logo {
+    }    .logo {
         font-size: 24px;
         font-weight: 700;
         letter-spacing: 1px;
-        color: var(--accent-color);
-    }
+        color: var(--accent-color);}
 
     .header-right {
         display: flex;
-        align-items: center;
-        gap: 40px;
+        align-items: center;gap: 40px;
     }
 
     #siteSearch {
         background: rgba(44, 44, 44, 0.7);
         border: 1px solid rgba(255, 255, 255, 0.2);
         color: #fff;
-        padding: 6px 15px;
-        border-radius: 20px;
+        padding: 10px 25px;
+        border-radius: 6px;
         outline: none;
-        font-size: 14px;
+        font-size: 12px;
         transition: border-color 0.3s;
-        width: 200px;
+        width: 350px;
     }
 
     #siteSearch:focus {
@@ -116,9 +106,7 @@
         width: 30px;
         height: 21px;
         position: relative;
-    }
-
-    .burger span {
+    }    .burger span {
         position: absolute;
         width: 100%;
         height: 3px;
@@ -176,8 +164,7 @@
     .nav-link {
         color: var(--text-color);
         text-decoration: none;
-        font-size: 18px;
-        padding: 12px 0;
+        font-size: 18px;        padding: 12px 0;
         border-bottom: 1px solid var(--accent-color);
         cursor: pointer;
         user-select: none;
@@ -192,8 +179,7 @@
     main {
         margin-top: 60px;
         padding: 40px;
-        max-width: 1200px;
-        margin-left: auto;
+        max-width: 1200px;        margin-left: auto;
         margin-right: auto;
         width: 100%;
         flex: 1;
@@ -219,18 +205,15 @@
         border: 1px solid var(--border-color);
         transition: transform 0.3s ease, box-shadow 0.3s ease, opacity 0.3s ease;
         display: block;
-        overflow: hidden;
-        cursor: pointer;
+        overflow: hidden;cursor: pointer;
     }
 
     .news-card:hover {
-        transform: scale(1.02);
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+        transform: scale(1.02);box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
         opacity: 0.9;
     }
 
-    .category-tag {
-        color: var(--accent-color);
+    .category-tag {color: var(--accent-color);
         font-size: 12px;
         font-weight: bold;
         text-transform: uppercase;
@@ -253,8 +236,7 @@
         margin-top: auto;
         font-size: 14px;
         display: flex;
-        justify-content: space-between;
-        align-items: center;
+        justify-content: space-between;align-items: center;
         margin-top: 10px;
     }
 
@@ -263,8 +245,7 @@
         padding: 20px;
         background-color: rgba(26, 26, 26, 0.8);
         backdrop-filter: blur(10px);
-        border-top: 1px solid rgba(255, 255, 255, 0.1);
-        margin-top: auto;
+        border-top: 1px solid rgba(255, 255, 255, 0.1);        margin-top: auto;
         text-align: center;
         display: flex;
         flex-direction: column;
@@ -280,25 +261,22 @@
     .copyright {
         font-size: 16px;
         color: #888;
-        margin-top: 15px;
+        margin-top:15px;
     }
 
     .social-icons-container {
-        display: flex;
-        justify-content: center;
+        display: flex;justify-content: center;
         gap: 25px;
         margin-top: 30px;
     }
 
     .social-icon {
         display: inline-flex;
-        justify-content: center;
-        align-items: center;
+        justify-content: center;        align-items: center;
         width: 40px;
         height: 40px;
         border-radius: 50%;
-        background-color: #333;
-        border: 1px solid #555;
+        background-color: #333;border: 1px solid #555;
         transition: transform 0.3s ease, box-shadow 0.3s ease;
         overflow: hidden;
         cursor: pointer;
@@ -315,19 +293,16 @@
         box-shadow: 0 5px 15px rgba(255, 71, 87, 0.4);
     }
 
-    .load-more-btn {
-        display: block;
+    .load-more-btn {display: block;
         padding: 10px 20px;
         margin: 30px auto;
         background: transparent;
-        border: 2px solid var(--accent-color);
-        color: var(--accent-color);
+        border: 2px solid var(--accent-color);        color: var(--accent-color);
         text-decoration: none;
         font-weight: bold;
         border-radius: 25px;
         transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        font-size: 1rem;
-        cursor: pointer;
+        font-size: 1rem;cursor: pointer;
         outline: none;
     }
 
@@ -337,16 +312,12 @@
         color: white;
         transform: scale(1.05);
         box-shadow: 0 0 15px rgba(224, 159, 125, 0.6);
-    }
-
-    @media (max-width: 768px) {
-        .mobile-menu {
-            width: 70%;
+    }    @media (max-width: 768px) {
+        .mobile-menu {width: 70%;
         }
 
         main {
-            padding: 20px;
-            max-width: 100%;
+            padding: 20px;max-width: 100%;
         }
 
         .news-grid {
@@ -367,8 +338,7 @@
             height: 30px;
         }
 
-        #siteSearch {
-            width: 140px;
+        #siteSearch {            width: 140px;
         }
     }
 </style>
@@ -383,8 +353,7 @@
     </div>
     <div class="header-right">
       <input type="text" id="siteSearch" placeholder="Поиск на сайте..." aria-label="Поиск новостей" />
-      <div class="burger" id="burger" aria-label="Меню" aria-expanded="false">
-        <span></span><span></span><span></span>
+      <div class="burger" id="burger" aria-label="Меню" aria-expanded="false"><span></span><span></span><span></span>
       </div>
     </div>
   </header>
@@ -408,8 +377,7 @@
       <p style="margin-left: 15px; color:#888;">Загрузка...</p>
     </div>
     
-    <div class="news-grid" id="grid-all" style="display: none;" role="list"></div>
-    <div id="no-results" style="text-align:center; padding:40px; color:#888; display:none;" role="alert">В этом разделе пока нет новостей.</div>
+    <div class="news-grid" id="grid-all" style="display: none;" role="list"></div><div id="no-results" style="text-align:center; padding:40px; color:#888; display:none;" role="alert">В этом разделе пока нет новостей.</div>
     <button id="load-more-btn" class="load-more-btn" style="display: none;" aria-label="Загрузить еще новости">Еще новости</button>
   </main>
 
@@ -425,79 +393,47 @@
     <p class="copyright">2026 © РАКУРС NEWS</p>
   </footer>
 
-  <script>
-  let allNewsGlobal = [];
+  <script>  let allNewsGlobal = [];
   let displayedNewsCount = 0;
+  let filteredNews = []; 
   const NEWS_PER_PAGE = 10;
   let currentCategory = 'Все';
 
+  // 1. Инициализация и загрузка
   async function loadNews() {
     const loader = document.getElementById('loader');
     const grid = document.getElementById('grid-all');
     
-    // Показываем лоадер
-    loader.style.display = 'flex';
-    grid.style.display = 'none';
-
     try {
-      // ВАЖНО: Проверь, чтобы имя файла точно совпадало с регистром букв в репозитории!
       const response = await fetch('news.json'); 
-      
-      if (!response.ok) {
-        throw new Error(`Ошибка сети: ${response.status} ${response.statusText}`);
-      }
-      
       allNewsGlobal = await response.json();
-      
-      console.log('Новости загружены:', allNewsGlobal.length); // Смотри в консоль браузера!
+      filteredNews = allNewsGlobal;
       
       loader.style.display = 'none';
       grid.style.display = 'grid'; 
-      filterNews(currentCategory);
-      
-      // Теперь безопасно вешаем событие на кнопку, так как данные уже есть
-      const btn = document.getElementById('load-more-btn');
-      if (btn) {
-        btn.addEventListener('click', loadMoreNews, { once: false });
-      }
-
+      displayNews(filteredNews);
     } catch (error) {
       console.error('Ошибка загрузки:', error);
-      loader.style.display = 'none';
-      grid.style.display = 'block';
-      // Красивая ошибка вместо красного текста
-      grid.innerHTML = `
-        <div style="color:#ff4757; text-align:center; padding: 40px; border: 1px solid #333; background: #111;">
-          <p>Не удалось загрузить новости.</p>
-          <p><b>Проверь консоль (F12) и:</b></p>
-          <ul style="text-align:left; margin-top:10px;">
-            <li>Лежит ли файл news.json в корне репозитория?</li>
-            <li>Совпадает ли регистр букв (news.json vs News.json)?</li>
-            <li>Валиден ли JSON (нет ли запятых в конце)?</li>
-          </ul>
-        </div>`;
+      if (loader) loader.innerHTML = '<p style="color:#ff4757; text-align:center;">Ошибка при загрузке новостей.</p>';
     }
   }
 
-  function createCardHTML(item, index) {
-    const linkUrl = item.url || `#`; // Если нет ссылки, ставим заглушку
-    
-    return `
-      <article class="news-card">
-        <a href="${linkUrl}" style="text-decoration: none; color: inherit; display: block; height: 100%;">
-          <div style="padding: 20px; height: 100%; display: flex; flex-direction: column;">
-            <span class="category-tag">${item.category || 'Разное'}</span>
-            <h3 class="card-title" style="margin: 10px 0;">${item.title}</h3>
-            <div class="card-meta" style="margin-top: auto; color: #888; font-size: 14px;">
-              <span>${item.date}</span>
-              ${item.time ? '<span style="margin-left:10px;">в ' + item.time + '</span>' : ''}
-            </div>
+  // 2. Генерация карточки со ссылкой на news.html?id=...
+  function createCardHTML(item) {return `
+      <article class="news-card" onclick="window.location.href='news.html?id=${item.id}'">
+        <div style="padding: 20px; height: 100%; display: flex; flex-direction: column;">
+          <span class="category-tag">${item.category || 'Разное'}</span>
+          <h3 class="card-title" style="margin: 10px 0;">${item.title}</h3>
+          <div class="card-meta" style="margin-top: auto; color: #888; font-size: 14px;">
+            <span>${item.date}</span>
+            ${item.time ? '<span style="margin-left:10px;">в ' + item.time + '</span>' : ''}
           </div>
-        </a>
+        </div>
       </article>
     `;
   }
 
+  // 3. Отображение новостей
   function displayNews(newsItems) {
     const grid = document.getElementById('grid-all');
     const noResults = document.getElementById('no-results');
@@ -505,19 +441,16 @@
     
     grid.innerHTML = '';
     displayedNewsCount = 0;
+    filteredNews = newsItems;
 
     if (!newsItems || newsItems.length === 0) {
       noResults.style.display = 'block';
-      if(loadMoreBtn) loadMoreBtn.style.display = 'none';
-      return;
+      if(loadMoreBtn) loadMoreBtn.style.display = 'none';return;
     } else {
       noResults.style.display = 'none';
-    }
-
-    const initialDisplayCount = Math.min(NEWS_PER_PAGE, newsItems.length);
+    }const initialDisplayCount = Math.min(NEWS_PER_PAGE, newsItems.length);
     for (let i = 0; i < initialDisplayCount; i++) {
-      const cardHTML = createCardHTML(newsItems[i], i);
-      grid.insertAdjacentHTML('beforeend', cardHTML);
+      grid.insertAdjacentHTML('beforeend', createCardHTML(newsItems[i]));
     }
     displayedNewsCount = initialDisplayCount;
 
@@ -526,70 +459,46 @@
     }
   }
 
+  // 4. Кнопка "Еще новости"
   function loadMoreNews() {
-    if (allNewsGlobal.length === 0) return; // Защита, если данные не загрузились
-
     const grid = document.getElementById('grid-all');
     const startIndex = displayedNewsCount;
-    const endIndex = Math.min(startIndex + NEWS_PER_PAGE, allNewsGlobal.length);
-    const newsToDisplay = allNewsGlobal.slice(startIndex, endIndex);
-
-    newsToDisplay.forEach((item, i) => {
-      const cardHTML = createCardHTML(item, startIndex + i);
-      grid.insertAdjacentHTML('beforeend', cardHTML);
-    });
-
-    displayedNewsCount = endIndex;
-
-    const btn = document.getElementById('load-more-btn');
-    if (btn) {
-      btn.style.display = (displayedNewsCount < allNewsGlobal.length) ? 'block' : 'none';
+    const endIndex = Math.min(startIndex + NEWS_PER_PAGE, filteredNews.length);
+    for (let i = startIndex; i < endIndex; i++) {      grid.insertAdjacentHTML('beforeend', createCardHTML(filteredNews[i]));
     }
+    displayedNewsCount = endIndex;
+    const btn = document.getElementById('load-more-btn');
+    if (btn) btn.style.display = (displayedNewsCount < filteredNews.length) ? 'block' : 'none';
   }
 
+  // 5. Фильтрация
   window.filterNews = function(category) {
     currentCategory = category;
     const titleEl = document.getElementById('current-title');
-    titleEl.textContent = category === 'Все' ? 'Все новости' : `${category}`;
-
-    let filtered;
-    if (category === 'Все') {
-      filtered = allNewsGlobal;
-    } else {
-      filtered = allNewsGlobal.filter(item => item.category === category);
-    }
+    titleEl.textContent = category === 'Все' ? 'Все новости' : category;
+    const filtered = category === 'Все'
+      ? allNewsGlobal 
+      : allNewsGlobal.filter(item => item.category === category);
     displayNews(filtered);
   };
 
-  // Поиск (упрощенный, работает только если карточки уже нарисованы)
+  // 6. Поиск
   document.getElementById('siteSearch').addEventListener('input', (e) => {
     const query = e.target.value.toLowerCase().trim();
     const cards = document.querySelectorAll('.news-card');
-    
-    if (query.length < 2) {
-       // Если поиск пустой, сбрасываем видимость всех карточек
-       cards.forEach(c => c.style.display = 'block');
-       document.getElementById('no-results').style.display = 'none';
-       return;
-    }
-
     let found = false;
     cards.forEach(card => {
-      const titleElement = card.querySelector('.card-title');
-      if (titleElement) {
-        const title = titleElement.innerText.toLowerCase();
-        if (title.includes(query)) {
-          card.style.display = 'block';
-          found = true;
-        } else {
-          card.style.display = 'none';
-        }
+      const title = card.querySelector('.card-title').innerText.toLowerCase();
+      if (title.includes(query)) {        card.style.display = 'block';
+        found = true;
+      } else {
+        card.style.display = 'none';
       }
     });
-
     document.getElementById('no-results').style.display = found ? 'none' : 'block';
   });
 
+  // 7. Бургер-меню (Восстановлено)
   const burger = document.getElementById('burger');
   const mobileMenu = document.getElementById('mobileMenu');
 
@@ -598,16 +507,13 @@
     burger.classList.remove('active');
   }
 
-  if (burger && mobileMenu) {
-    burger.addEventListener('click', () => {
-      mobileMenu.classList.toggle('open');
+  if (burger) {
+    burger.addEventListener('click', () => {mobileMenu.classList.toggle('open');
       burger.classList.toggle('active');
-    });
-  }
+    });}
 
-  document.addEventListener('DOMContentLoaded', () => {
-    loadNews();
-  });
+  document.getElementById('load-more-btn').addEventListener('click', loadMoreNews);
+  document.addEventListener('DOMContentLoaded', loadNews);
 </script>
 </body>
 </html>

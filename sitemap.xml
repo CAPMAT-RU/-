@@ -2,15 +2,8 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://rakurs-news.github.io/</loc>
-    <lastmod>2024-04-27</lastmod>
+    <lastmod>2026-07-11</lastmod>
+    <changefreq>daily</changefreq>
     <priority>1.0</priority>
   </url>
-  <!-- Добавляйте сюда дополнительные страницы по аналогии -->
-  <!-- Например:
-  <url>
-    <loc>https://capmat-ru.github.io/News-Rakurs/novosti.html</loc>
-    <lastmod>2024-04-26</lastmod>
-    <priority>0.8</priority>
-  </url>
-  -->
 </urlset>

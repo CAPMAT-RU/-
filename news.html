@@ -3,489 +3,82 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Новость | РАКУРС</title>
-    
-    <!-- Подключение шрифтов Google Fonts -->
+    <title>Новость | РАКУРС</title>    <meta name="description" content="Читайте последние новости на портале РАКУРС">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
 
     <style>
-        /* === ИДЕНТИЧНЫЕ СТИЛИ С index.html === */
         :root {
-            --bg-color: #1a1a1a; /* Off-black */
-            --text-color: #f0f0f0; /* Чистый белый/светло-серый */
-            --accent-color: #e09f7d; /* Приглушенный терракотовый */
-            --card-bg: #222222; /* Чуть отличающийся фон карточки */
-            --menu-bg: #2c2c2c;
-            --footer-height: 80px;
-            --border-color: #333333; /* Цвет рамки */
-        }
-        
-        /* Основные шрифты: Montserrat для заголовков и UI, Merriweather для основного текста */
-        * { 
-            margin: 0; 
-            padding: 0; 
-            box-sizing: border-box; 
-            font-family: 'Montserrat', sans-serif; /* Шрифт по умолчанию для всего */
-        }
-
-        body {
-            background-color: var(--bg-color);
-            color: var(--text-color);
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            padding-top: 60px; /* Добавляем отступ сверху равный высоте header */
-        }
-
-        /* Заголовки секций и карточек */
-        h1, h2, h3, .logo, .nav-link, .card-title, .site-logo-img, #siteSearch, .category-tag, .author, .publish-date, .publish-time, .hint-text, .copyright, .social-icon, .play-button, .volume-button, .load-more-btn {
-            font-family: 'Montserrat', sans-serif; /* Montserrat для всего UI */
-        }
-
-        /* Основной текст, мета-информация */
-        p, .meta-info span, .author, .publish-date, .publish-time, .hint-text, .copyright, .content-text {
-            font-family: 'Merriweather', serif; /* Merriweather для основного текста и читабельности */
-            line-height: 1.6; /* Улучшаем читабельность */
-        }
-
-        header {
-            position: fixed; 
-            top: 0; 
-            left: 0; 
-            width: 100%;
-            height: 60px; 
-            background-color: rgba(26, 26, 26, 0.8); /* Off-black с прозрачностью */
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            display: flex; 
-            justify-content: flex-start; /* Изменено для выравнивания по левому краю */
-            align-items: center;
-            padding: 0 15px; 
-            z-index: 1000;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        header .logo-container {
-            display: flex;
-            align-items: center;
-        }
-
-        header .logo-container img {
-            height: 30px; /* Размер логотипа */
-            margin-right: 10px; /* Отступ между логотипом и названием */
-        }
-
-        header h1 { 
-            color: var(--accent-color); 
-            margin: 0; 
-            font-weight: 700;
-            letter-spacing: 1px;
-            font-size: 28px; /* Увеличим размер заголовка */
-        }
-
-        footer {
-            margin-top: auto;
-            padding: 20px;
-            text-align: center;
-            color: #888; /* Более светлый цвет для футера */
-            font-size: 0.9rem;
-            border-top: 1px solid rgba(255, 255, 255, 0.1); /* Тонкая линия */
-        }
-
-        /* === СТИЛИ ДЛЯ КНОПКИ === */
-        .back-btn {
-            display: block;
-            padding: 10px 15px;       
-            max-width: 220px;       
-            width: 100%;
-            box-sizing: border-box;
-            
-            background: transparent;
-            border: 2px solid var(--accent-color);
-            color: var(--accent-color);
-            text-decoration: none;
-            font-weight: bold;
-            border-radius: 25px; /* Более скругленные углы */
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            margin: 30px auto 40px;
-            text-align: center;
-        }
-        
-        .back-btn:hover,
-        .back-btn:focus { /* Добавили :focus для интерактивности */
-            background: var(--accent-color);
-            color: var(--bg-color); /* Цвет текста на акцентном фоне */
-            transform: scale(1.05);
-            box-shadow: 0 0 15px rgba(224, 159, 125, 0.6); /* Используем новый акцентный цвет */
-        }
-
-        /* === ГЛАВНЫЙ БЛОК СТАТЬИ === */
-        #article-container {
-            max-width: 800px;
-            margin: 40px auto; /* Оставляем существующий отступ, padding-top на body уже решает проблему */
-            padding: 30px;
-            background: var(--card-bg); 
-            border-radius: 8px; /* Слегка скругленные углы */
-            border: 1px solid var(--border-color); /* Тонкая рамка */
-            transition: transform 0.3s, box-shadow 0.3s;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.3); /* Более мягкая тень */
-        }
-
-        #article-container:hover {
-            transform: translateY(-3px); /* Меньшее смещение */
-            box-shadow: 0 8px 20px rgba(0,0,0,0.4); /* Мягче тень */
-        }
-
-        #article-container img {
-            width: 100%;
-            height: auto;
-            max-height: 500px;
-            object-fit: cover;
-            border-radius: 4px; /* Скругление углов у изображения */
-            margin-bottom: 25px;
-            display: block;
-        }
-
-        /* ЗАГОЛОВОК НОВОСТИ - теперь белый */
-        #article-container h1 {
-            color: var(--text-color); /* Используем переменную */
-            font-size: 2.2rem;
-            line-height: 1.1;
-            margin: 0 0 20px 0;
-        }
-
-        /* БЛОК МЕТА-ИНФО (автор, дата) */
-        .meta-info {
-            color: #aaa;
-            font-size: 0.95rem;
-            margin-bottom: 5px; /* Уменьшен отступ */
-            border-bottom: 1px solid var(--border-color); /* Используем переменную */
-            padding-bottom: 5px;
-        }
-        .meta-info span { margin-right: 15px; }
-
-        .content-text {
-            font-size: 1.1rem;
-            line-height: 1.7;
-            color: var(--text-color); /* Используем переменную */
-            white-space: pre-wrap;
-        }
-        
-        .content-text p {
-            margin-bottom: 1.5rem;
-        }
-
-        /* Убираем отступ у первого абзаца, чтобы он прилип к линии */
-        #article-container .content-text p:first-child {
-            margin-top: 0;
-            margin-bottom: 0; /* Убираем и нижний отступ для плотного прилегания */
-        }
-        
-        @media (max-width: 600px) {
-            #article-container { margin: 20px; padding: 20px; }
-            #article-container h1 { font-size: 1.8rem; }
-            .back-btn { max-width: 100%; }
-        }
-
-        /* --- Стили для видеоплеера --- */
-        .video-container {
-            position: relative; 
-            width: 100%;
-            margin-bottom: 20px;
-            border-radius: 8px; /* Скругленные углы */
-            overflow: hidden; 
-            background-color: #000; 
-            cursor: pointer; 
-            display: flex; 
-            justify-content: center;
-            align-items: center;
-            max-height: 500px; /* Ограничиваем высоту видео */
-        }
-
-        .video-container video {
-            display: block; 
-            width: 100%;
-            height: auto; 
-            max-height: 500px; 
-            object-fit: cover; 
-            background-color: #000; 
-        }
-
-        .play-button {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 70px; 
-            height: 70px;
-            background-color: var(--card-bg); 
-            border-radius: 50%;
-            display: flex; 
-            justify-content: center;
-            align-items: center;
-            cursor: pointer;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            border: 2px solid var(--accent-color); 
-            box-shadow: 0 0 15px rgba(224, 159, 125, 0.4); /* Акцентный цвет */
-            z-index: 10; 
-            display: none; /* Скрыт по умолчанию */
-        }
-
-        .play-button:hover {
-            transform: translate(-50%, -50%) scale(1.1);
-            box-shadow: 0 8px 25px rgba(224, 159, 125, 0.6); /* Акцентный цвет */
-        }
-
-        .play-icon {
-            width: 0; 
-            height: 0; 
-            border-top: 15px solid transparent; 
-            border-bottom: 15px solid transparent; 
-            border-left: 25px solid var(--accent-color); 
-            margin-left: 5px; 
-        }
-        
-        /* Стили для кнопки громкости */
-        .volume-button {
-            position: absolute;
-            bottom: 10px; /* Размещаем в правом нижнем углу */
-            right: 10px;
-            width: 30px; /* Уменьшаем размер */
-            height: 30px; /* Уменьшаем размер */
-            background-color: rgba(44, 44, 44, 0.7); /* Более темный фон */
-            border-radius: 50%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            cursor: pointer;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            border: 1px solid rgba(224, 159, 125, 0.5); /* Акцентный цвет */
-            box-shadow: 0 2px 8px rgba(0,0,0,0.5);
-            z-index: 10;
-            display: none; /* Скрыта по умолчанию */
-        }
-
-        .volume-button:hover {
-            transform: scale(1.1);
-            box-shadow: 0 4px 12px rgba(224, 159, 125, 0.4); /* Акцентный цвет */
-        }
-
-        /* Измененные стили для .volume-icon */
-        .volume-icon {
-            width: 100%; /* Занимает всю ширину родительского контейнера */
-            height: 100%; /* Занимает всю высоту родительского контейнера */
-            object-fit: contain; /* Масштабирует изображение, сохраняя пропорции */
-            display: block; /* Убирает лишние отступы */
-            background: url('https://raw.githubusercontent.com/CAPMAT-RU/bez-shutok/main/images/IMG_20260704_133508.png') no-repeat center center; /* Добавляем вашу иконку */
-            background-size: 70% 70%; /* Регулируем размер иконки внутри кнопки */
-        }
-        /* Скрываем псевдоэлементы, которые раньше формировали иконку */
-        .volume-icon::before, 
-        .volume-icon::after {
-            display: none;
-        }
-        /* --- Конец стилей для кнопки громкости --- */
-
-        /* --- Конец стилей для видеоплеера --- */
-
-        /* === СТИЛИ ДЛЯ ФИРМЕННОГО ЭФФЕКТА ФОКУСА === */
-        /* Убираем стандартный outline, чтобы он не мешал */
-        :focus {
-            outline: none;
-        }
-
-        /* Добавляем контурную подсветку с размытием */
-        /* Используем box-shadow для создания эффекта */
-        .back-btn:focus, /* Применяем к кнопке "Вернуться" */
-        a:focus,
-        button:focus,
-        input:focus,
-        select:focus,
-        textarea:focus {
-            /* Основной контур - акцентный */
-            box-shadow: 0 0 0 2px var(--accent-color), 
-            /* Размытие - более светлый акцентный, немного дальше */
-                        0 0 0 5px rgba(224, 159, 125, 0.5); 
-        }
-        /* === КОНЕЦ СТИЛЕЙ ДЛЯ ФИРМЕННОГО ЭФФЕКТА ФОКУСА === */
-
+            --bg-color: #1a1a1a;
+            --text-color: #f0f0f0;
+            --accent-color: #e09f7d;
+            --card-bg: #222222;
+            --border-color: #333333;
+        }        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Montserrat', sans-serif; }
+        body { background-color: var(--bg-color); color: var(--text-color); min-height: 100vh; display: flex; flex-direction: column; padding-top: 60px; }
+        header { position: fixed; top: 0; left: 0; width: 100%; height: 60px; background-color: rgba(26, 26, 26, 0.8); backdrop-filter: blur(10px); display: flex; align-items: center; padding: 0 15px; z-index: 1000; border-bottom: 1px solid rgba(255, 255, 255, 0.1); }header .logo-container { display: flex; align-items: center; }
+        header .logo-container img { height:30px; margin-right: 10px; }
+        header h1 { color: var(--accent-color); font-weight: 700; letter-spacing: 1px; font-size: 28px; }
+        footer { margin-top: auto; padding: 20px; text-align: center; color: #888; font-size: 0.9rem; border-top:1px solid rgba(255, 255, 255, 0.1); }
+        .back-btn { display: block; padding: 10px 15px; max-width: 220px; width: 100%; box-sizing: border-box; background: transparent; border: 2px solid var(--accent-color); color: var(--accent-color); text-decoration: none; font-weight: bold; border-radius:25px; transition: all 0.3s; margin: 30px auto 40px; text-align: center;}
+        .back-btn:hover { background: var(--accent-color); color: var(--bg-color); transform: scale(1.05); }
+        #article-container { max-width: 800px; margin: 40px auto; padding: 30px; background: var(--card-bg); border-radius: 8px; border:1px solid var(--border-color); }
+        #article-container img { width: 100%; height: auto; max-height: 500px; object-fit: cover; border-radius:4px; margin-bottom: 25px; }
+        #article-container h1 { font-size: 2.2rem; margin-bottom: 20px; }
+        .meta-info { color: #aaa; margin-bottom: 20px; border-bottom: 1px solid var(--border-color); padding-bottom: 5px; }
+        .content-text { font-family: 'Merriweather', serif; font-size: 1.1rem; line-height: 1.7; white-space: pre-wrap; }
+        .video-container { position: relative; width: 100%; margin-bottom: 20px; border-radius: 8px; overflow: hidden; background: #000; cursor: pointer; }
+        .video-container video { width: 100%; display: block; }.play-button { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 70px; height: 70px; background: var(--card-bg); border-radius: 50%; display: flex; justify-content: center; align-items: center; border:2px solid var(--accent-color); }
+        .play-icon { width: 0; height: 0; border-top: 15px solid transparent; border-bottom: 15px solid transparent; border-left: 25px solid var(--accent-color); margin-left: 5px; }
     </style>
-
 </head>
 <body>
-
     <header>
         <div class="logo-container">
-            <img src="https://raw.github.com/rakurs-news/rakurs-news.github.io/main/images/IMG_20260706_221334.png" alt="Логотип РАКУРС">
+            <img src="https://raw.github.com/rakurs-news/rakurs-news.github.io/main/images/IMG_20260706_221334.png" alt="Логотип">
             <h1>РАКУРС</h1>
         </div>
-    </header>
-
-    <main>
-        <!-- Контейнер для статьи -->
+    </header>    <main>
         <div id="article-container">
             <p style="text-align: center; color: #666;">Загрузка статьи...</p>
-            
-            <!-- Кнопка будет добавлена сюда через JS внизу контента -->
         </div>
     </main>
 
-    <footer>
-        <p>©2026 РАКУРС</p>
-    </footer>
+    <footer><p>©2026 РАКУРС</p></footer>
 
     <script>
-        // Функция для управления видеоплеером
-        function setupVideoPlayer(container) {
-            const videoContainer = container.querySelector('.video-container');
-            if (!videoContainer) return;
-
-            const videoElement = videoContainer.querySelector('.video-element');
-            const playButton = videoContainer.querySelector('.play-button');
-            const volumeButton = videoContainer.querySelector('.volume-button');
-
-            // Скрываем плеер и кнопки по умолчанию
-            videoElement.style.display = 'none';
-            playButton.style.display = 'none';
-            volumeButton.style.display = 'none';
-
-            // Функция для показа плеера и кнопок
-            const showPlayerControls = () => {
-                videoElement.style.display = 'block';
-                playButton.style.display = 'flex';
-                volumeButton.style.display = 'flex';
-            };
-
-            // Обработчик события 'loadedmetadata'
-            videoElement.addEventListener('loadedmetadata', () => {
-                showPlayerControls();
-            });
-             
-            // Если видео уже загружено и готово к воспроизведению
-            if (videoElement.readyState >= 2 && videoElement.paused) { 
-                showPlayerControls();
-            } else if (videoElement.readyState < 2) {
-                playButton.style.display = 'flex';
-                volumeButton.style.display = 'flex';
-                videoContainer.style.cursor = 'pointer'; 
-            }
-
-            // Обработка клика по кнопке Play
-            playButton.addEventListener('click', (e) => {
-                e.stopPropagation(); 
-                if (videoElement.paused) {
-                    videoElement.play();
-                    playButton.style.display = 'none'; 
-                } else {
-                    videoElement.pause();
-                    playButton.style.display = 'flex'; 
-                }
-            });
-
-            // Обработка клика по кнопке Volume
-            volumeButton.addEventListener('click', (e) => {
-                e.stopPropagation(); 
-                videoElement.muted = !videoElement.muted;
-            });
-
-            // Обработчик события 'ended'
-            videoElement.addEventListener('ended', () => {
-                playButton.style.display = 'flex'; 
-                videoElement.style.display = 'block'; 
-                volumeButton.style.display = 'flex';
-            });
-            
-            // Клик по всему контейнеру видео для Play/Pause
-            videoContainer.addEventListener('click', () => {
-                if (videoElement.paused) {
-                    videoElement.play();
-                    playButton.style.display = 'none';
-                } else {
-                    videoElement.pause();
-                    playButton.style.display = 'flex';
-                }
-            });
-        }
-
         async function loadSingleArticle() {
             const params = new URLSearchParams(window.location.search);
             const newsId = params.get('id');
             const container = document.getElementById('article-container');
 
-            if (!newsId) {
-                container.innerHTML = `
-                    <h2 style="color:#ff4757; text-align:center;">Ошибка</h2>
-                    <p style="text-align:center; color:#888;">Не указан ID новости.</p>
-                `;
-                return;
-            }
-
-            try {
-                const response = await fetch('news.json');
-                if (!response.ok) throw new Error('JSON не найден');
+            try {const response = await fetch('news.json');
                 const data = await response.json();
-
                 const news = data.find(n => n.id == newsId);
 
                 if (news) {
-                    let mediaHtml = '';
-                    if (news.videoUrl) {
-                        mediaHtml = `
-                            <div class="video-container">
-                                <video class="video-element" preload="auto"> 
-                                    <source src="${news.videoUrl}" type="video/mp4">
-                                    Ваш браузер не поддерживает тег video.
-                                </video>
-                                <div class="play-button">
-                                    <div class="play-icon"></div>
-                                </div>
-                                <div class="volume-button">
-                                    <div class="volume-icon"></div>
-                                </div>
-                            </div>
-                        `;
-                    } else {
-                        mediaHtml = `
-                            <img src="${news.image}" alt="${news.title}" onerror="this.onerror=null; this.src='https://via.placeholder.com/800x500/333/fff?text=No+Image'">
-                        `;
-                    }
+                    // SEO оптимизацияdocument.title = `${news.title} | РАКУРС`;
+                    const cleanText = news.content.replace(/<[^>]*>/g, '').substring(0, 150);
+                    let metaDesc = document.querySelector('meta[name="description"]');
+                    if (metaDesc) metaDesc.setAttribute("content", cleanText);
 
-                    container.innerHTML = `
-                        ${mediaHtml}
-                        
-                        <h1>${news.title}</h1>
-                        
-                        <div class="meta-info">
-                            <span style="color: var(--accent-color); font-weight:bold; margin-left: 10px;">Рубрика: ${news.category}</span>
-                        </div>
-                        
-                        <div class="content-text">
-                            ${news.content}
-                        </div>
-                        
-                        <p class="author-info" style="color: #aaa; font-size: 0.9rem; margin-top: 20px;">Автор: Дмитрий Мусиенко</p>
-                        
-                        <!-- КНОПКА ВНИЗУ ПОСЛЕ СТАТЬИ -->
-                        <a href="index.html" class="back-btn">← На Главную</a>
-                    `;
+                    let mediaHtml = news.videoUrl
+                        ? `<div class="video-container"><video class="video-element" src="${news.videoUrl}"></video><div class="play-button"><div class="play-icon"></div></div></div>`
+                        : `<img src="${news.image}" alt="${news.title}">`;container.innerHTML = `${mediaHtml}<h1>${news.title}</h1><div class="meta-info">Рубрика: ${news.category}</div><div class="content-text">${news.content}</div><a href="index.html" class="back-btn">← На Главную</a>`;
                     
-                    // Инициализируем плеер после того, как контент добавлен
-                    setupVideoPlayer(container);
-
-                } else {
-                    container.innerHTML = `
-                        <h2 style="color:#ff4757; text-align:center;">Новость не найдена</h2>
-                        <p style="text-align:center; color:#888;">ID: ${newsId}</p>
-                    `;
+                    // Логика плеера
+                    const video = container.querySelector('video');
+                    const btn = container.querySelector('.play-button');
+                    if (video && btn) {
+                        btn.onclick = () => { video.paused ? video.play() : video.pause(); btn.style.display = video.paused ? 'flex' : 'none'; };
+                    }} else {
+                    container.innerHTML = `<h2>Новость не найдена</h2>`;
                 }
             } catch (err) {
-                console.error(err);
-                container.innerHTML = `<h2 style="color:#ff4757; text-align:center;">Ошибка загрузки</h2>`;
+                container.innerHTML = `<h2>Ошибка загрузки</h2>`;
             }
         }
-
         loadSingleArticle();
     </script>
 </body>
