@@ -413,22 +413,23 @@
   }
   // 2. Генерация карточки со ссылкой на news.html?id=...
   function createCardHTML(item) {
-    // Безопасное получение данных
-    const category = item.category || 'Без категории';
-    const title = item.title || 'Без названия';
-    const date = item.date || ''; // Если даты нет, будет пустая строка
-    const time = item.time ?`в ${item.time}` : ''; // Если времени нет, текст не появится
-    return `
-      <article class="news-card" onclick="window.location.href='news.html?id=${item.id}'">
-        <div style="padding:20px; height: 100%; display: flex; flex-direction: column;">
-          <span class="category-tag">${category}</span>
-          <h3 class="card-title" style="margin: 10px 0;">${title}</h3>
-          <div class="card-meta" style="margin-top: auto; color: var(--accent-color); font-size: 14px;">
-            <span>${date}</span><span style="margin-left:10px;">${time}</span>
-          </div>
-        </div></article>
-    `;
-  }
+  const category = item.category || 'Без категории';
+  const title = item.title || 'Без названия';
+  const date = item.date || '';
+  const time = item.time ? `в ${item.time}` : '';
+
+  return `
+    <article class="news-card" onclick="window.location.href='news.html?id=${item.id}'">
+      <div style="padding:20px; height: 100%; display: flex; flex-direction: column;">
+        <span class="category-tag">${category}</span>
+        <h3 class="card-title">${title}</h3>
+        <div class="card-meta" style="margin-top: auto; color: var(--accent-color); font-size: 14px;">
+          <span>${date}</span><span style="margin-left:10px;">${time}</span>
+        </div>
+      </div>
+    </article>
+  `;
+}
   
   // 3. Отображение новостей
   function displayNews(newsItems) {

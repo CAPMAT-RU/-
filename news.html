@@ -4,21 +4,20 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Новость | РАКУРС</title>
-  <link rel="icon" type="image/png" href="/images/favicon.png" sizes="32x32" />
+<link rel="icon" type="image/png" href="/images/favicon.png" sizes="32x32" />
 <meta name="yandex-verification" content="8e3a5a0a7520b3b8" />
 <meta name="description" content="Читайте последние новости на портале РАКУРС" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet" />
 
-<!-- Ваши стили без изменений -->
 <style>
 :root {
-    --bg-color: #1a1a1a;
-    --text-color: #f0f0f0;
-    --accent-color: #e09f7d;
-    --card-bg: #222222;
-    --border-color: #333333;
+--bg-color: #1a1a1a;
+--text-color: #f0f0f0;
+--accent-color: #e09f7d;
+--card-bg: #222222;
+--border-color: #333333;
 }
 * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Montserrat', sans-serif; }
 body { background-color: var(--bg-color); color: var(--text-color); min-height: 100vh; display: flex; flex-direction: column; padding-top: 60px; }
@@ -31,7 +30,17 @@ footer { margin-top: auto; padding: 20px; text-align: center; color: #888; font-
 .back-btn:hover { background: var(--accent-color); color: var(--bg-color); transform: scale(1.05); }
 #article-container { max-width: 800px; margin:40px auto; padding: 30px; background: var(--card-bg); border-radius: 8px; border:1px solid var(--border-color); }
 #article-container img { width: 100%; height: auto; max-height: 500px; object-fit: cover; border-radius:4px; margin-bottom: 25px; }
-#article-container h1 { font-size: 2.2rem; margin-bottom: 20px; }
+
+/* ИСПРАВЛЕНИЯ ЗДЕСЬ */
+#article-container h1 { 
+    font-size: 1.8rem; /* Уменьшили с 2.2rem до 1.8rem */
+    margin-bottom: 20px;
+    line-height: 1.3;
+    word-wrap: break-word; /* Разрывает длинные слова, если они не влезают */
+    overflow-wrap: break-word; /* Современный аналог для переноса */
+}
+/* -------------------------------- */
+
 .meta-info { color: #aaa; margin-bottom: 20px; border-bottom: 1px solid var(--border-color); padding-bottom: 5px; }
 .category-meta { color: var(--accent-color); font-weight: 700; }
 .content-text { font-family: 'Merriweather', serif; font-size: 1.1rem; line-height: 1.7; white-space: pre-wrap; }
@@ -39,71 +48,70 @@ footer { margin-top: auto; padding: 20px; text-align: center; color: #888; font-
 .video-container video { width: 100%; display: block; }
 .play-button { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 70px; height: 70px; background: var(--card-bg); border-radius: 50%; display: flex; justify-content: center; align-items: center; border:2px solid var(--accent-color); }
 .play-icon { width: 0; height: 0; border-top: 15px solid transparent; border-bottom: 15px solid transparent; border-left: 25px solid var(--accent-color); margin-left: 5px; }
+
+/* Адаптив для мобильных, чтобы заголовок точно не вылезал */
+@media (max-width: 600px) {
+    #article-container h1 { font-size: 1.5rem; }
+    #article-container { padding: 20px; margin: 20px 10px; }
+}
 </style>
 </head>
 <body>
 <header>
-    <div class="logo-container">
-        <img src="/images/favicon.png" alt="Логотип">
-        <h1>РАКУРС</h1>
-    </div>
+<div class="logo-container">
+<img src="/images/favicon.png" alt="Логотип">
+<h1>РАКУРС</h1>
+</div>
 </header>
 <main>
-    <div id="article-container">
-        <p style="text-align: center; color: #666;">Загрузка статьи...</p>
-    </div>
-</main>    <footer><p>©2026 РАКУРС</p></footer>
-
+<div id="article-container">
+<p style="text-align: center; color: #666;">Загрузка статьи...</p>
+</div>
+</main> <footer><p>©2026 РАКУРС</p></footer>
 <script>
 async function loadSingleArticle() {
-    const params = new URLSearchParams(window.location.search);
-    const newsId = params.get('id');
-    const container = document.getElementById('article-container');
-
-    try {
-        const response = await fetch('news.json');
-        const data = await response.json();
-        const news = data.find(n => n.id == newsId);
-
-        if (news) {
-            document.title = `${news.title} | РАКУРС`;
-
-            let mediaHtml = news.videoUrl
-                ? `<div class="video-container" id="vid-wrapper">
-                     <video src="${news.videoUrl}" playsinline></video>
-                     <div class="play-button" id="play-btn"><div class="play-icon"></div></div>
-                   </div>`
-                : `<img src="${news.image}" alt="${news.title}">`;
-
-            container.innerHTML = `${mediaHtml}
-                <h1>${news.title}</h1>
-                <div class="meta-info"><span class="category-meta">Рубрика: ${news.category}</span></div>
-                <div class="content-text">${news.content}</div>
-                <a href="index.html" class="back-btn">← На Главную</a>`;
-
-            const wrapper = document.getElementById('vid-wrapper');
-            const video = wrapper ? wrapper.querySelector('video') : null;
-            const btn = wrapper ? document.getElementById('play-btn') : null;
-
-            if (wrapper && video && btn) {
-                // При клике по видео или кнопке — переключение воспроизведения
-                const toggleVideo = () => {
-                    if (video.paused) {
-                        video.play();
-                        btn.style.display = 'none';
-                    } else {
-                        video.pause();
-                        btn.style.display = 'flex';
-                    }
-                };
-                wrapper.addEventListener('click', toggleVideo);
-            }
-        } else {
-            container.innerHTML = `<h2>Новость не найдена</h2>`;
+const params = new URLSearchParams(window.location.search);
+const newsId = params.get('id');
+const container = document.getElementById('article-container');
+try {
+const response = await fetch('news.json');
+const data = await response.json();
+const news = data.find(n => n.id == newsId);
+if (news) {
+document.title = `${news.title} | РАКУРС`;
+let mediaHtml = news.videoUrl
+? `<div class="video-container" id="vid-wrapper">
+<video src="${news.videoUrl}" playsinline></video>
+<div class="play-button" id="play-btn"><div class="play-icon"></div></div>
+</div>`
+: `<img src="${news.image}" alt="${news.title}">`;
+container.innerHTML = `${mediaHtml}
+<h1>${news.title}</h1>
+<div class="meta-info"><span class="category-meta">Рубрика: ${news.category}</span></div>
+<div class="content-text">${news.content}</div>
+<a href="index.html" class="back-btn">← На Главную</a>`;
+const wrapper = document.getElementById('vid-wrapper');
+const video = wrapper ? wrapper.querySelector('video') : null;
+const btn = wrapper ? document.getElementById('play-btn') : null;
+if (wrapper && video && btn) {
+const toggleVideo = () => {
+if (video.paused) {
+video.play();
+btn.style.display = 'none';
+} else {
+video.pause();
+btn.style.display = 'flex';
+}
+};
+wrapper.addEventListener('click', toggleVideo);
+}
+} else {
+container.innerHTML = `<h2>Новость не найдена</h2>`;
+}
+} catch (err) {
+console.error(err);
+container.innerHTML = `<h2>Ошибка загрузки</h2>`;
         }
-    } catch (err) {
-        console.error(err);
-        container.innerHTML = `<h2>Ошибка загрузки</h2>`;
     }
 }
 loadSingleArticle();
