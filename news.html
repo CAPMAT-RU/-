@@ -9,7 +9,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet" />
 
-<!-- Вставляем стили для плеера -->
+<!-- Вставляем ваши стили -->
 <style>
 /* Style.css */
 * {
@@ -17,7 +17,6 @@
     padding: 0;
     box-sizing: border-box;
 }
-
 body {
     display: flex;
     align-items: center;
@@ -26,7 +25,6 @@ body {
     gap: 20px;
     min-height: 100vh;
 }
-
 .gfg {
     padding-bottom: 10px;
     display: flex;
@@ -36,7 +34,6 @@ body {
     color: #01940b;
     align-items: center;
 }
-
 .video-container {
     max-width: 500px;
     max-height: 300px;
@@ -46,7 +43,6 @@ body {
     background-color: black;
     overflow: hidden;
 }
-
 .video-thumbnail {
     position: absolute;
     width: 100%;
@@ -54,12 +50,10 @@ body {
     object-fit: cover;
     cursor: pointer;
 }
-
 .video {
     width: 100%;
     height: 100%;
 }
-
 .controls {
     position: absolute;
     bottom: 0;
@@ -74,7 +68,6 @@ body {
     opacity: 0;
     transition: opacity 0.3s ease-in-out;
 }
-
 .controls button {
     background: transparent;
     border: none;
@@ -82,13 +75,11 @@ body {
     font-size: 18px;
     cursor: pointer;
 }
-
 .left {
     width: 80px;
     display: flex;
     justify-content: space-between;
 }
-
 .video-timer {
     display: flex;
     align-items: center;
@@ -96,38 +87,31 @@ body {
     font-size: 12px;
     margin-left: 10px;
 }
-
 .separator {
     margin: 0 5px;
     font-size: 14px;
 }
-
 .right {
     padding-left: 10px;
 }
-
 .volume-container {
     display: flex;
     align-items: center;
 }
-
 .volume {
     margin-left: 5px;
     width: 60px;
     height: 3px;
     cursor: pointer;
 }
-
 .mute {
     cursor: pointer;
 }
-
 .fa-volume-up,
 .fa-solid {
     font-size: 14px;
     color: #fff;
 }
-
 .playback-line {
     position: relative;
     height: 4px;
@@ -136,7 +120,6 @@ body {
     cursor: pointer;
     margin: 0 10px;
 }
-
 .progress-bar {
     height: 100%;
     width: 0;
@@ -159,7 +142,7 @@ body {
 </main>
 <footer><p>©2026 РАКУРС</p></footer>
 
-<!-- Вставляем скрипт для плеера -->
+<!-- Вставляем ваш скрипт -->
 <script>
 const timeFormatter = (timeInput) => {
     let minute = Math.floor(timeInput / 60);
@@ -187,7 +170,8 @@ async function loadSingleArticle() {
                      <div class="play-button" id="play-btn"><div class="play-icon"></div></div>
                    </div>`
                 : `<img src="${news.image}" alt="${news.title}">`;
-            container.innerHTML = `${mediaHtml}<h1>${news.title}</h1>
+            container.innerHTML = `${mediaHtml}
+                <h1>${news.title}</h1>
                 <div class="meta-info"><span class="category-meta">Рубрика: ${news.category}</span></div>
                 <div class="content-text">${news.content}</div>
                 <a href="index.html" class="back-btn">← На Главную</a>`;
@@ -209,33 +193,33 @@ async function loadSingleArticle() {
                 wrapper.addEventListener('click', toggleVideo);
             }
 
-            // Инициализация элементов для плеера
+            // Инициализация элементов управления для видео
             if (video) {
-                // Создаем элементы управления
-                const controlsHtml = `
-                <div class="controls" style="opacity: 0;">
-                    <div class="left">
-                        <button class="play-pause"><i class="fa-solid fa-pause"></i></button>
-                        <button class="skipminus-10"><i class="fa-solid fa-backward"></i></button>
-                        <button class="skip-10"><i class="fa-solid fa-forward"></i></button>
+                // Создаем элементы управления, если их еще нет
+                if (!container.querySelector('.controls')) {
+                    const controlsHtml = `
+                    <div class="controls" style="opacity: 0;">
+                        <div class="left">
+                            <button class="play-pause"><i class="fa-solid fa-pause"></i></button>
+                            <button class="skipminus-10"><i class="fa-solid fa-backward"></i></button>
+                            <button class="skip-10"><i class="fa-solid fa-forward"></i></button>
+                        </div>
+                        <div class="video-timer">
+                            <span class="current-time">00:00</span>
+                            <span class="separator">/</span>
+                            <span class="max-duration">00:00</span>
+                        </div>
+                        <div class="right volume-container">
+                            <button class="mute"><i class="fa-solid fa-volume-up"></i></button>
+                            <input type="range" min="0" max="1" step="0.01" class="volume" />
+                        </div>
                     </div>
-                    <div class="video-timer">
-                        <span class="current-time">00:00</span>
-                        <span class="separator">/</span>
-                        <span class="max-duration">00:00</span>
-                    </div>
-                    <div class="right volume-container">
-                        <button class="mute"><i class="fa-solid fa-volume-up"></i></button>
-                        <input type="range" min="0" max="1" step="0.01" class="volume" />
-                    </div>
-                </div>
-                <div class="playback-line">
-                    <div class="progress-bar"></div>
-                </div>`;
-                // Вставляем управляющие элементы перед видео
-                video.parentNode.insertAdjacentHTML('afterend', controlsHtml);
-
-                const containerVideo = video.parentNode; // контейнер, где есть видео и controls
+                    <div class="playback-line">
+                        <div class="progress-bar"></div>
+                    </div>`;
+                    video.insertAdjacentHTML('afterend', controlsHtml);
+                }
+                const containerVideo = video.parentNode;
                 const controls = containerVideo.querySelector('.controls');
                 const progressBar = containerVideo.querySelector('.progress-bar');
                 const currentTimeRef = containerVideo.querySelector('.current-time');
@@ -246,10 +230,8 @@ async function loadSingleArticle() {
                 const muteBtn = containerVideo.querySelector('.mute');
                 const volumeSlider = containerVideo.querySelector('.volume');
 
-                let isPlaying = false;
-
-                // Обработчики управления
-                playpauseBtn.addEventListener('click', () => {
+                // Обработчики
+                playpauseBtn.onclick = () => {
                     if (video.paused) {
                         video.play();
                         playpauseBtn.innerHTML = '<i class="fa-solid fa-pause"></i>';
@@ -257,27 +239,19 @@ async function loadSingleArticle() {
                         video.pause();
                         playpauseBtn.innerHTML = '<i class="fa-solid fa-play"></i>';
                     }
-                });
+                };
 
-                video.addEventListener('play', () => {
-                    isPlaying = true;
-                });
-                video.addEventListener('pause', () => {
-                    isPlaying = false;
-                });
-                video.addEventListener('ended', () => {
+                video.onplay = () => { /* можно расширять */ };
+                video.onpause = () => { /* можно расширять */ };
+                video.onended = () => {
                     playpauseBtn.innerHTML = '<i class="fa-solid fa-play"></i>';
-                    progressBar.style.width = "0%";
-                });
+                    progressBar.style.width = '0%';
+                };
 
-                skipForwardBtn.addEventListener('click', () => {
-                    video.currentTime += 5;
-                });
-                skipBackwardBtn.addEventListener('click', () => {
-                    video.currentTime -= 5;
-                });
+                skipForwardBtn.onclick = () => { video.currentTime += 5; };
+                skipBackwardBtn.onclick = () => { video.currentTime -= 5; };
 
-                muteBtn.addEventListener('click', () => {
+                muteBtn.onclick = () => {
                     video.muted = !video.muted;
                     if (video.muted) {
                         muteBtn.innerHTML = '<i class="fa-solid fa-volume-xmark"></i>';
@@ -286,39 +260,34 @@ async function loadSingleArticle() {
                         muteBtn.innerHTML = '<i class="fas fa-volume-up"></i>';
                         volumeSlider.value = video.volume;
                     }
-                });
+                };
 
-                volumeSlider.addEventListener('input', () => {
+                volumeSlider.oninput = () => {
                     video.volume = volumeSlider.value;
                     if (video.volume == 0) {
                         muteBtn.innerHTML = '<i class="fa-solid fa-volume-xmark"></i>';
                     } else {
                         muteBtn.innerHTML = '<i class="fas fa-volume-up"></i>';
                     }
-                });
+                };
 
-                // Обновление прогресс бара и времени
-                video.addEventListener('timeupdate', () => {
+                // Обновление прогресс бара
+                video.ontimeupdate = () => {
                     const percentage = (video.currentTime / video.duration) * 100;
                     progressBar.style.width = percentage + "%";
                     currentTimeRef.innerHTML = timeFormatter(video.currentTime);
                     maxDurationRef.innerText = timeFormatter(video.duration);
-                });
+                };
 
-                // Клик по шкале для перемотки
-                const playbackLine = containerVideo.querySelector('.playback-line');
-                playbackLine.addEventListener('click', (e) => {
-                    const timelineWidth = playbackLine.clientWidth;
-                    video.currentTime = (e.offsetX / timelineWidth) * video.duration;
-                });
+                // Перемотка по шкале
+                containerVideo.querySelector('.playback-line').onclick = (e) => {
+                    const width = containerVideo.querySelector('.playback-line').clientWidth;
+                    video.currentTime = (e.offsetX / width) * video.duration;
+                };
 
-                // Показать/скрыть управление при наведении
-                containerVideo.addEventListener("mouseenter", () => {
-                    controls.style.opacity = 1;
-                });
-                containerVideo.addEventListener("mouseleave", () => {
-                    controls.style.opacity = 0;
-                });
+                // Показать/скрыть управление
+                containerVideo.onmouseenter = () => { controls.style.opacity = 1; };
+                containerVideo.onmouseleave = () => { controls.style.opacity = 0; };
             }
         } else {
             container.innerHTML = `<h2>Новость не найдена</h2>`;
