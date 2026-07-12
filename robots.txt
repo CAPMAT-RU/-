@@ -1,8 +1,1 @@
-```text
-User-agent: *
-Disallow: /admin/
-Disallow: /login/
-Allow: /
-
 Sitemap: https://rakurs-news.github.io/sitemap.xml
-```
