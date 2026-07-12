@@ -9,9 +9,8 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet" />
 
-<!-- Вставляем ваши стили -->
+<!-- Ваши стили без изменений -->
 <style>
-/* Style.css */
 * {
     margin: 0;
     padding: 0;
@@ -142,7 +141,7 @@ body {
 </main>
 <footer><p>©2026 РАКУРС</p></footer>
 
-<!-- Вставляем ваш скрипт -->
+<!-- Скрипт для загрузки статьи и работы видеоплеера -->
 <script>
 const timeFormatter = (timeInput) => {
     let minute = Math.floor(timeInput / 60);
@@ -177,23 +176,7 @@ async function loadSingleArticle() {
                 <a href="index.html" class="back-btn">← На Главную</a>`;
 
             const video = container.querySelector('video');
-            const btn = container.querySelector('#play-btn');
-            const wrapper = container.querySelector('#vid-wrapper');
 
-            if (wrapper && video && btn) {
-                const toggleVideo = () => {
-                    if (video.paused) {
-                        video.play();
-                        btn.style.display = 'none';
-                    } else {
-                        video.pause();
-                        btn.style.display = 'flex';
-                    }
-                };
-                wrapper.addEventListener('click', toggleVideo);
-            }
-
-            // Инициализация элементов управления для видео
             if (video) {
                 // Создаем элементы управления, если их еще нет
                 if (!container.querySelector('.controls')) {
@@ -230,7 +213,7 @@ async function loadSingleArticle() {
                 const muteBtn = containerVideo.querySelector('.mute');
                 const volumeSlider = containerVideo.querySelector('.volume');
 
-                // Обработчики
+                // Обработчики управления
                 playpauseBtn.onclick = () => {
                     if (video.paused) {
                         video.play();
@@ -241,8 +224,6 @@ async function loadSingleArticle() {
                     }
                 };
 
-                video.onplay = () => { /* можно расширять */ };
-                video.onpause = () => { /* можно расширять */ };
                 video.onended = () => {
                     playpauseBtn.innerHTML = '<i class="fa-solid fa-play"></i>';
                     progressBar.style.width = '0%';
