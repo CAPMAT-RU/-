@@ -5,8 +5,7 @@
   <title>РАКУРС NEWS — Все новости</title>
   <meta name="yandex-verification" content="8e3a5a0a7520b3b8" />
   <link rel="icon" type="image/png" href="/images/favicon.png" sizes="32x32" />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="preconnect" href="https://fonts.googleapis.com" /><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet" />
   <style>
     :root {
@@ -20,7 +19,7 @@
 
     * {
         margin: 0;
-        padding: 0;
+        padding:0;
         box-sizing: border-box;
         font-family: 'Montserrat', sans-serif;
     }
@@ -49,11 +48,10 @@
         position: fixed;
         top: 0;
         left: 0;        width: 100%;
-        height: 60px;
-        background-color: rgba(26, 26, 26, 0.8);
+        height:60px;
+        background-color: rgba(26, 26, 26,0.8);
         backdrop-filter: blur(10px);
-        display: flex;
-        justify-content: space-between;
+        display: flex;justify-content: space-between;
         align-items: center;
         padding: 0 15px;
         z-index: 1000;
@@ -82,11 +80,11 @@
 
     .header-right {
         display: flex;
-        align-items: center;gap: 40px;
+        align-items: center;gap:40px;
     }
 
     #siteSearch {
-        background: rgba(44, 44, 44, 0.7);
+        background: rgba(44, 44,44, 0.7);
         border: 1px solid rgba(255, 255, 255, 0.2);
         color: #fff;
         padding: 10px 25px;
@@ -97,8 +95,7 @@
         width: 350px;
     }
 
-    #siteSearch:focus {
-        border-color: var(--accent-color);
+    #siteSearch:focus {border-color: var(--accent-color);
     }
 
     .burger {
@@ -115,28 +112,21 @@
         transition: all 0.3s ease;
     }
 
-    .burger span:nth-child(1) {
-        top: 0;
+    .burger span:nth-child(1) {        top: 0;
     }
 
-    .burger span:nth-child(2) {
-        top: 9px;
+    .burger span:nth-child(2) {top: 9px;
     }
 
-    .burger span:nth-child(3) {
-        top: 18px;
+    .burger span:nth-child(3) {top: 18px;
     }
 
     .burger.active span:nth-child(1) {
         transform: rotate(45deg);
         top: 9px;
-    }
-
-    .burger.active span:nth-child(2) {
+    }.burger.active span:nth-child(2) {
         opacity: 0;
-    }
-
-    .burger.active span:nth-child(3) {
+    }    .burger.active span:nth-child(3) {
         transform: rotate(-45deg);
         top: 9px;
     }
@@ -145,8 +135,7 @@
         position: fixed;
         top: 0;
         left: -70%;
-        width: 70%;
-        height: 100vh;
+        width: 70%;        height: 100vh;
         background-color: var(--menu-bg);
         padding: 40px 20px;
         transition: left 0.3s cubic-bezier(0.68, -0.55, 0.27, 1.55);
@@ -157,23 +146,29 @@
         overflow-y: auto;
     }
 
-    .mobile-menu.open {
-        left: 0;
+    .mobile-menu.open {left: 0;
     }
 
     .nav-link {
         color: var(--text-color);
         text-decoration: none;
-        font-size: 18px;        padding: 12px 0;
-        border-bottom: 1px solid var(--accent-color);
-        cursor: pointer;
+        font-size: 18px;        padding:12px 0;
+        border-bottom: 1px solid var(--accent-color);cursor: pointer;
         user-select: none;
-        transition: color 0.2s;
-        outline: none;
+        transition: color 0.2s;        outline: none;
     }
 
     .nav-link:hover {
         color: var(--accent-color);
+    }
+
+    /* Добавленный стиль для кнопки Контакты */
+    .nav-link.contact-btn {
+        border: 2px solid var(--accent-color);
+        border-radius: 8px;
+        text-align: center;
+        padding: 12px;
+        margin-top: 10px;
     }
 
     main {
@@ -196,7 +191,7 @@
         display: grid;
         grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
         gap: 30px;
-        margin-bottom: 50px;
+        margin-bottom:50px;
     }
 
     .news-card {
@@ -216,8 +211,7 @@
     .category-tag {color: var(--accent-color);
         font-size: 12px;
         font-weight: bold;
-        text-transform: uppercase;
-        margin-bottom: 8px;
+        text-transform: uppercase;margin-bottom: 8px;
         display: inline-block;
     }
 
@@ -234,16 +228,15 @@
 
     .card-meta {
         margin-top: auto;
-        font-size: 14px;
-        display: flex;
+        font-size: 14px;display: flex;
         justify-content: space-between;align-items: center;
         margin-top: 10px;
     }
 
     footer {
         height: var(--footer-height);
-        padding: 20px;
-        background-color: rgba(26, 26, 26, 0.8);
+        padding:20px;
+        background-color: rgba(26, 26, 26,0.8);
         backdrop-filter: blur(10px);
         border-top: 1px solid rgba(255, 255, 255, 0.1);        margin-top: auto;
         text-align: center;
@@ -259,8 +252,7 @@
     }
 
     .copyright {
-        font-size: 16px;
-        color: #888;
+        font-size: 16px;color: #888;
         margin-top:15px;
     }
 
@@ -270,16 +262,14 @@
         margin-top: 30px;
     }
 
-    .social-icon {
-        display: inline-flex;
+    .social-icon {display: inline-flex;
         justify-content: center;        align-items: center;
         width: 40px;
         height: 40px;
         border-radius: 50%;
         background-color: #333;border: 1px solid #555;
-        transition: transform 0.3s ease, box-shadow 0.3s ease;
-        overflow: hidden;
-        cursor: pointer;
+        transition: transform0.3s ease, box-shadow 0.3s ease;
+        overflow: hidden;cursor: pointer;
     }
 
     .social-icon img {
@@ -290,14 +280,13 @@
 
     .social-icon:hover {
         transform: translateY(-3px) scale(1.1);
-        box-shadow: 0 5px 15px rgba(255, 71, 87, 0.4);
+        box-shadow: 05px 15px rgba(255, 71, 87, 0.4);
     }
 
     .load-more-btn {display: block;
         padding: 10px 20px;
         margin: 30px auto;
-        background: transparent;
-        border: 2px solid var(--accent-color);        color: var(--accent-color);
+        background: transparent;border: 2px solid var(--accent-color);        color: var(--accent-color);
         text-decoration: none;
         font-weight: bold;
         border-radius: 25px;
@@ -307,8 +296,7 @@
     }
 
     .load-more-btn:hover,
-    .load-more-btn:focus {
-        background: var(--accent-color);
+    .load-more-btn:focus {background: var(--accent-color);
         color: white;
         transform: scale(1.05);
         box-shadow: 0 0 15px rgba(224, 159, 125, 0.6);
@@ -321,17 +309,15 @@
         }
 
         .news-grid {
-            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-        }
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));}
     }
 
     @media (max-width: 480px) {
-        .news-grid {
-            grid-template-columns: 1fr;
+        .news-grid {grid-template-columns: 1fr;
         }
 
         .header-left .logo {
-            font-size: 20px;
+            font-size:20px;
         }
 
         .header-left .site-logo-img {
@@ -345,8 +331,7 @@
 </head>
 <body>
   <header>
-    <div class="header-left">
-      <div class="logo-container">
+    <div class="header-left"><div class="logo-container">
         <img src="/images/favicon.png" class="site-logo-img" alt="Логотип РАКУРС NEWS" />
         <div class="logo">РАКУРС NEWS</div>
       </div>
@@ -354,32 +339,27 @@
     <div class="header-right">
       <input type="text" id="siteSearch" placeholder="Поиск на сайте..." aria-label="Поиск новостей" />
       <div class="burger" id="burger" aria-label="Меню" aria-expanded="false"><span></span><span></span><span></span>
-      </div>
-    </div>
+      </div></div>
   </header>
   
   <nav class="mobile-menu" id="mobileMenu" aria-label="Мобильное меню">
     <a href="#" class="nav-link" onclick="filterNews('Все'); closeMobileMenu();" aria-current="page">Все новости</a>
-    <a href="#" class="nav-link" onclick="filterNews('Политика'); closeMobileMenu();">Политика</a>
-    <a href="#" class="nav-link" onclick="filterNews('Регионы'); closeMobileMenu();">Регионы</a>
+    <a href="#" class="nav-link" onclick="filterNews('Политика'); closeMobileMenu();">Политика</a>    <a href="#" class="nav-link" onclick="filterNews('Регионы'); closeMobileMenu();">Регионы</a>
     <a href="#" class="nav-link" onclick="filterNews('Геополитика'); closeMobileMenu();">Геополитика</a>
     <a href="#" class="nav-link" onclick="filterNews('Армия'); closeMobileMenu();">Армия</a>
-    <a href="#" class="nav-link" onclick="filterNews('Коррупция'); closeMobileMenu();">Коррупция</a>
-    <a href="#" class="nav-link" onclick="filterNews('Криминал'); closeMobileMenu();">Криминал</a>
+    <a href="#" class="nav-link" onclick="filterNews('Коррупция'); closeMobileMenu();">Коррупция</a>    <a href="#" class="nav-link" onclick="filterNews('Криминал'); closeMobileMenu();">Криминал</a>
     <a href="#" class="nav-link" onclick="filterNews('Спорт'); closeMobileMenu();">Спорт</a>
     <a href="#" class="nav-link" onclick="filterNews('Шоу-бизнес'); closeMobileMenu();">Шоу-бизнес</a>
-  </nav>
+    <a href="contacts.html" class="nav-link contact-btn">Контакты</a>  </nav>
   <main>
     <h2 class="section-title" id="current-title">Все новости</h2>
     <div id="loader" style="display: flex; justify-content: center; align-items: center; min-height: 400px;">
       <p style="margin-left: 15px; color:#888;">Загрузка...</p>
     </div>   
     <div class="news-grid" id="grid-all" style="display: none;" role="list"></div><div id="no-results" style="text-align:center; padding:40px; color:#888; display:none;" role="alert">В этом разделе пока нет новостей.</div>
-    <button id="load-more-btn" class="load-more-btn" style="display: none;" aria-label="Загрузить еще новости">Еще новости</button>
-  </main>
+    <button id="load-more-btn" class="load-more-btn" style="display: none;" aria-label="Загрузить еще новости">Еще новости</button></main>
   <footer>
-    <div class="social-icons-container" aria-label="Социальные сети">
-      <a href="https://vk.ru/rakurs_news" target="_blank" rel="noopener noreferrer" class="social-icon" aria-label="ВКонтакте">
+    <div class="social-icons-container" aria-label="Социальные сети"><a href="https://vk.ru/rakurs_news" target="_blank" rel="noopener noreferrer" class="social-icon" aria-label="ВКонтакте">
         <img src="/images/IMG_20260710_182354.webp" alt="ВКонтакте" width="30" height="30" />
       </a>
       <a href="https://t.me/RAKURS_NEWS_RU" target="_blank" rel="noopener noreferrer" class="social-icon" aria-label="Telegram">
@@ -388,21 +368,19 @@
     </div>
     <p class="copyright">2026 © РАКУРС NEWS</p>
   </footer>
-  <script>  let allNewsGlobal = [];
+  <script>let allNewsGlobal = [];
   let displayedNewsCount = 0;
-  let filteredNews = []; 
+  let filteredNews = [];
   const NEWS_PER_PAGE = 10;
   let currentCategory = 'Все';
-  // 1. Инициализация и загрузка
+  
   async function loadNews() {
     const loader = document.getElementById('loader');
     const grid = document.getElementById('grid-all');
-    
     try {
       const response = await fetch('news.json'); 
       allNewsGlobal = await response.json();
       filteredNews = allNewsGlobal;
-      
       loader.style.display = 'none';
       grid.style.display = 'grid'; 
       displayNews(filteredNews);
@@ -411,13 +389,12 @@
       if (loader) loader.innerHTML = '<p style="color:#ff4757; text-align:center;">Ошибка при загрузке новостей.</p>';
     }
   }
-  // 2. Генерация карточки со ссылкой на news.html?id=...
+
   function createCardHTML(item) {
-    // Безопасное получение данных
     const category = item.category || 'Без категории';
     const title = item.title || 'Без названия';
-    const date = item.date || ''; // Если даты нет, будет пустая строка
-    const time = item.time ?`в ${item.time}` : ''; // Если времени нет, текст не появится
+    const date = item.date || '';
+    const time = item.time ?`в ${item.time}` : '';
     return `
       <article class="news-card" onclick="window.location.href='news.html?id=${item.id}'">
         <div style="padding:20px; height: 100%; display: flex; flex-direction: column;">
@@ -430,33 +407,27 @@
     `;
   }
   
-  // 3. Отображение новостей
   function displayNews(newsItems) {
     const grid = document.getElementById('grid-all');
     const noResults = document.getElementById('no-results');
     const loadMoreBtn = document.getElementById('load-more-btn');
-    
     grid.innerHTML = '';
     displayedNewsCount = 0;
     filteredNews = newsItems;
-
     if (!newsItems || newsItems.length === 0) {
       noResults.style.display = 'block';
       if(loadMoreBtn) loadMoreBtn.style.display = 'none';return;
     } else {
       noResults.style.display = 'none';
-    }const initialDisplayCount = Math.min(NEWS_PER_PAGE, newsItems.length);
-    for (let i = 0; i < initialDisplayCount; i++) {
+    }    const initialDisplayCount = Math.min(NEWS_PER_PAGE, newsItems.length);
+    for (let i =0; i < initialDisplayCount; i++) {
       grid.insertAdjacentHTML('beforeend', createCardHTML(newsItems[i]));
     }
     displayedNewsCount = initialDisplayCount;
-
-    if (loadMoreBtn) {
-      loadMoreBtn.style.display = (displayedNewsCount < newsItems.length) ? 'block' : 'none';
+    if (loadMoreBtn) {loadMoreBtn.style.display = (displayedNewsCount < newsItems.length) ? 'block' : 'none';
     }
   }
   
-  // 4. Кнопка "Еще новости"
   function loadMoreNews() {
     const grid = document.getElementById('grid-all');
     const startIndex = displayedNewsCount;
@@ -468,7 +439,6 @@
     if (btn) btn.style.display = (displayedNewsCount < filteredNews.length) ? 'block' : 'none';
   }
   
-  // 5. Фильтрация
   window.filterNews = function(category) {
     currentCategory = category;
     const titleEl = document.getElementById('current-title');
@@ -479,18 +449,17 @@
     displayNews(filtered);
   };
   
-  // 6. Поиск
   document.getElementById('siteSearch').addEventListener('input', (e) => {
     const query = e.target.value.toLowerCase().trim();
     const cards = document.querySelectorAll('.news-card');
     let found = false;
     cards.forEach(card => {
       const title = card.querySelector('.card-title').innerText.toLowerCase();
-      if (title.includes(query)) {        card.style.display = 'block';
+      if (title.includes(query)) {
+        card.style.display = 'block';
         found = true;
       } else {
-        card.style.display = 'none';
-      }
+        card.style.display = 'none';      }
     });
     document.getElementById('no-results').style.display = found ? 'none' : 'block';
   });
@@ -505,9 +474,11 @@
   }
 
   if (burger) {
-    burger.addEventListener('click', () => {mobileMenu.classList.toggle('open');
+    burger.addEventListener('click', () => {
+      mobileMenu.classList.toggle('open');
       burger.classList.toggle('active');
-    });}
+    });
+  }
 
   document.getElementById('load-more-btn').addEventListener('click', loadMoreNews);
   document.addEventListener('DOMContentLoaded', loadNews);
