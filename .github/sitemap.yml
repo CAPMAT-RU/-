@@ -1,37 +1,38 @@
 name: Update Sitemap
 
 on:
-push:
-paths:
-- 'news.json'
+  push:
+    paths:
+      - 'news.json'
 
 permissions:
-contents: write
+  contents: write
 
 jobs:
-build:
-runs-on: ubuntu-latest
-steps:
-- name: Checkout code
-uses: actions/checkout@v3
-with:
-token: ${{ secrets.GITHUB_TOKEN }}
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
 
-- name: Setup Node.js
-uses: actions/setup-node@v3
-with:
-node-version: '16'
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '16'
 
-- name: Run sitemap generator
-run: node generate_sitemap.js
+      - name: Run sitemap generator
+        run: node generate_sitemap.js
 
-- name: Commit and push sitemap
-run: |
-git config --global user.name 'github-actions[bot]'
-git config --global user.email 'github-actions[bot]@users.noreply.github.com'
-git add sitemap.xml
-if ! git diff --quiet --cached || ! git diff --quiet; then
-git commit -m "Автоматическое обновление sitemap.xml"
-git push
-else
-echo "Нет изменений для коммита." fi
+      - name: Commit and push sitemap
+        run: |
+          git config --global user.name 'github-actions[bot]'
+          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+          git add sitemap.xml
+          if ! git diff --quiet --cached; then
+            git commit -m "Автоматическое обновление sitemap.xml"
+            git push
+          else
+            echo "Нет изменений для коммита — sitemap.xml уже актуален."
+          fi
