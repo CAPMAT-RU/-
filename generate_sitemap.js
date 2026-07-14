@@ -1,20 +1,19 @@
 const fs = require('fs');
 const path = require('path');
-
 const DOMAIN = 'https://rakurs-news.github.io';
 
 // Функция экранирования XML
 function escapeXml(unsafe) {
-    if (!unsafe) return '';
-    return String(unsafe).replace(/[<>&'"]/g, function (c) {
-        switch (c) {
-            case '<': return '&lt;';
-            case '>': return '&gt;';
-            case '&': return '&amp;';
-            case "'": return '&apos;';
-            case '"': return '&quot;';
-        }
-    });
+  if (!unsafe) return '';
+  return String(unsafe).replace(/[<>&'"]/g, function (c) {
+    switch (c) {
+      case '<': return '&lt;';
+      case '>': return '&gt;';
+      case '&': return '&amp;';
+      case "'": return '&apos;';
+      case '"': return '&quot;';
+    }
+  });
 }
 
 console.log('🚀 ЗАПУСК ГЕНЕРАТОРА SITEMAP...');
@@ -22,67 +21,69 @@ console.log(`📂 Рабочая директория: ${process.cwd()}`);
 console.log(`📄 Ищем файл: ${path.join(process.cwd(), 'news.json')}`);
 
 try {
-    // 1. Проверка существования файла
-    if (!fs.existsSync('news.json')) {
-        console.error('❌ КРИТИЧЕСКАЯ ОШИБКА: Файл news.json не найден в текущей папке!');
-        process.exit(1);
-    }
+  // 1. Проверка существования файла
+  if (!fs.existsSync('news.json')) {
+    console.error('❌ КРИТИЧЕСКАЯ ОШИБКА: Файл news.json не найден в текущей папке!');
+    process.exit(1);
+  }
 
-    // 2. Чтение файла
-    const fileContent = fs.readFileSync('news.json', 'utf8');
-    console.log('✅ Файл news.json успешно прочитан.');
+  // 2. Чтение файла
+  const fileContent = fs.readFileSync('news.json', 'utf8');
+  console.log('✅ Файл news.json успешно прочитан.');
 
-    // 3. Парсинг JSON
-    let newsData;
-    try {
-        newsData = JSON.parse(fileContent);
-    } catch (e) {
-        console.error(`❌ КРИТИЧЕСКАЯ ОШИБКА: Не удалось распарсить JSON. Ошибка: ${e.message}`);
-        process.exit(1);
-    }
+  // 3. Парсинг JSON
+  let newsData;
+  try {
+    newsData = JSON.parse(fileContent);
+  } catch (e) {
+    console.error(`❌ КРИТИЧЕСКАЯ ОШИБКА: Не удалось распарсить JSON. Ошибка: ${e.message}`);
+    process.exit(1);
+  }
 
-    if (!Array.isArray(newsData)) {
-        console.error('❌ КРИТИЧЕСКАЯ ОШИБКА: news.json должен содержать массив новостей []');
-        process.exit(1);
-    }
+  if (!Array.isArray(newsData)) {
+    console.error('❌ КРИТИЧЕСКАЯ ОШИБКА: news.json должен содержать массив новостей []');
+    process.exit(1);
+  }
 
-    console.log(`✅ Загружено новостей: ${newsData.length}`);
+  console.log(`✅ Загружено новостей: ${newsData.length}`);
 
-    // 4. Генерация XML
-    let sitemap = `<?xml version="1.0" encoding="UTF-8"?>
+  // 4. Генерация XML
+  let sitemap = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url>
-    <loc>${DOMAIN}/</loc>
-    <changefreq>daily</changefreq>
-    <priority>1.0</priority>
-  </url>
+<url>
+<loc>${DOMAIN}/</loc>
+<changefreq>daily</changefreq>
+<priority>1.0</priority>
+</url>
 `;
 
-    newsData.forEach((news, index) => {
-        const safeId = escapeXml(news.id);
-        sitemap += `  <url>
-    <loc>${DOMAIN}/news.html?id=${safeId}</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
+  newsData.forEach((news, index) => {
+    const safeId = escapeXml(news.id);
+    sitemap += ` <url>
+<loc>${DOMAIN}/news.html?id=${safeId}</loc>
+<changefreq>weekly</changefreq>
+<priority>0.8</priority>
+</url>
 `;
-        // Небольшой лог каждые 10 новостей, чтобы видеть прогресс в больших файлах
-        if ((index + 1) % 10 === 0) {
-            console.log(`   → Обработано ${index + 1} новостей...`);
-        }
-    });
+    // Небольшой лог каждые 10 новостей
+    if ((index + 1) % 10 === 0) {
+      console.log(` → Обработано ${index + 1} новостей...`);
+    }
+  });
 
-    sitemap += '</urlset>';
+  // Добавляем явный перенос строки перед закрывающим тегом
+  sitemap += '\n</urlset>';
 
-    // 5. Запись файла
-    fs.writeFileSync('sitemap.xml', sitemap, 'utf8');
-    
-    const stats = fs.statSync('sitemap.xml');
-    console.log(`✅ Файл sitemap.xml успешно создан!`);
-    console.log(`📊 Размер файла: ${stats.size} байт.`);
-    console.log(`🎉 ГОТОВО! Всего URL в карте: ${newsData.length + 1}`);
+  // 5. Запись файла
+  // .trim() удаляет любые лишние пробелы и переносы в начале и в конце файла
+  fs.writeFileSync('sitemap.xml', sitemap.trim(), 'utf8');
+
+  const stats = fs.statSync('sitemap.xml');
+  console.log(`✅ Файл sitemap.xml успешно создан!`);
+  console.log(`📊 Размер файла: ${stats.size} байт.`);
+  console.log(`🎉 ГОТОВО! Всего URL в карте: ${newsData.length + 1}`);
 
 } catch (error) {
-    console.error('💥 Неожиданная ошибка:', error.message);
-    process.exit(1);
+  console.error('💥 Неожиданная ошибка:', error.message);
+  process.exit(1);
 }
