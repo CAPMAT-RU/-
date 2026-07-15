@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="ru">
-<head>
-    <meta name="yandex-verification" content="8e3a5a0a7520b3b8" />
+<head>    <meta name="yandex-verification" content="8e3a5a0a7520b3b8" />
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
@@ -18,10 +17,8 @@
         .logo { font-weight: bold; color: var(--accent); font-size: 18px; text-transform: uppercase; letter-spacing: 1px; }
 
         .search-container { display: flex; gap: 10px; align-items: center; width: 50%; }
-        .search-input {
-            background: var(--input-bg);
-            border: 1px solid #333;
-            color: var(--text);
+        .search-input {            background: var(--input-bg);
+            border: 1px solid #333;color: var(--text);
             padding: 10px 15px;
             border-radius: 4px;
             font-size: 14px;
@@ -38,13 +35,11 @@
             gap: 12px;
             margin-bottom: 30px;
         }
-        .category-btn {
-            background: transparent;
+        .category-btn {background: transparent;
             border: 1px solid var(--accent);
             color: var(--accent);
             padding: 10px 16px;
-            border-radius: 5px;
-            cursor: pointer;
+            border-radius: 5px;            cursor: pointer;
             font-size: 14px;
             text-transform: uppercase;
             transition: all 0.2s;
@@ -52,8 +47,7 @@
             text-align: center;
             display: block;
         }
-        .category-btn:hover, .category-btn.active {
-            background: var(--accent);
+        .category-btn:hover, .category-btn.active {            background: var(--accent);
             color: #000;
         }
 
@@ -82,8 +76,7 @@
             padding: 15px 30px;
             background: transparent;
             border: 1px solid var(--accent);
-            color: var(--accent);
-            font-weight: bold;
+            color: var(--accent);font-weight: bold;
             text-transform: uppercase;
             cursor: pointer;
             border-radius: 4px;
@@ -98,29 +91,25 @@
             left: 0;
             width: 100%;
             height: 100%;
-            z-index: 9999;
-            display: flex;
+            z-index: 9999;            display: flex;
             justify-content: center;
             align-items: center;
             pointer-events: none;
         }
 
         .spinner {
-            width: 40px;
-            height: 40px;
+            width: 40px;height: 40px;
             border: 3px solid rgba(255, 255, 255, 0.1);
             border-top: 3px solid var(--accent);
             border-radius: 50%;
-            animation: spin 1s linear infinite;
-        }
+            animation: spin 1s linear infinite;        }
 
         @keyframes spin {
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
         }
     </style>
-</head>
-<body>
+</head><body>
 
     <div id="loadingSpinner" class="spinner-container">
         <div class="spinner"></div>
@@ -169,14 +158,11 @@
         let allNews = [];
         let displayedCount = 0;
         const batchSize = 6;
-        let currentCategory = 'all';
-
-        function hideSpinner() {
+        let currentCategory = 'all';        function hideSpinner() {
             const spinner = document.getElementById('loadingSpinner');
             spinner.style.opacity = '0';
             setTimeout(() => {
-                spinner.style.display = 'none';
-            }, 300);
+                spinner.style.display = 'none';}, 300);
         }
 
         async function loadNews() {
@@ -192,9 +178,7 @@
                 allNews.sort((a, b) => new Date(b.date) - new Date(a.date));
 
                 displayedCount = 0;
-                renderNews();
-                
-                if (allNews.length <= batchSize) {
+                renderNews();                if (allNews.length <= batchSize) {
                     loadMoreBtn.style.display = 'none';
                 } else {
                     loadMoreBtn.style.display = 'block';
@@ -213,9 +197,7 @@
 
         function renderNews() {
             const container = document.getElementById('news-container');
-            container.innerHTML = '';
-
-            let filteredNews = allNews;
+            container.innerHTML = '';let filteredNews = allNews;
             if (currentCategory !== 'all') {
                 filteredNews = allNews.filter(item => item.category === currentCategory);
             }
@@ -223,12 +205,16 @@
             const toDisplay = filteredNews.slice(displayedCount, displayedCount + batchSize);
 
             toDisplay.forEach(item => {
+                const [day, month, year] = item.date.split('.');
+                const isoDate = `${year}-${month}-${day}`;
                 const link = `news.html?id=${item.id}`;
-                const card = `
+                // Используем item.description из JSON, если он есть, иначе берем контент
+                const previewText = item.description ? item.description : item.content.replace(/<[^>]*>/g, '').substring(0, 150);
+                
+                const card =`
                     <a href="${link}" class="card" itemscope itemtype="https://schema.org/NewsArticle" aria-label="${item.title}">
-                        <span class="meta" itemprop="datePublished" content="${item.date}">${item.date} • ${item.category}</span>
-                        <h3 itemprop="headline">${item.title}</h3>
-                        <p class="preview" itemprop="description">${item.content.substring(0, 150)}...</p>
+                        <span class="meta" itemprop="datePublished" content="${isoDate}">${item.date} • ${item.category}</span>
+                        <h3 itemprop="headline">${item.title}</h3><p class="preview" itemprop="description">${previewText}...</p>
                         <meta itemprop="author" content="Ракурс NEWS">
                         <meta itemprop="publisher" content="Ракурс NEWS">
                     </a>
@@ -257,14 +243,9 @@
         document.querySelectorAll('.category-btn').forEach(btn => {
             btn.addEventListener('click', (e) => {
                 e.preventDefault();
-                
                 document.querySelectorAll('.category-btn').forEach(b => b.classList.remove('active'));
-                
                 const category = btn.getAttribute('data-category');
-                
-                currentCategory = category;
-                btn.classList.add('active');
-                
+                currentCategory = category;btn.classList.add('active');
                 displayedCount = 0;
                 renderNews();
             });
@@ -277,8 +258,7 @@
 
             if (query.length < 2) {
                 searchResults.style.display = 'none';
-                return;
-            }
+                return;}
 
             const lowerQuery = query.toLowerCase();
             const found = allNews.filter(item => 
