@@ -1,11 +1,10 @@
-name: Deploy to GitHub Pages
+name: Pages
 
 on:
   push:
-    branches: ["main"]  # Если твоя ветка называется master, замени main на master
+    branches: ["main"] # Замени на master, если твоя ветка так называется
 
 permissions:
-  contents: read
   pages: write
   id-token: write
 
@@ -17,17 +16,13 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
+      - uses: actions/checkout@v4
       - name: Setup Pages
         uses: actions/configure-pages@v4
-
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: '.'  # Точка означает "загрузи всё из текущей папки"
-
+          path: '.'
   deploy:
     environment:
       name: github-pages
