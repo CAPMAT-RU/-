@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Китайский ИИ монстр бьет рекорды | Ракурс NEWS</title>
+    <!-- Рекомендация Яндекса: связь десктопной и мобильной версий -->
+    <link rel="alternate" href="https://rakurs-news.github.io/rakurs-news/" media="only screen and (max-width: 600px)">
     <style>
         /* --- БАЗОВЫЕ ПЕРЕМЕННЫЕ (ТЕМЫ) --- */
         :root { 
@@ -260,6 +262,13 @@
             <p>Следствие уже передало материалы дела в суд, и теперь мечтатель о большой политике имеет все шансы обменять свою уютную квартиру на казенную камеру до конца своих дней. Пожизненное заключение станет достойной наградой за столь нелепую попытку реализации деструктивных фантазий, ведь правосудие не питает иллюзий относительно граждан, которые не научились занимать себя чем-то более интеллектуальным, чем сборка бомб в жилых помещениях.</p>
         </article>
 
+        <!-- Кнопка "Поделиться" -->
+        <div class="share-button-wrapper" style="position: relative; margin-top: 20px; text-align: right;">
+            <button class="share-btn" onclick="shareNews()" aria-label="Поделиться новостью">
+                <img src="/images/Podelitsya.png" alt="Поделиться" style="width: 30px; height: 30px;">
+            </button>
+        </div>
+
         <!-- Кнопка "Назад" -->
         <div class="back-btn-wrapper">
             <a href="index.html" class="back-btn">Назад</a>
@@ -284,6 +293,34 @@
             const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
             document.documentElement.setAttribute('data-theme', newTheme);
             localStorage.setItem('theme', newTheme);
+        }
+        
+        // Функция для кнопки "Поделиться"
+        function shareNews() {
+            const newsUrl = window.location.href; // URL текущей страницы
+            const newsTitle = document.title; // Заголовок текущей страницы
+
+            // Создаем текст для дележки
+            const shareText = `${newsTitle} - ${newsUrl}`;
+            
+            // Пытаемся использовать Web Share API, если он доступен
+            if (navigator.share) {
+                navigator.share({
+                    title: newsTitle,
+                    url: newsUrl,
+                }).then(() => {
+                    console.log('Успешно поделились');
+                }).catch(console.error);
+            } else {
+                // Если API не поддерживается, открываем окно для дележки через соцсети
+                const encodedText = encodeURIComponent(shareText);
+                const facebookUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodedText}`;
+                const twitterUrl = `https://twitter.com/intent/tweet?text=${encodedText}`;
+                const emailUrl = `mailto:?subject=${newsTitle}&body=${encodedText}`;
+                
+                const shareWindow = window.open(facebookUrl, '_blank'); // Открываем Facebook по умолчанию
+                shareWindow.focus();
+            }
         }
     </script>
 </body>
