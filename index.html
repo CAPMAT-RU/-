@@ -301,7 +301,7 @@ header { background: var(--card); padding: 15px 5px; display: flex; justify-cont
         const filteredNews = data.filter(item => item.id !== featuredNewsId);
         container.innerHTML += filteredNews.map(item => {
             let title = query ? item.title.replace(new RegExp(`(${query})`, 'gi'), '<span class="highlight">$1</span>') : item.title;
-            return `<a href="article.html?id=${item.id}" rel="bookmark" style="text-decoration: none; color: inherit;">
+            return `<a href="/rakurs-news/article-${item.id}.html" rel="bookmark" style="text-decoration: none; color: inherit;">
                         <div class="card">
                             <img src="${item.image || '/images/placeholder.jpg'}" alt="${item.title}" class="card-image" loading="lazy">
                             <span class="meta">${item.category} • ${item.date}</span>
