@@ -302,7 +302,7 @@ header { background: var(--card); padding: 15px 5px; display: flex; justify-cont
         container.innerHTML += filteredNews.map(item => {
             let title = query ? item.title.replace(new RegExp(`(${query})`, 'gi'), '<span class="highlight">$1</span>') : item.title;
             
-return `<a href="/rakurs-news/${item.id}.html" rel="bookmark" style="text-decoration: none; color: inherit;">
+return `<a href="/${item.id}.html" rel="bookmark" style="text-decoration: none; color: inherit;">
                         <div class="card">
                             <img src="${item.image || '/images/placeholder.jpg'}" alt="${item.title}" class="card-image" loading="lazy">
                             <span class="meta">${item.category} • ${item.date}</span>
@@ -320,7 +320,7 @@ return `<a href="/rakurs-news/${item.id}.html" rel="bookmark" style="text-decora
             const resDiv = document.getElementById('search-results');
             if (val.length < 2) { resDiv.style.display = 'none'; return; }
             const filtered = allNews.filter(n => n.title.toLowerCase().includes(val));
-            resDiv.innerHTML = filtered.length ? filtered.map(n => `<div class="result-item" onclick="location.href='article.html?id=${n.id}'">${n.title}</div>`).join('') : '<div class="result-item">Ничего не найдено</div>';
+            resDiv.innerHTML = filtered.length ? filtered.map(n => `<div class="result-item" onclick="location.href='${n.id}.html">${n.title}</div>`).join('') : '<div class="result-item">Ничего не найдено</div>';
             resDiv.style.display = 'block';
         }, 300);
     });
