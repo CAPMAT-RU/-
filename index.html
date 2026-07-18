@@ -272,6 +272,7 @@ header { background: var(--card); padding: 15px 5px; display: flex; justify-cont
 <script>
     const savedTheme = localStorage.getItem('theme') || 'light';
     document.documentElement.setAttribute('data-theme', savedTheme);
+
     function toggleTheme() {
         const currentTheme = document.documentElement.getAttribute('data-theme');
         const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
@@ -285,13 +286,14 @@ header { background: var(--card); padding: 15px 5px; display: flex; justify-cont
     async function loadNews() {
         try {
             const res = await fetch('news.json');
+            if (!res.ok) throw new Error('Не удалось загрузить news.json');
             allNews = await res.json();
             featuredNewsId = allNews.featuredNewsId;
             document.getElementById('loader').style.display = 'none';
             renderNews(allNews);
         } catch(e) {
             console.error('Ошибка загрузки:', e);
-            document.getElementById('loader').innerHTML = `<p style="color: red;">Ошибка загрузки новостей: ${e.message}</p>`;
+            document.getElementById('loader').innerHTML = `<p style="color: red;">Ошибка: ${e.message}</p>`;
         }
     }
 
@@ -330,35 +332,51 @@ header { background: var(--card); padding: 15px 5px; display: flex; justify-cont
         }).join('');
     }
 
+    // --- ЛОГИКА ПОИСКА (ИСПРАВЛЕННАЯ) ---
+    const searchInput = document.getElementById('searchInput');
+    const searchResults = document.getElementById('search-results');
     let searchTimeout;
-    document.getElementById('searchInput').addEventListener('input', (e) => {
+
+    searchInput.addEventListener('input', (e) => {
         clearTimeout(searchTimeout);
-        searchTimeout = setTimeout(() => {
-            const val = e.target.value.toLowerCase();
-            const resDiv = document.getElementById('search-results');
-            if (val.length < 3) { 
-                resDiv.style.display = 'none'; 
-                return; 
-            }
-            
-            const filtered = allNews
-                .filter(n => n.title.toLowerCase().includes(val))
-                .sort((a, b) => new Date(b.date) - new Date(a.date));
-            
-            resDiv.innerHTML = filtered.length ? filtered.map(n => 
-                `<div class="result-item" onclick="handleSearchResultClick(${n.id});">
-                    ${n.title.replace(new RegExp(`(${val})`, 'gi'), '<span class="highlight">$1</span>')}
-                </div>`
-            ).join('') : '<div class="result-item">Ничего не найдено</div>';
-            resDiv.style.display = 'block';
-        }, 300);
+        const val = e.target.value.trim().toLowerCase();
+
+        // Требование: 3 и более букв
+        if (val.length < 3) { 
+            searchResults.style.display = 'none'; 
+            return; 
+        }
+        
+        // Фильтр ТОЛЬКО по заголовкам
+        const filtered = allNews
+            .filter(n => n.title.toLowerCase().includes(val))
+            // Сортировка: от самой свежей к старой
+            .sort((a, b) => new Date(b.date) - new Date(a.date));
+        
+        if (filtered.length === 0) {
+            searchResults.innerHTML = '<div class="result-item">Ничего не найдено</div>';
+            searchResults.style.display = 'block';
+            return;
+        }
+
+        searchResults.innerHTML = filtered.map(n => 
+            // ВАЖНО: ID передаётся в кавычках, чтобы работали текстовые ID
+            `<div class="result-item" onclick="handleSearchResultClick('${n.id}')">
+                ${n.title.replace(new RegExp(`(${val})`, 'gi'), '<span class="highlight">$1</span>')}
+            </div>`
+        ).join('');
+        searchResults.style.display = 'block';
     });
 
     function handleSearchResultClick(newsId) {
-        document.getElementById('searchInput').value = '';
-        document.getElementById('search-results').style.display = 'none';
+        // 1. Стираем всё из строки ввода
+        searchInput.value = '';
+        // 2. Убираем подсказку
+        searchResults.style.display = 'none';
+        // 3. Открываем статью по ID (работает и для чисел, и для текста)
         window.location.href = `/${newsId}.html`;
     }
+    // -------------------------------------
 
     const menuElement = document.getElementById('menu');
     const mobileMenuElement = document.getElementById('mobileMenu');
