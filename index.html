@@ -153,6 +153,28 @@ header { background: var(--card); padding: 15px 5px; display: flex; justify-cont
         height: 18px;
     }
 }
+
+/* Индикатор скролла справа */
+.scroll-indicator-track {
+    position: fixed;
+    right: 8px;
+    top: 0;
+    width: 6px;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.1);
+    pointer-events: none;
+    z-index: 999;
+}
+.scroll-indicator-thumb {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 0%;
+    background: var(--accent);
+    border-radius: 3px;
+    pointer-events: none;
+}
 </style>
 </head>
 <body>
@@ -222,6 +244,8 @@ header { background: var(--card); padding: 15px 5px; display: flex; justify-cont
     <button class="category-btn" data-category="Коррупция">Коррупция</button>
     <button class="category-btn" data-category="Шоу-бизнес">Шоу-бизнес</button>
     <button class="category-btn" data-category="Спорт">Спорт</button>
+    <button class="category-btn" data-category="Наука">Наука</button>
+    <button class="category-btn" data-category="Стиль">Стиль</button>
     <button class="category-btn" data-category="Культура">Культура</button>
 </div>
 
@@ -413,6 +437,39 @@ header { background: var(--card); padding: 15px 5px; display: flex; justify-cont
     });
 
     loadNews();
+
+    // Логика индикатора скролла
+    const scrollIndicatorTrack = document.createElement('div');
+    scrollIndicatorTrack.className = 'scroll-indicator-track';
+    document.body.appendChild(scrollIndicatorTrack);
+
+    const scrollIndicatorThumb = document.createElement('div');
+    scrollIndicatorThumb.className = 'scroll-indicator-thumb';
+    scrollIndicatorTrack.appendChild(scrollIndicatorThumb);
+
+    window.addEventListener('scroll', () => {
+        const scrollTop = window.scrollY;
+        const docHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+        const scrollPercent = (scrollTop / docHeight) * 100;
+        scrollIndicatorThumb.style.height = scrollPercent + '%';
+    });
+
+    function scrollToTop() {
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        });
+    }
+
+    window.addEventListener('scroll', () => {
+        const btn = document.getElementById('scrollToTop');
+        if (window.scrollY > 300) {
+            btn.style.display = 'flex';
+            btn.style.opacity = '0.7';
+        } else {
+            btn.style.display = 'none';
+        }
+    });
 </script>
 </body>
 </html>
