@@ -1,477 +1,423 @@
- 
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ракурс NEWS — ироничные новости с экспертным взглядом</title>
-    <meta name="description" content="Ракурс NEWS — саркастичный взгляд на новости: политика, геополитика, криминал, общество и культура в ироничном освещении. Узнайте правду, скрытую за иронией!">
-    <meta property="og:title" content="Ракурс NEWS">
-    <meta property="og:description" content="Свежие новости с иронией. Вся правда в иронии">
-    <meta property="og:image" content="images/og-image.jpg">
-    <meta property="og:url" content="index.html">
-    <meta property="og:type" content="website">
-    <link rel="icon" type="image/png" href="images/favicon.png">
-    <link rel="alternate" href="index.html" media="only screen and (max-width: 600px)">
-    <style>
-        :root { --bg: #ffffff; --card: #f9f9f9; --text: #1a1a1a; --accent: #ff9800; --meta: #666; --mobile-menu-bg: var(--card); --mobile-menu-text: var(--text); --mobile-menu-border: var(--accent); }
-        [data-theme="dark"] { --bg: #121212; --card: #1e1e1e; --text: #e0e0e0; --accent: #ff9800; --meta: #aaa; --mobile-menu-bg: #000000; --mobile-menu-text: var(--text); --mobile-menu-border: var(--accent); }
-        body { background: var(--bg); color: var(--text); font-family: sans-serif; margin: 0; transition: background 0.3s; }
-        h1 { display: none; }
-        #progress-bar { position: fixed; top: 0; left: 0; width: 0%; height:3px; background: var(--accent); z-index: 2000; }
-        header { background: var(--card); padding: 15px 5px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--accent); position: sticky; top: 0; z-index: 1000; }
-        .logo-wrapper { display: flex; align-items: center; gap: 8px; font-weight: bold; font-size: 20px; margin-left:5px; }
-        .logo-wrapper img { width: 30px; height: 30px; }
-        .controls-wrapper { display: flex; align-items: center; gap: 10px; }
-        #searchInput { height: 32px; width: 150px; padding: 0 10px; border: 1px solid var(--accent); background: var(--bg); color: var(--text); border-radius: 2px; box-sizing: border-box; }
-        @media (max-width: 500px) { #searchInput { width: 90px; } }
-        .categories-wrapper { padding: 15px 20px; overflow-x: auto; white-space: nowrap; border-bottom: 1px solid var(--accent); display: flex; gap: 20px; scrollbar-width: none; }
-        .categories-wrapper::-webkit-scrollbar { display: none; }
-        .category-btn { background: none; border: none; color: var(--text); cursor: pointer; text-transform: uppercase; font-size: 13px; font-weight: bold; flex-shrink: 0; }
-        .category-btn.active { color: var(--accent); }
-        .search-wrapper { position: relative; }
-        #search-results { position: absolute; top: 40px; right: 0; width: 250px; max-height: 400px; overflow-y: auto; background: var(--card); border: 1px solid var(--accent); z-index: 1500; display: none; }
-        .result-item { display: flex; padding: 10px; gap: 10px; border-bottom: 1px solid var(--accent); cursor: pointer; align-items: center; }
-        .highlight { background: var(--accent); color: #000; }
-        .breadcrumbs { padding: 10px 20px; font-size: 12px; color: var(--meta); }
-        .featured-news { background: var(--card); padding: 15px; border-bottom: 2px solid var(--accent); }
-        .news-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px; padding: 20px; }
-        .card { background: var(--card); padding: 15px; border-left: 4px solid var(--accent); transition: transform 0.2s; cursor: pointer; opacity: 0; transform: translateY(30px); animation: fadeInUp 0.6s ease forwards; }
-        .card:hover { transform: translateY(-5px); }
-        .meta-container { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
-        .meta-date { color: var(--meta); font-size: 11px; }
-        .meta-author { color: var(--accent); font-size: 11px; font-weight: 600; white-space: nowrap; }
-        .desc { font-size: 14px; color: var(--meta); margin-top: 8px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
-        .theme-toggle { cursor: pointer; background: transparent; border: 1px solid var(--accent); color: var(--text); display: flex; align-items: center; justify-content: center; border-radius: 2px; transition: all 0.3s; height: 32px; width: 32px; padding: 0; }
-        .theme-toggle:hover { background: var(--accent); color: #000; }
-        #scrollToTop { position: fixed; bottom: 30px; right: 30px; background: var(--accent); color: #fff; border: none; border-radius: 50%; width: 50px; height: 50px; display: none; cursor: pointer; transition: opacity 0.3s, transform 0.3s; opacity: 0.7; }
-        #scrollToTop:hover { opacity: 1; }
-        .floating-buttons { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); display: flex; gap: 10px; transition: opacity 0.3s; opacity: 0; visibility: hidden; }
-        .floating-buttons img { width: 40px; height: 40px; }
-        @media (max-width: 500px) { #scrollToTop { width:44px; height: 44px; bottom: 90px; right: 20px; } .floating-buttons img { width: 30px; height: 30px; } }
-        .card-image { width: 100%; height: 180px; object-fit: cover; border-radius: 4px 4px 0 0; margin-bottom: 12px; background-color: #333; }
-        .footer { position: fixed; bottom: 0; left: 0; right: 0; height: 70px; background: var(--bg); border-top: 1px solid var(--accent); display: flex; justify-content: center; align-items: center; }
-        .social-icons { display: flex; gap: 35px; }
-        .social-icons img { width: 40px; height: 40px; }
-        .mobile-menu-button { display: none; cursor: pointer; background: transparent; border: 1px solid var(--accent); color: var(--text); display: flex; align-items: center; justify-content: center; border-radius: 2px; transition: all 0.3s; height: 32px; width: 32px; padding: 0; margin-left: 10px; }
-        .mobile-menu-button:hover { background: var(--accent); color: #000; }
-        .mobile-menu-button svg { width: 20px; height: 20px; }
-        .mobile-menu { position: fixed; top: 0; left: 0; width: 200px; height: 100%; background: var(--mobile-menu-bg); color: var(--mobile-menu-text); transform: translateX(-100%); transition: transform 0.3s ease-in-out; z-index: 1100; padding: 20px; box-sizing: border-box; border-right: 1px solid var(--mobile-menu-border); overflow-y: auto; }
-        .mobile-menu.open { transform: translateX(0); }
-        .mobile-menu .category-btn { display: block; width: 100%; text-align: left; padding: 12px 0; font-size: 16px; border-bottom: 1px solid var(--mobile-menu-border); color: var(--mobile-menu-text); cursor: pointer; }
-        .mobile-menu .category-btn:last-child { border-bottom: none; }
-        .mobile-menu .category-btn.active { color: var(--accent); }
-        .page-title-wrapper { padding: 15px 20px; border-bottom: 1px solid var(--accent); display: flex; align-items: center; gap: 10px; }
-        .page-title-indicator { width: 4px; height: 20px; background-color: var(--accent); }
-        .page-title { font-size: 20px; font-weight: bold; margin: 0; }
-        @media (max-width: 768px) { .categories-wrapper { display: none; } .mobile-menu-button { display: flex; } .page-title-wrapper { padding: 10px 15px; gap: 8px; } .page-title { font-size: 18px; } .page-title-indicator { height: 18px; } }
-        .scroll-indicator-track { position: fixed; right: 4px; top: 0; width: 4px; height: 100vh; background: rgba(0, 0, 0, 0.08); pointer-events: none; z-index: 999; }
-        .scroll-indicator-thumb { position: absolute; top: 0; left: 0; width: 100%; height: 0%; background: var(--accent); border-radius: 2px; pointer-events: none; }
-        .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.85); z-index: 3000; justify-content: center; align-items: center; }
-        .modal-overlay.active { display: flex; }
-        .modal-content { background: var(--card); width: 95vw; max-width: 1200px; height: 90vh; max-height: 90vh; display: flex; flex-direction: column; border-radius: 8px; overflow: hidden; position: relative; animation: modalFadeIn 0.3s ease-out; }
-        @keyframes modalFadeIn { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
-        .modal-close { position: absolute; top: 5px; right: 5px; background: none; border: none; color: var(--accent); font-size: 32px; line-height: 1; cursor: pointer; z-index: 10; padding: 0; margin: 0; font-family: sans-serif; }
-        .modal-close:hover { color: #ff6b00; opacity: 0.9; }
-        .modal-header { padding: 20px; border-bottom: 1px solid var(--accent); flex-shrink: 0; }
-        .modal-title { margin: 0; font-size: 28px; line-height: 1.1; font-weight: bold; }
-        .modal-meta { margin-top: 8px; font-size: 13px; color: var(--meta); }
-        .modal-body { flex: 1; padding: 20px; overflow-y: auto; color: var(--text); }
-        .modal-img-wrapper { width: 100%; margin: 20px 0; text-align: center; }
-        .modal-image { max-width: 100%; height: auto; display: block; border-radius: 4px; }
-        .modal-body p { line-height: 1.6; margin-bottom: 16px; }
-        .share-button { background: none; border: none; cursor: pointer; color: var(--accent); font-size: 18px; margin-top: 10px; }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ракурс NEWS — ироничные новости с экспертным взглядом</title>
+<meta name="description" content="Ракурс NEWS — саркастичный взгляд на новости: политика, геополитика, криминал, общество и культура в ироничном освещении. Узнайте правду, скрытую за иронией!">
+<meta property="og:title" content="Ракурс NEWS">
+<meta property="og:description" content="Свежие новости с иронией. Вся правда в иронии">
+<meta property="og:image" content="https://rakurs-news.github.io/rakurs-news/images/og-image.jpg">
+<meta property="og:url" content="https://rakurs-news.github.io/rakurs-news/">
+<meta property="og:type" content="website">
+<link rel="icon" type="image/png" href="https://rakurs-news.github.io/rakurs-news/images/favicon.png">
+<link rel="alternate" href="https://rakurs-news.github.io/rakurs-news/" media="only screen and (max-width: 600px)">
+<style>
+:root { --bg: #ffffff; --card: #f9f9f9; --text: #1a1a1a; --accent: #ff9800; --meta: #666; --mobile-menu-bg: var(--card); --mobile-menu-text: var(--text); --mobile-menu-border: var(--accent); }
+[data-theme="dark"] { --bg: #121212; --card: #1e1e1e; --text: #e0e0e0; --accent: #ff9800; --meta: #aaa; --mobile-menu-bg: #000000; --mobile-menu-text: var(--text); --mobile-menu-border: var(--accent); }
+body { background: var(--bg); color: var(--text); font-family: sans-serif; margin: 0; transition: background 0.3s; }
+h1 { display: none; }
+#progress-bar { position: fixed; top: 0; left: 0; width: 0%; height:3px; background: var(--accent); z-index: 2000; }
+header { background: var(--card); padding: 15px 5px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--accent); position: sticky; top: 0; z-index: 1000; }
+.logo-wrapper { display: flex; align-items: center; gap: 8px; font-weight: bold; font-size: 20px; margin-left:5px; }
+.logo-wrapper img { width: 30px; height: 30px; }
+.controls-wrapper { display: flex; align-items: center; gap: 10px; }
+#searchInput { height: 32px; width: 150px; padding: 0 10px; border: 1px solid var(--accent); background: var(--bg); color: var(--text); border-radius: 2px; box-sizing: border-box; }
+@media (max-width: 500px) { #searchInput { width: 90px; } }
+.categories-wrapper { padding: 15px 20px; overflow-x: auto; white-space: nowrap; border-bottom: 1px solid var(--accent); display: flex; gap: 20px; scrollbar-width: none; }
+.categories-wrapper::-webkit-scrollbar { display: none; }
+.category-btn { background: none; border: none; color: var(--text); cursor: pointer; text-transform: uppercase; font-size: 13px; font-weight: bold; flex-shrink: 0; }
+.category-btn.active { color: var(--accent); }
+.search-wrapper { position: relative; }
+#search-results { position: absolute; top: 40px; right: 0; width: 250px; max-height: 400px; overflow-y: auto; background: var(--card); border: 1px solid var(--accent); z-index: 1500; display: none; }
+.result-item { display: flex; padding: 10px; gap: 10px; border-bottom: 1px solid var(--accent); cursor: pointer; align-items: center; }
+.highlight { background: var(--accent); color: #000; }
+.breadcrumbs { padding: 10px 20px; font-size: 12px; color: var(--meta); }
+.featured-news { background: var(--card); padding: 15px; border-bottom: 2px solid var(--accent); }
+.news-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px; padding: 20px; }
+.card { background: var(--card); padding: 15px; border-left: 4px solid var(--accent); transition: transform 0.2s; cursor: pointer; opacity: 0; transform: translateY(30px); animation: fadeInUp 0.6s ease forwards; }
+.card:hover { transform: translateY(-5px); }
+.meta-container { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+.meta-date { color: var(--meta); font-size: 11px; }
+.meta-author { color: var(--accent); font-size: 11px; font-weight: 600; white-space: nowrap; }
+.desc { font-size: 14px; color: var(--meta); margin-top: 8px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.theme-toggle { cursor: pointer; background: transparent; border: 1px solid var(--accent); color: var(--text); display: flex; align-items: center; justify-content: center; border-radius: 2px; transition: all 0.3s; height: 32px; width: 32px; padding: 0; }
+.theme-toggle:hover { background: var(--accent); color: #000; }
+#scrollToTop { position: fixed; bottom: 30px; right: 30px; background: var(--accent); color: #fff; border: none; border-radius: 50%; width: 50px; height: 50px; display: none; cursor: pointer; transition: opacity 0.3s, transform 0.3s; opacity: 0.7; }
+#scrollToTop:hover { opacity: 1; }
+.floating-buttons { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); display: flex; gap: 10px; transition: opacity 0.3s; opacity: 0; visibility: hidden; }
+.floating-buttons img { width: 40px; height: 40px; }
+@media (max-width: 500px) { #scrollToTop { width:44px; height: 44px; bottom: 90px; right: 20px; } .floating-buttons img { width: 30px; height: 30px; } }
+.card-image { width: 100%; height: 180px; object-fit: cover; border-radius: 4px 4px 0 0; margin-bottom: 12px; background-color: #333; }
+.footer { position: fixed; bottom: 0; left: 0; right: 0; height: 70px; background: var(--bg); border-top: 1px solid var(--accent); display: flex; justify-content: center; align-items: center; }
+.social-icons { display: flex; gap: 35px; }
+.social-icons img { width: 40px; height: 40px; }
+.mobile-menu-button { display: none; cursor: pointer; background: transparent; border: 1px solid var(--accent); color: var(--text); display: flex; align-items: center; justify-content: center; border-radius: 2px; transition: all 0.3s; height: 32px; width: 32px; padding: 0; margin-left: 10px; }
+.mobile-menu-button:hover { background: var(--accent); color: #000; }
+.mobile-menu-button svg { width: 20px; height: 20px; }
+.mobile-menu { position: fixed; top: 0; left: 0; width: 200px; height: 100%; background: var(--mobile-menu-bg); color: var(--mobile-menu-text); transform: translateX(-100%); transition: transform 0.3s ease-in-out; z-index: 1100; padding: 20px; box-sizing: border-box; border-right: 1px solid var(--mobile-menu-border); overflow-y: auto; }
+.mobile-menu.open { transform: translateX(0); }
+.mobile-menu .category-btn { display: block; width: 100%; text-align: left; padding: 12px 0; font-size: 16px; border-bottom: 1px solid var(--mobile-menu-border); color: var(--mobile-menu-text); cursor: pointer; }
+.mobile-menu .category-btn:last-child { border-bottom: none; }
+.mobile-menu .category-btn.active { color: var(--accent); }
+.page-title-wrapper { padding: 15px 20px; border-bottom: 1px solid var(--accent); display: flex; align-items: center; gap: 10px; }
+.page-title-indicator { width: 4px; height: 20px; background-color: var(--accent); }
+.page-title { font-size: 20px; font-weight: bold; margin: 0; }
+@media (max-width: 768px) { .categories-wrapper { display: none; } .mobile-menu-button { display: flex; } .page-title-wrapper { padding: 10px 15px; gap: 8px; } .page-title { font-size: 18px; } .page-title-indicator { height: 18px; } }
+.scroll-indicator-track { position: fixed; right: 4px; top: 0; width: 4px; height: 100vh; background: rgba(0, 0, 0, 0.08); pointer-events: none; z-index: 999; }
+.scroll-indicator-thumb { position: absolute; top: 0; left: 0; width: 100%; height: 0%; background: var(--accent); border-radius: 2px; pointer-events: none; }
+.modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.85); z-index: 3000; justify-content: center; align-items: center; }
+.modal-overlay.active { display: flex; }
+.modal-content { background: var(--card); width: 95vw; max-width: 1200px; height: 90vh; max-height: 90vh; display: flex; flex-direction: column; border-radius: 8px; overflow: hidden; position: relative; animation: modalFadeIn 0.3s ease-out; }
+@keyframes modalFadeIn { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
+.modal-close { position: absolute; top: 5px; right: 5px; background: none; border: none; color: var(--accent); font-size: 32px; line-height: 1; cursor: pointer; z-index: 10; padding: 0; margin: 0; font-family: sans-serif; }
+.modal-close:hover { color: #ff6b00; opacity: 0.9; }
+.modal-header { padding: 20px; border-bottom: 1px solid var(--accent); flex-shrink: 0; }
+.modal-title { margin: 0; font-size: 28px; line-height: 1.1; font-weight: bold; }
+.modal-meta { margin-top: 8px; font-size: 13px; color: var(--meta); }
+.modal-body { flex: 1; padding: 20px; overflow-y: auto; color: var(--text); }
+.modal-img-wrapper { width: 100%; margin: 20px 0; text-align: center; }
+.modal-image { max-width: 100%; height: auto; display: block; border-radius: 4px; }
+.modal-body p { line-height: 1.6; margin-bottom: 16px; }
+.share-button { background: none; border: none; cursor: pointer; color: var(--accent); font-size: 18px; margin-top: 10px; }
 
-        @keyframes fadeInUp {
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-        .card-link {
-            display: block;
-            text-decoration: none;
-            color: inherit;
-        }
-        .card-link:hover .card {
-            transform: translateY(-5px);
-        }
-    </style>
+@keyframes fadeInUp {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+</style>
 </head>
 <body>
-    <h1>Актуальные новости Ракурс NEWS</h1>
-    <div id="progress-bar"></div>
-    <header>
-        <div class="logo-wrapper"><img src="images/logo.png" alt="Logo"><span>Ракурс NEWS</span></div>
-        <div class="controls-wrapper">
-            <div class="search-wrapper">
-                <input type="text" id="searchInput" placeholder="Поиск...">
-                <div id="search-results"></div>
-            </div>
-            <button class="theme-toggle" onclick="toggleTheme()" aria-label="Сменить тему">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <circle cx="12" cy="12" r="5"></circle>
-                    <line x1="12" y1="1" x2="12" y2="3"></line>
-                    <line x1="12" y1="21" x2="12" y2="23"></line>
-                    <line x1="1" y1="12" x2="3" y2="12"></line>
-                    <line x1="21" y1="12" x2="23" y2="12"></line>
-                    <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
-                    <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
-                    <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
-                    <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
-                </svg>
-            </button>
+<h1>Актуальные новости Ракурс NEWS</h1>
+<div id="progress-bar"></div>
+<header>
+<div class="logo-wrapper"><img src="/images/logo.png" alt="Logo"><span>Ракурс NEWS</span></div>
+<div class="controls-wrapper">
+<div class="search-wrapper">
+<input type="text" id="searchInput" placeholder="Поиск...">
+<div id="search-results"></div>
+</div>
+<button class="theme-toggle" onclick="toggleTheme()" aria-label="Сменить тему">
+<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="12" cy="12" r="5"></circle>
+  <!-- 8 лучей (добавлены 2 новых) -->
+  <line x1="12" y1="1" x2="12" y2="3"></line>
+  <line x1="12" y1="21" x2="12" y2="23"></line>
+  <line x1="1" y1="12" x2="3" y2="12"></line>
+  <line x1="21" y1="12" x2="23" y2="12"></line>
+  <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+  <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+  <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+  <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+</svg>
+</button>
 
-            <button class="mobile-menu-button" id="mobileMenuButton" aria-label="Открыть меню">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                stroke-linecap="round" stroke-linejoin="round">
-                    <line x1="3" y1="12" x2="21" y2="12"></line>
-                    <line x1="3" y1="6" x2="21" y2="6"></line>
-                    <line x1="3" y1="18" x2="21" y2="18"></line>
-                </svg>
-            </button>
+<button class="mobile-menu-button" id="mobileMenuButton" aria-label="Открыть меню">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="3" y1="12" x2="21" y2="12"></line>
+        <line x1="3" y1="6" x2="21" y2="6"></line>
+        <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+</button>
+</div>
+</header>
+<div class="page-title-wrapper">
+    <div class="page-title-indicator"></div>
+    <h3 class="page-title">Все новости</h3>
+</div>
+<div class="categories-wrapper" id="menu">
+    <button class="category-btn active" data-category="all">Все новости</button>
+    <button class="category-btn" data-category="СВО">СВО</button>
+    <button class="category-btn" data-category="Общество">Общество</button>
+    <button class="category-btn" data-category="Регионы">Регионы</button>
+    <button class="category-btn" data-category="Государство">Государство</button>
+    <button class="category-btn" data-category="Криминал">Криминал</button>
+    <button class="category-btn" data-category="Политика">Политика</button>
+    <button class="category-btn" data-category="Геополитика">Геополитика</button>
+    <button class="category-btn" data-category="Коррупция">Коррупция</button>
+    <button class="category-btn" data-category="Шоу-бизнес">Шоу-бизнес</button>
+    <button class="category-btn" data-category="Спорт">Спорт</button>
+    <button class="category-btn" data-category="Наука">Наука</button>
+    <button class="category-btn" data-category="Стиль">Стиль</button>
+    <button class="category-btn" data-category="Культура">Культура</button>
+</div>
+<div class="mobile-menu" id="mobileMenu">
+    <button class="category-btn active" data-category="all">Все новости</button>
+    <button class="category-btn" data-category="СВО">СВО</button>
+    <button class="category-btn" data-category="Общество">Общество</button>
+    <button class="category-btn" data-category="Регионы">Регионы</button>
+    <button class="category-btn" data-category="Государство">Государство</button>
+    <button class="category-btn" data-category="Криминал">Криминал</button>
+    <button class="category-btn" data-category="Политика">Политика</button>
+    <button class="category-btn" data-category="Геополитика">Геополитика</button>
+    <button class="category-btn" data-category="Коррупция">Коррупция</button>
+    <button class="category-btn" data-category="Шоу-бизнес">Шоу-бизнес</button>
+    <button class="category-btn" data-category="Спорт">Спорт</button>
+    <button class="category-btn" data-category="Наука">Наука</button>
+    <button class="category-btn" data-category="Стиль">Стиль</button>
+    <button class="category-btn" data-category="Культура">Культура</button>
+</div>
+<div id="top-scroll-indicator" style="
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 0%;
+    height: 4px;
+    background: var(--accent);
+    z-index: 2001;
+"></div>
+<div id="loader" style="text-align:center; padding: 20px;">Загрузка новостей...</div>
+<div id="main-news" class="featured-news" style="display: none;"></div>
+<div id="news-container" class="news-grid" style="padding-bottom: 80px;"></div>
+<button id="scrollToTop" onclick="scrollToTop()" aria-label="Вернуться наверх" role="button">
+    <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin: auto;">
+        <line x1="12" y1="19" x2="12" y2="5"></line>
+        <polyline points="5 12 12 5 19 12"></polyline>
+    </svg>
+</button>
+<div class="floating-buttons" id="floatingButtons">
+    <a href="https://vk.ru/rakurs_news" target="_blank"><img src="/images/VK.png" alt="VK"></a>
+    <a href="https://t.me/RAKURS_NEWS_RU" target="_blank"><img src="/images/Telegram.png" alt="Telegram"></a>
+</div>
+<div class="footer">
+    <div class="social-icons">
+        <a href="https://vk.ru/rakurs_news" target="_blank"><img src="/images/VK.png" alt="VK"></a>
+        <a href="https://t.me/RAKURS_NEWS_RU" target="_blank"><img src="/images/Telegram.png" alt="Telegram"></a>
+    </div>
+</div>
+<div class="modal-overlay" id="newsModal">
+    <div class="modal-content">
+        <button class="modal-close" onclick="closeModal()">×</button>
+        <div class="modal-header">
+            <h2 class="modal-title" id="modalTitle">Заголовок новости</h2>
+            <div class="modal-meta" id="modalMeta">Категория • Дата</div>
         </div>
-    </header>
-    <div class="page-title-wrapper">
-        <div class="page-title-indicator"></div>
-        <h3 class="page-title">Все новости</h3>
-    </div>
-    <div class="categories-wrapper" id="menu">
-        <button class="category-btn active" data-category="all">Все новости</button>
-        <button class="category-btn" data-category="СВО">СВО</button>
-        <button class="category-btn" data-category="Общество">Общество</button>
-        <button class="category-btn" data-category="Регионы">Регионы</button>
-        <button class="category-btn" data-category="Государство">Государство</button>
-        <button class="category-btn" data-category="Криминал">Криминал</button>
-        <button class="category-btn" data-category="Политика">Политика</button>
-        <button class="category-btn" data-category="Геополитика">Геополитика</button>
-        <button class="category-btn" data-category="Коррупция">Коррупция</button>
-        <button class="category-btn" data-category="Шоу-бизнес">Шоу-бизнес</button>
-        <button class="category-btn" data-category="Спорт">Спорт</button>
-        <button class="category-btn" data-category="Наука">Наука</button>
-        <button class="category-btn" data-category="Стиль">Стиль</button>
-        <button class="category-btn" data-category="Культура">Культура</button>
-    </div>
-    <div class="mobile-menu" id="mobileMenu">
-        <button class="category-btn active" data-category="all">Все новости</button>
-        <button class="category-btn" data-category="СВО">СВО</button>
-        <button class="category-btn" data-category="Общество">Общество</button>
-        <button class="category-btn" data-category="Регионы">Регионы</button>
-        <button class="category-btn" data-category="Государство">Государство</button>
-        <button class="category-btn" data-category="Криминал">Криминал</button>
-        <button class="category-btn" data-category="Политика">Политика</button>
-        <button class="category-btn" data-category="Геополитика">Геополитика</button>
-        <button class="category-btn" data-category="Коррупция">Коррупция</button>
-        <button class="category-btn" data-category="Шоу-бизнес">Шоу-бизнес</button>
-        <button class="category-btn" data-category="Спорт">Спорт</button>
-        <button class="category-btn" data-category="Наука">Наука</button>
-        <button class="category-btn" data-category="Стиль">Стиль</button>
-        <button class="category-btn" data-category="Культура">Культура</button>
-    </div>
-    <div id="top-scroll-indicator" style="
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 0%;
-        height: 4px;
-        background: var(--accent);
-        z-index: 2001;
-    "></div>
-    <div id="loader" style="text-align:center; padding: 20px;">Загрузка новостей...</div>
-    <div id="main-news" class="featured-news" style="display: none;"></div>
-    <div id="news-container" class="news-grid" style="padding-bottom: 80px;"></div>
-    <button id="scrollToTop" onclick="scrollToTop()" aria-label="Вернуться наверх" role="button">
-        <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin: auto;">
-            <line x1="12" y1="19" x2="12" y2="5"></line>
-            <polyline points="5 12 12 5 19 12"></polyline>
-        </svg>
-    </button>
-    <div class="floating-buttons" id="floatingButtons">
-        <a href="https://vk.ru/rakurs_news" target="_blank"><img src="images/VK.png" alt="VK"></a>
-        <a href="https://t.me/RAKURS_NEWS_RU" target="_blank"><img src="images/Telegram.png" alt="Telegram"></a>
-    </div>
-    <div class="footer">
-        <div class="social-icons">
-            <a href="https://vk.ru/rakurs_news" target="_blank"><img src="images/VK.png" alt="VK"></a>
-            <a href="https://t.me/RAKURS_NEWS_RU" target="_blank"><img src="images/Telegram.png" alt="Telegram"></a>
+        <div class="modal-body" id="modalBody">
+            <!-- Контент новости -->
+            <button class="share-button" id="shareButton" onclick="shareNews()">Поделиться ссылкой</button>
         </div>
     </div>
-    <div class="modal-overlay" id="newsModal">
-        <div class="modal-content">
-            <button class="modal-close" onclick="closeModal()">&times;</button>
-            <div class="modal-header">
-                <h2 class="modal-title" id="modalTitle">Заголовок новости</h2>
-                <div class="modal-meta" id="modalMeta">Категория • Дата</div>
-            </div>
-            <div class="modal-body" id="modalBody">
-                <button class="share-button" id="shareButton" onclick="shareNews()">Поделиться ссылкой</button>
-            </div>
-        </div>
-    </div>
+</div>
 
-    <script>
-        const savedTheme = localStorage.getItem('theme') || 'light';
-        document.documentElement.setAttribute('data-theme', savedTheme);
-
-        function toggleTheme() {
-            const currentTheme = document.documentElement.getAttribute('data-theme');
-            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
-            document.documentElement.setAttribute('data-theme', newTheme);
-            localStorage.setItem('theme', newTheme);
+<script>
+    const savedTheme = localStorage.getItem('theme') || 'light';
+    document.documentElement.setAttribute('data-theme', savedTheme);
+    function toggleTheme() {
+        const currentTheme = document.documentElement.getAttribute('data-theme');
+        const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+        document.documentElement.setAttribute('data-theme', newTheme);
+        localStorage.setItem('theme', newTheme);
+    }
+    let allNews = [];
+    let featuredNewsId = null;
+    async function loadNews() {
+        try {
+            const res = await fetch('news.json');
+            if (!res.ok) throw new Error('Не удалось загрузить news.json');
+            allNews = await res.json();
+            featuredNewsId = allNews.featuredNewsId;
+            document.getElementById('loader').style.display = 'none';
+            renderNews(allNews);
+        } catch(e) {
+            console.error('Ошибка загрузки:', e);
+            document.getElementById('loader').innerHTML = `<p style="color: red;">Ошибка: ${e.message}</p>`;
         }
-
-        let allNews = [];
-        let featuredNewsId = null; // Убедитесь, что это поле есть в вашем news.json, если вы его используете
-
-        async function loadNews() {
-            try {
-                const res = await fetch('news.json');
-                if (!res.ok) throw new Error('Не удалось загрузить news.json');
-                allNews = await res.json();
-                // Если featuredNewsId есть в news.json, раскомментируйте следующую строку:
-                // featuredNewsId = allNews.find(item => item.isFeatured)?.id || null; // Пример: ищем новость с полем isFeatured: true
-                document.getElementById('loader').style.display = 'none';
-                renderNews(allNews);
-            } catch(e) {
-                console.error('Ошибка загрузки:', e);
-                document.getElementById('loader').innerHTML = `<p style="color: red;">Ошибка: ${e.message}</p>`;
-            }
-        }
-
-        const observerOptions = {
-            threshold: 0.1
-        };
-        const observer = new IntersectionObserver((entries, observer) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.style.opacity = '1';
-                    observer.unobserve(entry.target);
-                }
-            });
-        }, observerOptions);
-
-        function renderNews(data, query = '') {
-            const container = document.getElementById('news-container');
-            container.innerHTML = '';
-
-            // Если featuredNewsId задан и такая новость есть в данных
-            if (featuredNewsId && data.some(item => item.id === featuredNewsId)) {
-                const featuredNews = data.find(item => item.id === featuredNewsId);
-                if (featuredNews) {
-                    const title = query
-                        ? featuredNews.title.replace(new RegExp(`(${query})`, 'gi'), '<span class="highlight">$1</span>')
-                        : featuredNews.title;
-
-                    // ИСПРАВЛЕНИЕ: Ссылка должна вести на news-<id>.html
-                    const featuredHTML = `
-                        <a href="news-${featuredNews.id}.html" class="card-link">
-                            <div class="card">
-                                <img src="${featuredNews.image || 'images/placeholder.jpg'}" alt="${featuredNews.title}" class="card-image" loading="lazy">
-                                <div class="meta-container">
-                                    <span class="meta-date">${featuredNews.category} • ${featuredNews.date}</span>
-                                    <span class="meta-author">${featuredNews.author || ''}</span>
-                                </div>
-                                <h3>${title}</h3>
-                                <div class="desc">${featuredNews.description || ''}</div>
-                            </div>
-                        </a>`;
-                    document.getElementById('main-news').innerHTML = featuredHTML;
-                    document.getElementById('main-news').style.display = 'block';
-                }
-            } else {
-                document.getElementById('main-news').style.display = 'none';
-            }
-
-            const filteredNews = data.filter(item => item.id !== featuredNewsId);
-
-            container.innerHTML += filteredNews.map(item => {
-                let title = query ? item.title.replace(new RegExp(`(${query})`, 'gi'), '<span class="highlight">$1</span>') : item.title;
-
-                // ИСПРАВЛЕНИЕ: Ссылка должна вести на news-<id>.html
-                return `
-                    <a href="news-${item.id}.html" class="card-link">
-                        <div class="card">
-                            <img src="${item.image || 'images/placeholder.jpg'}" alt="${item.title}" class="card-image" loading="lazy">
-                            <div class="meta-container">
-                                <span class="meta-date">${item.category} • ${item.date}</span>
-                                <span class="meta-author">${item.author || ''}</span>
-                            </div>
-                            <h3>${title}</h3>
-                            <div class="desc">${item.description || ''}</div>
+    }
+    function renderNews(data, query = '') {
+        const container = document.getElementById('news-container');
+        container.innerHTML = '';
+        if (featuredNewsId && data.some(item => item.id === featuredNewsId)) {
+            const featuredNews = data.find(item => item.id === featuredNewsId);
+            if (featuredNews) {
+                const featuredHTML = `
+                    <div class="card" style="width: 100%;">
+                        <img src="${featuredNews.image || '/images/placeholder.jpg'}" alt="${featuredNews.title}" class="card-image" loading="lazy">
+                        <div class="meta-container">
+                            <span class="meta-date">${featuredNews.category} • ${featuredNews.date}</span>
+                            <span class="meta-author">${featuredNews.author || ''}</span>
                         </div>
-                    </a>`;
-            }).join('');
-
-            const cards = document.querySelectorAll('.card');
-            cards.forEach(card => {
-                card.style.opacity = '0';
-                observer.observe(card);
-            });
+                        <h3>${featuredNews.title}</h3>
+                        <div class="desc">${featuredNews.description || ''}</div>
+                    </div>
+                `;
+                document.getElementById('main-news').innerHTML = featuredHTML;
+                document.getElementById('main-news').style.display = 'block';
+            }
+        } else {
+            document.getElementById('main-news').style.display = 'none';
         }
-
-        const searchInput = document.getElementById('searchInput');
-        const searchResults = document.getElementById('search-results');
-        let searchTimeout;
-
-        searchInput.addEventListener('input', (e) => {
-            clearTimeout(searchTimeout);
-            const val = e.target.value.trim().toLowerCase();
-            if (val.length < 3) {
-                searchResults.style.display = 'none';
-                return;
-            }
-            const filtered = allNews
-                .filter(n => n.title.toLowerCase().includes(val))
-                .sort((a, b) => new Date(b.date) - new Date(a.date));
-            if (filtered.length === 0) {
-                searchResults.innerHTML = '<div class="result-item">Ничего не найдено</div>';
-                searchResults.style.display = 'block';
-                return;
-            }
-            searchResults.innerHTML = filtered.map(n =>
-                `<div class="result-item" onclick="handleSearchResultClick('${n.id}')">
-                    ${n.title.replace(new RegExp(`(${val})`, 'gi'), '<span class="highlight">$1</span>')}
-                </div>`
-            ).join('');
+        const filteredNews = data.filter(item => item.id !== featuredNewsId);
+        container.innerHTML += filteredNews.map(item => {
+            let title = query ? item.title.replace(new RegExp(`(${query})`, 'gi'), '<span class="highlight">$1</span>') : item.title;
+            return `<div class="card" onclick="openModal('${item.id}')">
+                        <img src="${item.image || '/images/placeholder.jpg'}" alt="${item.title}" class="card-image" loading="lazy">
+                        <div class="meta-container">
+                            <span class="meta-date">${item.category} • ${item.date}</span>
+                            <span class="meta-author">${item.author || ''}</span>
+                        </div>
+                        <h3>${title}</h3>
+                        <div class="desc">${item.description || ''}</div>
+                    </div>`;
+        }).join('');
+    }
+    const searchInput = document.getElementById('searchInput');
+    const searchResults = document.getElementById('search-results');
+    let searchTimeout;
+    searchInput.addEventListener('input', (e) => {
+        clearTimeout(searchTimeout);
+        const val = e.target.value.trim().toLowerCase();
+        if (val.length < 3) { 
+            searchResults.style.display = 'none'; 
+            return; 
+        }
+        const filtered = allNews
+            .filter(n => n.title.toLowerCase().includes(val))
+            .sort((a, b) => new Date(b.date) - new Date(a.date));
+        if (filtered.length === 0) {
+            searchResults.innerHTML = '<div class="result-item">Ничего не найдено</div>';
             searchResults.style.display = 'block';
-        });
-
-        function handleSearchResultClick(newsId) {
-            searchInput.value = '';
-            searchResults.style.display = 'none';
-            // ИСПРАВЛЕНИЕ: Ссылка должна вести на news-<id>.html
-            window.location.href = `news-${newsId}.html`;
+            return;
         }
-
-        const menuElement = document.getElementById('menu');
-        const mobileMenuElement = document.getElementById('mobileMenu');
-        const mobileMenuButton = document.getElementById('mobileMenuButton');
-        const pageTitleElement = document.querySelector('.page-title');
-
-        function handleCategoryClick(e) {
-            if (!e.target.classList.contains('category-btn')) return;
-            document.querySelectorAll('.category-btn').forEach(b => b.classList.remove('active'));
-            e.target.classList.add('active');
-            const cat = e.target.dataset.category;
-            pageTitleElement.textContent = cat === 'all' ? 'Все новости' : cat;
-            renderNews(cat === 'all' ? allNews : allNews.filter(n => n.category === cat));
-            if (mobileMenuElement.classList.contains('open')) {
-                mobileMenuElement.classList.remove('open');
-            }
+        searchResults.innerHTML = filtered.map(n => 
+            `<div class="result-item" onclick="handleSearchResultClick('${n.id}')">
+                ${n.title.replace(new RegExp(`(${val})`, 'gi'), '<span class="highlight">$1</span>')}
+            </div>`
+        ).join('');
+        searchResults.style.display = 'block';
+    });
+    function handleSearchResultClick(newsId) {
+        searchInput.value = '';
+        searchResults.style.display = 'none';
+        window.location.href = `/${newsId}.html`;
+    }
+    const menuElement = document.getElementById('menu');
+    const mobileMenuElement = document.getElementById('mobileMenu');
+    const mobileMenuButton = document.getElementById('mobileMenuButton');
+    const pageTitleElement = document.querySelector('.page-title');
+    function handleCategoryClick(e) {
+        if (!e.target.classList.contains('category-btn')) return;
+        document.querySelectorAll('.category-btn').forEach(b => b.classList.remove('active'));
+        e.target.classList.add('active');
+        const cat = e.target.dataset.category;
+        pageTitleElement.textContent = cat === 'all' ? 'Все новости' : cat;
+        renderNews(cat === 'all' ? allNews : allNews.filter(n => n.category === cat));
+        if (mobileMenuElement.classList.contains('open')) {
+            mobileMenuElement.classList.remove('open');
         }
-
-        menuElement.addEventListener('click', handleCategoryClick);
-        mobileMenuElement.addEventListener('click', handleCategoryClick);
-
-        mobileMenuButton.addEventListener('click', () => {
-            mobileMenuElement.classList.toggle('open');
-        });
-
-        document.addEventListener('click', (e) => {
-            if (mobileMenuElement.classList.contains('open') && !mobileMenuElement.contains(e.target) && !mobileMenuButton.contains(e.target)) {
-                mobileMenuElement.classList.remove('open');
-            }
-        });
-
-        const modal = document.getElementById('newsModal');
-
-        function openModal(id) {
-            const newsItem = allNews.find(n => n.id === id);
-            if (!newsItem) return;
-            document.getElementById('modalTitle').textContent = newsItem.title;
-            document.getElementById('modalMeta').textContent = `${newsItem.category} • ${newsItem.date}`;
-            const body = document.getElementById('modalBody');
-            // Обработка переносов строк в контенте для корректного отображения в <p>
-            const formattedContent = (newsItem.content || newsItem.description || '').replace(/\n/g, '</p><p>');
-            body.innerHTML = `
-                ${newsItem.image ? `<div class="modal-img-wrapper"><img src="${newsItem.image}" alt="${newsItem.title}" class="modal-image"></div>` : ''}
-                <p>${formattedContent}</p>
-                <button class="share-button" onclick="shareNews()">Поделиться ссылкой</button>
-            `;
-            modal.classList.add('active');
-            document.body.style.overflow = 'hidden';
+    }
+    menuElement.addEventListener('click', handleCategoryClick);
+    mobileMenuElement.addEventListener('click', handleCategoryClick);
+    mobileMenuButton.addEventListener('click', () => {
+        mobileMenuElement.classList.toggle('open');
+    });
+    document.addEventListener('click', (e) => {
+        if (mobileMenuElement.classList.contains('open') && !mobileMenuElement.contains(e.target) && !mobileMenuButton.contains(e.target)) {
+            mobileMenuElement.classList.remove('open');
         }
+    });
+    const modal = document.getElementById('newsModal');
+    function openModal(id) {
+        const newsItem = allNews.find(n => n.id === id);
+        if (!newsItem) return;
+        document.getElementById('modalTitle').textContent = newsItem.title;
+        document.getElementById('modalMeta').textContent = `${newsItem.category} • ${newsItem.date}`;
+        const body = document.getElementById('modalBody');
+        body.innerHTML = `
+            ${newsItem.image ? `<div class="modal-img-wrapper"><img src="${newsItem.image}" alt="${newsItem.title}" class="modal-image"></div>` : ''}
+            <p>${newsItem.content || newsItem.description || ''}</p>
+            <button class="share-button" onclick="shareNews()">Поделиться ссылкой</button>
+        `;
+        modal.classList.add('active');
+        document.body.style.overflow = 'hidden';
+    }
+    function shareNews() {
+        const newsTitle = document.getElementById('modalTitle').textContent;
+        const newsId = allNews.find(n => n.title === newsTitle).id;
+        const newsUrl = `/${newsId}.html`;
+        const shareData = {
+            title: newsTitle,
+            url: newsUrl
+        };
+        navigator.share(shareData)
+            .then(() => console.log('Успешно поделились'))
+            .catch((error) => console.error('Ошибка при поделении:', error));
+    }
+    function closeModal() {
+        modal.classList.remove('active');
+        document.body.style.overflow = '';
+    }
+    modal.addEventListener('click', (e) => {
+        if (e.target === modal) closeModal();
+    });
+    loadNews();
+    window.addEventListener('scroll', () => {
+        const scrollTop = window.scrollY;
+        const docHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+        const scrollPercent = (scrollTop / docHeight) * 100;
+        document.getElementById('top-scroll-indicator').style.width = scrollPercent + '%';
+    });
+    function scrollToTop() {
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        });
+    }
+    window.addEventListener('scroll', () => {
+    const btn = document.getElementById('scrollToTop');
+    if (!btn) return;
 
-        function shareNews() {
-            const newsTitle = document.getElementById('modalTitle').textContent;
-            // Находим новость по заголовку, чтобы получить ее ID и сформировать правильную ссылку
-            const newsItem = allNews.find(n => n.title === newsTitle);
-            if (!newsItem) return;
-            const newsId = newsItem.id;
-            // ИСПРАВЛЕНИЕ: Ссылка должна вести на news-<id>.html
-            const newsUrl = `news-${newsId}.html`;
-            const shareData = {
-                title: newsTitle,
-                url: newsUrl
-            };
-            if (navigator.share) {
-                navigator.share(shareData)
-                    .then(() => console.log('Успешно поделились'))
-                    .catch((error) => console.error('Ошибка при поделении:', error));
+    if (window.scrollY > 300) {
+        btn.style.display = 'flex';
+        btn.style.opacity = '0.7';
+        // Гарантируем позицию, если CSS вдруг не применился
+        btn.style.bottom = '150px'; 
+        btn.style.right = '20px';
+    } else {
+        btn.style.display = 'none';
+    }
+});
+    (function() {
+        const text = "Ракурс NEWS |";
+        const container = document.querySelector('.logo-wrapper span');
+        let index = 0;
+        let timer;
+        function type() {
+            if (index < text.length) {
+                container.textContent = text.substring(0, index + 1);
+                index++;
+                const delays = [100, 150, 120, 180, 140, 160, 130, 170, 110, 190, 150, 200, 100];
+                const delay = delays[index % delays.length] || 150;
+                timer = setTimeout(type, delay);
             } else {
-                // Fallback для браузеров, не поддерживающих Web Share API
-                alert(`Скопируйте эту ссылку: ${window.location.origin}/${newsUrl}`);
+                setTimeout(() => {
+                    index = 0;
+                    container.textContent = "";
+                    type();
+                }, 5000);
             }
         }
-
-        function closeModal() {
-            modal.classList.remove('active');
-            document.body.style.overflow = '';
-        }
-
-        modal.addEventListener('click', (e) => {
-            if (e.target === modal) closeModal();
-        });
-
-        loadNews();
-
-        window.addEventListener('scroll', () => {
-            const scrollTop = window.scrollY;
-            const docHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-            const scrollPercent = (scrollTop / docHeight) * 100;
-            document.getElementById('top-scroll-indicator').style.width = scrollPercent + '%';
-        });
-
-        function scrollToTop() {
-            window.scrollTo({
-                top: 0,
-                behavior: 'smooth'
-            });
-        }
-
-        window.addEventListener('scroll', () => {
-            const btn = document.getElementById('scrollToTop');
-            if (!btn) return;
-
-            if (window.scrollY > 300) {
-                btn.style.display = 'flex';
-                btn.style.opacity = '0.7';
-                btn.style.bottom = '150px';
-                btn.style.right = '20px';
-            } else {
-                btn.style.display = 'none';
+        type();
+    })();
+    
+    // Анимация появления карточек при скролле
+    const observerOptions = {
+        threshold: 0.1
+    };
+    const observer = new IntersectionObserver((entries, observer) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.style.opacity = '1';
+                entry.target.style.transform = 'translateY(0)';
+                observer.unobserve(entry.target);
             }
         });
+    }, observerOptions);
 
-        (function() {
-            const text = "Ракурс NEWS |";
-            const container = document.querySelector('.logo-wrapper span');
-            let index = 0;
-            let timer;
-            function type() {
-                if (index < text.length) {
-                    container.textContent = text.substring(0, index + 1);
-                    index++;
-                     
-const delays = [100, 150, 120, 180, 140, 160, 130, 170, 110, 190, 150, 200, 100];
-                    const delay = delays[index % delays.length] || 150;
-                    timer = setTimeout(type, 150);
-                }
-            }
-            type();
-        })();
-    </script>
+    document.querySelectorAll('.card').forEach(card => {
+        observer.observe(card);
+    });
+</script>
 </body>
 </html>
- 
- 
