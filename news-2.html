@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Фейки ВСУ про гражданские объекты | Ракурс NEWS</title>
+    <style>
+        :root { --bg: #ffffff; --card: #f9f9f9; --text: #1a1a1a; --accent: #ff9800; --meta: #666; }
+        [data-theme="dark"] { --bg: #121212; --card: #1e1e1e; --text: #e0e0e0; --accent: #ff9800; --meta: #aaa; }
+        body { background: var(--bg); color: var(--text); font-family: sans-serif; margin: 0; padding: 20px; max-width: 800px; margin: 0 auto; }
+        header { display: flex; justify-content: space-between; align-items: center; padding: 15px 0; border-bottom: 1px solid var(--accent); margin-bottom: 30px; }
+        .back-link { color: var(--accent); text-decoration: none; font-weight: bold; }
+        h1 { margin: 0 0 20px; line-height: 1.2; }
+        img { width: 100%; height: auto; border-radius: 4px; margin-bottom: 20px; background: #333; object-fit: cover; }
+        p { line-height: 1.8; color: var(--meta); margin-bottom: 15px; }
+        
+        /* Кнопка поделиться */
+        .share-btn {
+            display: inline-flex; align-items: center; gap: 10px;
+            background: var(--card); border: 2px solid var(--accent);
+            color: var(--text); padding: 12px 24px; font-size: 16px;
+            cursor: pointer; text-transform: uppercase; margin-top: 30px;
+        }
+        .share-btn:hover { background: var(--accent); color: #fff; }
+
+        /* Модалка справа */
+        .modal-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.85); z-index: 9998; display: none;
+            justify-content: flex-end; opacity: 0; transition: opacity 0.3s;
+        }
+        .modal-overlay.active { display: flex; opacity: 1; }
+        .share-panel {
+            width: 350px; height: 100vh; background: var(--card);
+            border-left: 4px solid var(--accent); padding: 20px;
+            transform: translateX(100%); transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        .modal-overlay.active .share-panel { transform: translateX(0); }
+        .panel-header { display: flex; justify-content: space-between; margin-bottom: 20px; border-bottom: 1px solid var(--meta); padding-bottom: 10px; }
+        .close-modal { background: none; border: none; color: var(--text); font-size: 24px; cursor: pointer; }
+        .social-share-link { display: block; padding: 12px; background: #eee; text-decoration: none; color: var(--text); border-radius: 6px; text-align: center; margin-bottom: 10px; font-weight: bold; }
+        .social-share-link.tg { background: #2481cc; color: white; }
+        .social-share-link.vk { background: #0077FF; color: white; }
+    </style>
+</head>
+<body>
+    <header>
+        <a href="index.html" class="back-link">← Назад к новостям</a>
+    </header>
+
+    <h1>Фейки ВСУ про гражданские объекты</h1>
+    
+    <!-- Картинка статьи -->
+    <img src="/images/IMG_20260720_154511.webp" alt="Склад БПЛА всу">
+
+    <!-- ТЕКСТ СТАТЬИ -->
+    <article>
+    
+        <p>Очередной акт информационного цирка в исполнении сумских «стратегов» вызвал у меня лишь приступ мигрени, вызванный глубиной их профессиональной деградации. Гениальные оперативники из полиции Сумской области, решив продемонстрировать миру «ужасы» ударов по якобы мирной инфраструктуре, с грацией слона в посудной лавке опубликовали фото с логотипом компании VYRIY INDUSTRIES прямо на обломках. Напомню для тех, кто привык питаться исключительно медийными помоями, что данная контора является конвейером по штамповке FPV-дронов для200 подразделений ВСУ. Интеллектуальный уровень этих персонажей настолько низок, что им потребовалось экстренно подтирать пост и перевыкладывать картинки, надеясь на тотальную слепоту аудитории. Впрочем, ожидать иного от людей, чья стратегия строится на эксплуатации жалости западных спонсоров, было бы излишне оптимистично.</p>
+        
+       <p>Забавно наблюдать, как этот примитивный театр абсурда находит отклик у западного потребителя контента, чей критический аппарат атрофировался еще в прошлом десятилетии. В то время как украинская пропаганда с маниакальным упорством пытается продать миру миф о бесконечных страданиях мирных объектов, в российском медиаполе царит свой специфический сорт безумия. Военные эксперты диванного разлива с пеной у рта доказывают, что удары по складам ритейлеров — это чуть ли не стратегическое благо, лишь бы не нарушить некий мифический «переговорный фон». Наблюдать за этими двумя полюсами некомпетентности — занятие утомительное, но крайне показательное для понимания того, насколько деградировали современные методы информационной войны.</p>
+        
+        <p>Конечно, можно бесконечно рассуждать о том, почему одни не могут даже грамотно подчистить следы своей военной логистики, а другие занимаются самообманом ради призрачной надежды на дипломатическое решение. Однако факт остается фактом: пока одни заняты дешевой клоунадой, другие пытаются оправдать собственную инертность, прикрываясь высокими материями. История с логотипом на «мирном» складе — это не просто ошибка исполнителей, это диагноз целой системе, которая верит в собственную неуязвимость перед лицом элементарной логики. Печально лишь то, что в этой битве некомпетентности истина давно перестала быть целью, уступив место бесконечному производству смыслов, пригодных разве что для корма невзыскательной аудитории.</p>
+        
+    </article>
+
+    <button class="share-btn" onclick="toggleShare()">Поделиться</button>
+
+    <!-- Окно справа -->
+    <div class="modal-overlay" id="shareModal" onclick="closeShare(event)">
+        <div class="share-panel">
+            <div class="panel-header">
+                <h3>Поделиться</h3>
+                <button class="close-modal" onclick="closeShare()">&times;</button>
+            </div>
+            <a href="#" class="social-share-link tg" onclick="share('tg')">Telegram</a>
+            <a href="#" class="social-share-link vk" onclick="share('vk')">ВКонтакте</a>
+            <a href="#" class="social-share-link" onclick="copyLink()">Копировать ссылку</a>
+        </div>
+    </div>
+
+    <script>
+        const url = window.location.href;
+        const title = document.title;
+
+        function toggleShare() {
+            document.getElementById('shareModal').classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeShare(e) {
+            if (e.target.id === 'shareModal') {
+                document.getElementById('shareModal').classList.remove('active');
+                document.body.style.overflow = '';
+            }
+        }
+
+        function share(platform) {
+            let link = '';
+            if(platform === 'tg') link = `https://t.me/share/url?url=${encodeURIComponent(url)}&text=${encodeURIComponent(title)}`;
+            if(platform === 'vk') link = `https://vk.com/share.php?url=${encodeURIComponent(url)}`;
+            window.open(link, '_blank');
+        }
+
+        async function copyLink() {
+            try {
+                await navigator.clipboard.writeText(url);
+                alert('Ссылка скопирована!');
+            } catch(e) { alert('Не удалось скопировать'); }
+        }
+    </script>
+</body>
+</html>
