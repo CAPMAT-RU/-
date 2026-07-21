@@ -96,34 +96,50 @@ header { background: var(--card); padding: 15px 5px; display: flex; justify-cont
     /* Убираем var(--accent) отсюда */
 }
 
-/* Цвета для категорий */
+/* Базовый стиль плашки (позиция: правый верхний угол) */
 .category-badge {
     position: absolute;
-    bottom: 15px;       /* Отступ снизу */
-    left: 0px;         /* Отступ слева */
+    top: 15px;       /* Отступ сверху */
+    right: 0px;     /* Отступ справа */
     padding: 6px 12px;
-    font-size: 10px;
+    font-size: 11px; /* Чуть уменьшил шрифт, чтобы влезло на узких экранах */
     font-weight: bold;
     color: white;
     text-transform: uppercase;
     letter-spacing: 0.5px;
-    border-radius: 4px;
-    z-index: 20;        /* Поверх картинки, но ниже, чем hot-badge если они пересекутся */
-    box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+    border-radius: 2px;
+    z-index: 20;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.4);
+    pointer-events: none; /* Важно: чтобы клик по плашке не ломал ссылку */
+    line-height: 1;
 }
+/* --- ВСЕ 13 КАТЕГОРИЙ (и запасные) --- */
 
-/* Индивидуальные цвета */
-.cat-svo { background-color: #d32f2f; }       /* Красный для СВО */
-.cat-politics { background-color: #1976d2; }   /* Синий для Политика/Государство */
-.cat-society { background-color: #f57c00; }    /* Оранжевый для Общество */
-.cat-crime { background-color: #7b1fa2; }     /* Фиолетовый для Криминал */
-.cat-culture { background-color: #388e3c; }   /* Зеленый для Культура/Наука */
-.cat-sports { background-color: #e91e63; }   /* Розовый для Спорт */
-.cat-showbiz { background-color: #ffab40; }   /* Желтый для Шоу-бизнес */
+/* СВО, Политика, Государство, Геополитика */
+.cat-svo { background-color: #d32f2f; }           /* Красный */
+.cat-politics { background-color: #1976d2; }      /* Синий */
+.cat-state { background-color: #2e7d32; }          /* Зеленый (Государство) */
+.cat-geopolitics { background-color: #4a148c; }    /* Темно-фиолетовый (Геополитика) */
 
-/* Универсальный класс, если категории нет в списке выше */
-.cat-default { background-color: #555; }
+/* Общество, Регионы */
+.cat-society { background-color: #f57c00; }        /* Оранжевый */
+.cat-regions { background-color: #ffab40; }        /* Светло-оранжевый (Регионы) */
 
+/* Криминал, Коррупция */
+.cat-crime { background-color: #7b1fa2; }           /* Фиолетовый */
+.cat-corruption { background-color: #c62828; }     /* Темно-красный (Коррупция) */
+
+/* Культура, Наука, Стиль */
+.cat-culture { background-color: #388e3c; }        /* Зеленый */
+.cat-science { background-color: #00897b; }        /* Бирюзовый (Наука) */
+.cat-style { background-color: #ec407a; }          /* Розовый (Стиль) */
+
+/* Спорт, Шоу-бизнес */
+.cat-sports { background-color: #e91e63; }         /* Малиновый */
+.cat-showbiz { background-color: #fbc02d; }        /* Золотистый */
+
+/* Если категория не найдена ни под одно правило */
+.cat-default { background-color: #555; }          /* Серый */
 
 </style>
 </head>
