@@ -66,20 +66,6 @@ header { background: var(--card); padding: 15px 5px; display: flex; justify-cont
 @media (max-width: 768px) { .categories-wrapper { display: none; } .mobile-menu-button { display: flex; } .page-title-wrapper { padding: 10px 15px; gap: 8px; } .page-title { font-size: 18px; } .page-title-indicator { height: 18px; } }
 .scroll-indicator-track { position: fixed; right: 4px; top: 0; width: 4px; height: 100vh; background: rgba(0, 0, 0, 0.08); pointer-events: none; z-index: 999; }
 .scroll-indicator-thumb { position: absolute; top: 0; left: 0; width: 100%; height: 0%; background: var(--accent); border-radius: 2px; pointer-events: none; }
-.modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.85); z-index: 3000; justify-content: center; align-items: center; }
-.modal-overlay.active { display: flex; }
-.modal-content { background: var(--card); width: 95vw; max-width: 1200px; height: 90vh; max-height: 90vh; display: flex; flex-direction: column; border-radius: 8px; overflow: hidden; position: relative; animation: modalFadeIn 0.3s ease-out; }
-@keyframes modalFadeIn { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
-.modal-close { position: absolute; top: 5px; right: 5px; background: none; border: none; color: var(--accent); font-size: 32px; line-height: 1; cursor: pointer; z-index: 10; padding: 0; margin: 0; font-family: sans-serif; }
-.modal-close:hover { color: #ff6b00; opacity: 0.9; }
-.modal-header { padding: 20px; border-bottom: 1px solid var(--accent); flex-shrink: 0; }
-.modal-title { margin: 0; font-size: 28px; line-height: 1.1; font-weight: bold; }
-.modal-meta { margin-top: 8px; font-size: 13px; color: var(--meta); }
-.modal-body { flex: 1; padding: 20px; overflow-y: auto; color: var(--text); }
-.modal-img-wrapper { width: 100%; margin: 20px 0; text-align: center; }
-.modal-image { max-width: 100%; height: auto; display: block; border-radius: 4px; }
-.modal-body p { line-height: 1.6; margin-bottom: 16px; }
-.share-button { background: none; border: none; cursor: pointer; color: var(--accent); font-size: 18px; margin-top: 10px; }
 
 @keyframes fadeInUp {
     to {
@@ -159,6 +145,22 @@ header { background: var(--card); padding: 15px 5px; display: flex; justify-cont
     <button class="category-btn" data-category="Стиль">Стиль</button>
     <button class="category-btn" data-category="Культура">Культура</button>
 </div>
+<div class="mobile-menu" id="mobileMenu">
+    <button class="category-btn active" data-category="all">Все новости</button>
+    <button class="category-btn" data-category="СВО">СВО</button>
+    <button class="category-btn" data-category="Общество">Общество</button>
+    <button class="category-btn" data-category="Регионы">Регионы</button>
+    <button class="category-btn" data-category="Государство">Государство</button>
+    <button class="category-btn" data-category="Криминал">Криминал</button>
+    <button class="category-btn" data-category="Политика">Политика</button>
+    <button class="category-btn" data-category="Геополитика">Геополитика</button>
+    <button class="category-btn" data-category="Коррупция">Коррупция</button>
+    <button class="category-btn" data-category="Шоу-бизнес">Шоу-бизнес</button>
+    <button class="category-btn" data-category="Спорт">Спорт</button>
+    <button class="category-btn" data-category="Наука">Наука</button>
+    <button class="category-btn" data-category="Стиль">Стиль</button>
+    <button class="category-btn" data-category="Культура">Культура</button>
+</div>
 <div id="top-scroll-indicator" style="
     position: fixed;
     top: 0;
@@ -185,19 +187,6 @@ header { background: var(--card); padding: 15px 5px; display: flex; justify-cont
     <div class="social-icons">
         <a href="https://vk.ru/rakurs_news" target="_blank"><img src="/images/VK.png" alt="VK"></a>
         <a href="https://t.me/RAKURS_NEWS_RU" target="_blank"><img src="/images/Telegram.png" alt="Telegram"></a>
-    </div>
-</div>
-<div class="modal-overlay" id="newsModal">
-    <div class="modal-content">
-        <button class="modal-close" onclick="closeModal()">×</button>
-        <div class="modal-header">
-            <h2 class="modal-title" id="modalTitle">Заголовок новости</h2>
-            <div class="modal-meta" id="modalMeta">Категория • Дата</div>
-        </div>
-        <div class="modal-body" id="modalBody">
-            <!-- Контент новости -->
-            <button class="share-button" id="shareButton" onclick="shareNews()">Поделиться ссылкой</button>
-        </div>
     </div>
 </div>
 
@@ -251,7 +240,7 @@ header { background: var(--card); padding: 15px 5px; display: flex; justify-cont
         const filteredNews = data.filter(item => item.id !== featuredNewsId);
         container.innerHTML += filteredNews.map(item => {
             let title = query ? item.title.replace(new RegExp(`(${query})`, 'gi'), '<span class="highlight">$1</span>') : item.title;
-            return `<div class="card" onclick="openModal('${item.id}')">
+            return `<div class="card" onclick="window.location.href='/${item.id}.html'">
                         <img src="${item.image || '/images/placeholder.jpg'}" alt="${item.title}" class="card-image" loading="lazy">
                         <div class="meta-container">
                             <span class="meta-date">${item.category} • ${item.date}</span>
@@ -317,40 +306,6 @@ header { background: var(--card); padding: 15px 5px; display: flex; justify-cont
             mobileMenuElement.classList.remove('open');
         }
     });
-    const modal = document.getElementById('newsModal');
-    function openModal(id) {
-        const newsItem = allNews.find(n => n.id === id);
-        if (!newsItem) return;
-        document.getElementById('modalTitle').textContent = newsItem.title;
-        document.getElementById('modalMeta').textContent = `${newsItem.category} • ${newsItem.date}`;
-        const body = document.getElementById('modalBody');
-        body.innerHTML = `
-            ${newsItem.image ? `<div class="modal-img-wrapper"><img src="${newsItem.image}" alt="${newsItem.title}" class="modal-image"></div>` : ''}
-            <p>${newsItem.content || newsItem.description || ''}</p>
-            <button class="share-button" onclick="shareNews()">Поделиться ссылкой</button>
-        `;
-        modal.classList.add('active');
-        document.body.style.overflow = 'hidden';
-    }
-    function shareNews() {
-        const newsTitle = document.getElementById('modalTitle').textContent;
-        const newsId = allNews.find(n => n.title === newsTitle).id;
-        const newsUrl = `/${newsId}.html`;
-        const shareData = {
-            title: newsTitle,
-            url: newsUrl
-        };
-        navigator.share(shareData)
-            .then(() => console.log('Успешно поделились'))
-            .catch((error) => console.error('Ошибка при поделении:', error));
-    }
-    function closeModal() {
-        modal.classList.remove('active');
-        document.body.style.overflow = '';
-    }
-    modal.addEventListener('click', (e) => {
-        if (e.target === modal) closeModal();
-    });
     loadNews();
     window.addEventListener('scroll', () => {
         const scrollTop = window.scrollY;
@@ -371,7 +326,6 @@ header { background: var(--card); padding: 15px 5px; display: flex; justify-cont
     if (window.scrollY > 300) {
         btn.style.display = 'flex';
         btn.style.opacity = '0.7';
-        // Гарантируем позицию, если CSS вдруг не применился
         btn.style.bottom = '150px'; 
         btn.style.right = '20px';
     } else {
@@ -401,7 +355,6 @@ header { background: var(--card); padding: 15px 5px; display: flex; justify-cont
         type();
     })();
     
-    // Анимация появления карточек при скролле
     const observerOptions = {
         threshold: 0.1
     };
