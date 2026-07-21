@@ -79,21 +79,21 @@ header { background: var(--card); padding: 15px 5px; display: flex; justify-cont
     display: block;
 }
 
-/* Сам бейдж */
 .hot-badge {
-    background-color: var(--accent);       /* Ярко-красный */
-    color: white;                   /* Белый текст */
-    padding: 6px 12px;              /* Чуть больше отступы */
+    background-color: #ff4444; /* Жестко заданный красный, не зависит от темы */
+    color: #ffffff;
+    padding: 6px 12px;
     font-size: 11px;
     font-weight: bold;
-    border-radius: 0 4px 4px 0;     /* Скос слева, чтобы красиво прилегал к углу */
-    position: absolute;             /* ВАЖНО: вырываем из потока */
-    top: 10px;                      /* Отступ сверху */
-    left: 0;                         /* Прижимаем к левому краю */
-    box-shadow: 0 2px 4px rgba(0,0,0,0.3); /* Лёгкая тень для объёма */
-    z-index: 10;                     /* Чтобы был поверх картинки */
-    text-transform: uppercase;       /* ВСЕ ЗАГЛАВНЫЕ */
+    border-radius: 0 4px 4px 0;
+    position: absolute;
+    top: 10px;
+    left: 0;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+    z-index: 10;
+    text-transform: uppercase;
     letter-spacing: 0.5px;
+    /* Убираем var(--accent) отсюда */
 }
 
 </style>
@@ -168,22 +168,7 @@ header { background: var(--card); padding: 15px 5px; display: flex; justify-cont
     <button class="category-btn" data-category="Стиль">Стиль</button>
     <button class="category-btn" data-category="Культура">Культура</button>
 </div>
-<div class="mobile-menu" id="mobileMenu">
-    <button class="category-btn active" data-category="all">Все новости</button>
-    <button class="category-btn" data-category="СВО">СВО</button>
-    <button class="category-btn" data-category="Общество">Общество</button>
-    <button class="category-btn" data-category="Регионы">Регионы</button>
-    <button class="category-btn" data-category="Государство">Государство</button>
-    <button class="category-btn" data-category="Криминал">Криминал</button>
-    <button class="category-btn" data-category="Политика">Политика</button>
-    <button class="category-btn" data-category="Геополитика">Геополитика</button>
-    <button class="category-btn" data-category="Коррупция">Коррупция</button>
-    <button class="category-btn" data-category="Шоу-бизнес">Шоу-бизнес</button>
-    <button class="category-btn" data-category="Спорт">Спорт</button>
-    <button class="category-btn" data-category="Наука">Наука</button>
-    <button class="category-btn" data-category="Стиль">Стиль</button>
-    <button class="category-btn" data-category="Культура">Культура</button>
-</div>
+
 <div id="top-scroll-indicator" style="
     position: fixed;
     top: 0;
