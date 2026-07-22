@@ -3,276 +3,98 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!DOCTYPE html>
-<html lang="ru">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
-    <!-- 👇 ТЕГИ ДЛЯ ПРЕВЬЮ (ВСТАВЛЕНЫ И ИСПРАВЛЕНЫ) 👇 -->
-    <meta property="og:title" content="Алкогольный загул в Ульяновске">
-    <meta property="og:description" content="В Ульяновске 22-летний парень украл алкогольное мороженое на 61 тысячу рублей и устроил пир прямо на месте преступления">
-    <!-- Путь к картинке теперь правильный: одна папка images -->
-    <meta property="og:image" content="https://rakurs-news.github.io/images/IMG_20260722_224940.webp">
-    <!-- Ссылка на саму страницу статьи (без .html, со слэшем) -->
-    <meta property="og:url" content="https://rakurs-news.github.io/news-16/">
+    <!-- 👇 МЕНЯТЬ ЗДЕСЬ 👇 -->
+    <title>Алкогольный загул в Ульяновске | Ракурс NEWS</title>
+    <meta name="description" content="В Ульяновске 22-летний парень украл алкогольное мороженое на 61 тысячу рублей и устроил пир прямо на месте преступления">
+    
     <meta property="og:type" content="article">
     <meta property="og:locale" content="ru_RU">
-
+    <meta property="og:title" content="НОВЫЙ ЗАГОЛОВОК СТАТЬИ">
+    <meta property="og:description" content="В Ульяновске 22-летний парень украл алкогольное мороженое на 61 тысячу рублей и устроил пир прямо на месте преступления">
+    <!-- Вставь имя своей картинки (без слэша в начале!) -->
+    <meta property="og:image" content="https://rakurs-news.github.io/images/IMG_20260722_224940.webp">
+    <!-- Важно: ссылка должна совпадать с именем файла (news-17.html) -->
+    <meta property="og:url" content="https://rakurs-news.github.io/news-16.html">
+    
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="Алкогольный загул в Ульяновске">
-    <meta name="twitter:description" content="В Ульяновске 22-летний парень украл алкогольное мороженое на 61 тысячу рублей и устроил пир прямо на месте преступления">
+    <meta name="twitter:title" content="НОВЫЙ ЗАГОЛОВОК СТАТЬИ">
+    <meta name="twitter:description" content="Алкогольный загул в Ульяновске">
     <meta name="twitter:image" content="https://rakurs-news.github.io/images/IMG_20260722_224940.webp">
-    <!-- 👆 ТЕГИ ДЛЯ ПРЕВЬЮ ЗАКОНЧИЛИСЬ 👆 -->
+    <!-- 👆 МЕНЯТЬ ЗДЕСЬ ЗАКОНЧИЛОСЬ 👆 -->
 
-    <title>Алкогольный загул в Ульяновске | Ракурс NEWS</title>
-
-    <style>
-    :root {
-        --bg: #ffffff;
-        --card: #f9f9f9;
-        --text: #1a1a1a;
-        --accent: #ff9800;
-        --meta: #666;
-        --quote-bg: rgba(255, 152, 0, 0.05);
-        --hr-color: #eee;
-    }
-
-    [data-theme="dark"] {
-        --bg: #121212;
-        --card: #1e1e1e;
-        --text: #e0e0e0;
-        --accent: #ff9800;
-        --meta: #aaa;
-        --quote-bg: rgba(255, 152, 0, 0.1);
-        --hr-color: #333;
-    }
-
-    body {
-        background: var(--bg);
-        color: var(--text);
-        font-family: sans-serif;
-        margin: 0;
-        padding: 20px;
-        max-width: 800px;
-        margin-left: auto;
-        margin-right: auto;
-        line-height: 1.6;
-        transition: background 0.3s, color 0.3s;
-    }
-
-    header {
-        padding: 15px 0;
-        border-bottom: 1px solid var(--accent);
-        margin-bottom: 30px;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-    }
-
-    .logo-wrapper {
-        display: flex;
-        align-items: center;
-        gap: 8px;
-        font-weight: bold;
-        font-size: 20px;
-        cursor: pointer;
-    }
-
-    .logo-wrapper img {
-        width: 30px;
-        height: 30px;
-    }
-
-    .theme-toggle {
-        cursor: pointer;
-        background: transparent;
-        border: 1px solid var(--accent);
-        color: var(--text);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        border-radius: 2px;
-        transition: all 0.3s;
-        height: 32px;
-        width: 32px;
-        padding: 0;
-    }
-
-    .theme-toggle:hover {
-        background: var(--accent);
-        color: #000;
-    }
-
-    h1 {
-        margin: 0 0 20px;
-        line-height: 1.2;
-        font-size: 24px;
-    }
-
-    img {
-        width: 100%;
-        height: auto;
-        border-radius: 4px;
-        margin-bottom: 20px;
-        background: #333;
-        display: block;
-    }
-
-    p {
-        margin-bottom: 20px;
-    }
-
-    article p:first-of-type {
-        font-size: 1.1rem;
-        font-weight: 500;
-        border-left: 3px solid var(--accent);
-        padding-left: 12px;
-        margin-top: 0;
-    }
-
-    blockquote {
-        margin: 25px 0;
-        padding: 16px 20px;
-        background: var(--quote-bg);
-        border-left: 4px solid var(--accent);
-        font-style: italic;
-        color: var(--meta);
-        position: relative;
-    }
-
-    blockquote::before {
-        content: "“";
-        font-size: 36px;
-        opacity: 0.2;
-        position: absolute;
-        top: 10px;
-        left: 8px;
-    }
-
-    hr {
-        border: 0;
-        height: 1px;
-        background: var(--hr-color);
-        margin: 30px 0;
-    }
-
-    ul, ol {
-        margin-bottom: 20px;
-        padding-left: 20px;
-    }
-
-    li {
-        margin-bottom: 8px;
-    }
-
-    .controls {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-top: 30px;
-        flex-wrap: wrap;
-        gap: 10px;
-        padding-top: 15px;
-        border-top: 1px solid var(--hr-color);
-    }
-
-    .btn {
-        text-decoration: none;
-        padding: 8px 16px;
-        cursor: pointer;
-        border-radius: 4px;
-        font-weight: bold;
-        border: 1px solid var(--accent);
-        color: var(--text);
-        background: var(--card);
-        transition: all 0.2s;
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        height: 32px;
-        box-sizing: border-box;
-    }
-
-    .btn:hover {
-        background: var(--accent);
-        color: #fff;
-    }
-
-    .logo-wrapper img {
-        width: 30px !important; 
-        height: 30px !important;
-        display: block;
-        margin: 0;
-    }
-    </style>
+    <!-- Подключаем ВСЕ стили отсюда -->
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <header>
-        <div class="logo-wrapper" onclick="window.location.href='index.html'">
-            <img src="/images/logo.png" alt="Logo">
-            <span>Ракурс NEWS</span>
+    <!-- Микроразметка для Яндекса -->
+    <article itemscope itemtype="https://schema.org/NewsArticle">
+        
+        <header>
+            <div class="logo-wrapper" onclick="window.location.href='index.html'">
+                <img src="images/logo.png" alt="Logo">
+                <span>Ракурс NEWS</span>
+            </div>
+            
+            <button class="theme-toggle" onclick="toggleTheme()" aria-label="Сменить тему">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="5"></circle>
+                    <line x1="12" y1="1" x2="12" y2="3"></line>
+                    <line x1="12" y1="21" x2="12" y2="23"></line>
+                    <line x1="1" y1="12" x2="3" y2="12"></line>
+                    <line x1="21" y1="12" x2="23" y2="12"></line>
+                </svg>
+            </button>
+        </header>
+
+        <!-- Картинка: МЕНЯТЬ src на имя своего файла -->
+        <img src="images/ИМЯ_ТВОЕЙ_КАРТИНКИ.webp" alt="Описание картинки" itemprop="image">
+        
+        <!-- Заголовок: МЕНЯТЬ текст -->
+        <h1 itemprop="headline">Алкогольный загул в Ульяновске</h1>
+        
+        <!-- Метаданные: МЕНЯТЬ дату, автора, категорию -->
+        <div class="meta-container">
+            <!-- Дата: формат YYYY-MM-DD для робота, текст для человека -->
+            <span itemprop="datePublished" content="2026-07-23">23 июля 2026 г.</span> | 
+            
+            <span itemprop="author" itemscope itemtype="https://schema.org/Person">
+                <span itemprop="name">Дмитрий Мусиенко</span>
+            </span> |
+            
+            <!-- Категория: класс должен быть в style.css (cat-society, cat-incidents и т.д.) -->
+            <span class="category-badge cat-incidents">Происшествия</span>
         </div>
-        <button class="theme-toggle" onclick="toggleTheme()" aria-label="Сменить тему">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <circle cx="12" cy="12" r="5"></circle>
-                <line x1="12" y1="1" x2="12" y2="3"></line>
-                <line x1="12" y1="21" x2="12" y2="23"></line>
-                <line x1="1" y1="12" x2="3" y2="12"></line>
-                <line x1="21" y1="12" x2="23" y2="12"></line>
-                <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
-                <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
-                <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
-                <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
-            </svg>
-        </button>
-    </header>
-    
-    <h1>Алкогольный загул в Ульяновске</h1>
-    
-    <img src="/images/IMG_20260722_224940.webp" alt="Конец духа Анкориджа">
-    
-    <article>
-        <p>В Ульяновске подрастает новый гений криминального мира — 22-летний гурман, решивший, что 13 килограммов алкогольного мороженого стоимостью 61 тысячу рублей сами себя не съедят.</p>
-        
-        <p>Парень вынес три увесистых контейнера из парка и, не отходя от кассы, принялся за дегустацию. Видимо, план побега был настолько же «гениальным», как и сама идея кражи: слопать всё, что влезет, а остатки «элитного» лакомства заботливо припрятать в кустах.</p>
-        
-        <p>Теперь этот ценитель прекрасного сидит под подпиской о невыезде и, вероятно, подсчитывает, стоило ли такое приключение уголовного дела. Похоже, ледяной десерт оказался настолько хорош, что парень забыл и о логике, и о последствиях. Интересно, в камере его будут кормить чем-то более прозаичным, или он всё еще надеется доесть те самые заначки из кустов?</p>
-        
+
+        <!-- Текст статьи: МЕНЯТЬ абзацы -->
+        <div itemprop="articleBody">
+            <p>В Ульяновске подрастает новый гений криминального мира — 22-летний гурман, решивший, что 13 килограммов алкогольного мороженого стоимостью 61 тысячу рублей сами себя не съедят. Парень вынес три увесистых контейнера из парка и, не отходя от кассы, принялся за дегустацию.</p>
+            <p>Видимо, план побега был настолько же «гениальным», как и сама идея кражи: слопать всё, что влезет, а остатки «элитного» лакомства заботливо припрятать в кустах. Теперь этот ценитель прекрасного сидит под подпиской о невыезде и, вероятно, подсчитывает, стоило ли такое приключение уголовного дела.</p>
+            <p>Похоже, ледяной десерт оказался настолько хорош, что парень забыл и о логике, и о последствиях. Интересно, в камере его будут кормить чем-то более прозаичным, или он всё еще надеется доесть те самые заначки из кустов?</p>
+        </div>
     </article>
-    
+
     <div class="controls">
-        <a href="index.html" class="btn" style="height: 32px;">На главную</a>
+        <a href="index.html" class="btn">← На главную</a>
         <button class="btn" id="shareButton">Поделиться</button>
     </div>
 
+    <script src="script.js" defer></script>
     <script>
-        const savedTheme = localStorage.getItem('theme') || 'light';
-        document.documentElement.setAttribute('data-theme', savedTheme);
-        
-        function toggleTheme() {
-            const currentTheme = document.documentElement.getAttribute('data-theme');
-            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
-            document.documentElement.setAttribute('data-theme', newTheme);
-            localStorage.setItem('theme', newTheme);
-        }
-
         const shareButton = document.getElementById('shareButton');
-        
-        shareButton.addEventListener('click', () => {
-            const url = window.location.href;
-            const title = document.title;
-            
-            if (navigator.share) {
-                navigator.share({
-                    title: title,
-                    url: url,
-                }).then(() => console.log('Успешно поделились'))
-                .catch((error) => console.error('Ошибка при отправке:', error));
-            } else {
-                alert(`Скопируйте эту ссылку: ${url}`);
-            }
-        });
+        if (shareButton) {
+            shareButton.addEventListener('click', () => {
+                if (navigator.share) {
+                    navigator.share({
+                        title: document.title,
+                        text: "Читайте эту новость на Ракурс NEWS!",
+                        url: window.location.href
+                    }).catch(err => console.error('Ошибка шаринга:', err));
+                } else {
+                    alert('Скопируйте ссылку: ' + window.location.href);
+                }
+            });
+        }
     </script>
 </body>
 </html>
