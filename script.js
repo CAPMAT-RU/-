@@ -1,240 +1,214 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // --- Инициализация темы ---
-    const savedTheme = localStorage.getItem('theme') || 'light';
-    document.documentElement.setAttribute('data-theme', savedTheme);
-    updateCategoriesBackground(savedTheme);
-
-    function toggleTheme() {
-        const currentTheme = document.documentElement.getAttribute('data-theme');
-        const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
-        document.documentElement.setAttribute('data-theme', newTheme);
-        localStorage.setItem('theme', newTheme);
-        updateCategoriesBackground(newTheme);
-    }
-
-    window.toggleTheme = toggleTheme;
-
-    function updateCategoriesBackground(theme) {
-        const menu = document.getElementById('menu');
-        if (!menu) return;
-
-        if (theme === 'light') {
-            menu.style.background = 'rgba(255, 255, 255, 0.9)';
-            const buttons = menu.querySelectorAll('.category-btn');
-            buttons.forEach(btn => btn.style.color = '#1a1a1a');
-        } else {
-            menu.style.background = 'rgba(30, 30, 30, 0.8)';
-            const buttons = menu.querySelectorAll('.category-btn');
-            buttons.forEach(btn => btn.style.color = '#ffffff');
-        }
-    }
-
-    // --- Загрузка и рендер новостей ---
-    let allNews = [];
-    let featuredNewsId = null;
-
-    async function loadNews() {
-        try {
-            const res = await fetch('news.json');
-            if (!res.ok) throw new Error('Не удалось загрузить news.json');
-            const data = await res.json();
-            
-            // Обработка структуры JSON (поддерживает оба формата: плоский массив или объект с items)
-            allNews = Array.isArray(data) ? data : (data.items || []);
-            featuredNewsId = data.featuredNewsId || null;
-            
-            document.getElementById('loader').style.display = 'none';
-            renderNews(allNews);
-        } catch (e) {
-            console.error('Ошибка загрузки:', e);
-            const loader = document.getElementById('loader');
-            loader.style.display = 'block';
-            loader.innerHTML = `<p style="color: red; text-align: center;">Ошибка загрузки новостей. Проверьте файл news.json.</p>`;
-        }
-    }
-
-    function renderNews(data, query = '') {
-        const container = document.getElementById('news-container');
-        container.innerHTML = '';
-        
-        // Рендер главной новости (Featured)
-        if (featuredNewsId && data.some(item => item.id === featuredNewsId)) {
-            const featuredNews = data.find(item => item.id === featuredNewsId);
-            if (featuredNews) {
-                const hotBadge = featuredNews.isHot ? '<span class="hot-badge">ТОП</span>' : '';
-                const featuredCatClass = getCategoryClass(featuredNews.category);
-
-                const featuredHTML = `
-                    <article class="card" itemscope itemtype="https://schema.org/NewsArticle" style="width: 100%;">
-                        <div class="card-image-wrapper">
-                            <img src="${featuredNews.image || 'images/placeholder.jpg'}" alt="${featuredNews.title}" itemprop="image" class="card-image" loading="lazy">
-                            ${hotBadge}
-                            <span class="category-badge ${featuredCatClass}">${featuredNews.category}</span>
-                        </div>
-                        
-                        <div class="meta-container">
-                            <span class="meta-date" itemprop="datePublished" content="${featuredNews.date}">${featuredNews.date}</span>
-                            <span class="meta-author" itemprop="author" itemscope itemtype="https://schema.org/Person"><span itemprop="name">${featuredNews.author || ''}</span></span>
-                        </div>
-                        <h3 itemprop="headline">${featuredNews.title}</h3>
-                        <div class="desc" itemprop="description">${featuredNews.description || ''}</div>
-                    </article>`;
-                
-                document.getElementById('main-news').innerHTML = featuredHTML;
-                document.getElementById('main-news').style.display = 'block';
-            }
-        } else {
-            document.getElementById('main-news').style.display = 'none';
-        }
-
-        // Рендер остальных новостей
-        const filteredNews = data.filter(item => item.id !== featuredNewsId);
-        
-        container.innerHTML = filteredNews.map(item => {
-            const hotBadge = item.isHot ? '<span class="hot-badge">ТОП</span>' : '';
-            const catClass = getCategoryClass(item.category); 
-            
-            // Подсветка поиска
-            let title = query ? item.title.replace(new RegExp(`(${query})`, 'gi'), '<span class="highlight">$1</span>') : item.title;
-            
-            return `
-                <article class="card" itemscope itemtype="https://schema.org/NewsArticle" onclick="window.location.href='/${item.id}.html'">
-                    <div class="card-image-wrapper">
-                        <img src="${item.image || 'images/placeholder.jpg'}" alt="${item.title}" itemprop="image" class="card-image" loading="lazy">
-                        ${hotBadge}
-                        <span class="category-badge ${catClass}">${item.category}</span>
-                    </div>
-                    
-                    <div class="meta-container">
-                        <span class="meta-date" itemprop="datePublished" content="${item.date}">${item.date}</span>
-                        <span class="meta-author" itemprop="author" itemscope itemtype="https://schema.org/Person"><span itemprop="name">${item.author || ''}</span></span>
-                    </div>
-                    <h3 itemprop="headline">${title}</h3>
-                    <div class="desc" itemprop="description">${item.description || ''}</div>
-                </article>`;
-        }).join('');
-    }
-
-    // --- Поиск ---
+    const newsContainer = document.getElementById('news-container');
+    const loader = document.getElementById('loader');
+    const categoryButtons = document.querySelectorAll('.category-btn');
     const searchInput = document.getElementById('searchInput');
-    const searchResults = document.getElementById('search-results');
-    let searchTimeout;
+    const searchResultsContainer = document.getElementById('search-results');
+    const featuredNewsContainer = document.getElementById('main-news');
+    const progressBar = document.getElementById('progress-bar');
+    const scrollToTopButton = document.getElementById('scrollToTop');
 
-    if (searchInput) {
-        searchInput.addEventListener('input', (e) => {
-            clearTimeout(searchTimeout);
-            const val = e.target.value.trim().toLowerCase();
-            if (val.length < 3) { 
-                searchResults.style.display = 'none'; 
-                return; 
+    let allNewsData = []; // Для хранения всех новостей
+    let currentCategory = 'all'; // Текущая выбранная категория
+
+    // --- Загрузка данных из JSON ---
+    fetch('data.json')
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
             }
-            const filtered = allNews
-                .filter(n => n.title.toLowerCase().includes(val))
-                .sort((a, b) => new Date(b.date) - new Date(a.date));
-            
-            if (filtered.length === 0) {
-                searchResults.innerHTML = '<div class="result-item">Ничего не найдено</div>';
-                searchResults.style.display = 'block';
-                return;
+            return response.json();
+        })
+        .then(data => {
+            allNewsData = data.items; // Сохраняем все новости
+            // Отображаем сначала "главную" новость, если она есть
+            if (data.featuredNewsId && allNewsData.length > 0) {
+                const featuredNews = allNewsData.find(item => item.id === data.featuredNewsId);
+                if (featuredNews) {
+                    displayFeaturedNews(featuredNews);
+                }
             }
-            searchResults.innerHTML = filtered.map(n => 
-                `<div class="result-item" onclick="handleSearchResultClick('${n.id}')">
-                    ${n.title.replace(new RegExp(`(${val})`, 'gi'), '<span class="highlight">$1</span>')}
-                </div>`
-            ).join('');
-            searchResults.style.display = 'block';
+            // Отображаем все новости по умолчанию
+            displayNews(allNewsData);
+            loader.style.display = 'none'; // Скрыть индикатор загрузки
+        })
+        .catch(error => {
+            console.error('Ошибка при загрузке новостей:', error);
+            loader.textContent = 'Не удалось загрузить новости. Попробуйте позже.';
+        });
+
+    // --- Функция отображения главной новости ---
+    function displayFeaturedNews(newsItem) {
+        featuredNewsContainer.style.display = 'block'; // Показать блок для главной новости
+        featuredNewsContainer.innerHTML = `
+            <div class="featured-news-card">
+                <img src="${newsItem.image}" alt="${newsItem.title}" class="featured-news-image">
+                <div class="featured-news-content">
+                    <h2 class="featured-news-title">${newsItem.title}</h2>
+                    <p class="featured-news-date">${newsItem.date}</p>
+                    <p class="featured-news-description">${newsItem.description}</p>
+                    <a href="#" class="read-more-featured">Читать полностью</a>
+                </div>
+            </div>
+        `;
+        // Можно добавить обработчик для кнопки "Читать полностью"
+        featuredNewsContainer.querySelector('.read-more-featured').addEventListener('click', (e) => {
+            e.preventDefault();
+            // Логика для перехода к полной статье или открытия модального окна
+            alert('Переход к полной статье: ' + newsItem.title);
         });
     }
 
-    function handleSearchResultClick(newsId) {
-        if(searchInput) searchInput.value = '';
-        if(searchResults) searchResults.style.display = 'none';
-        window.location.href = `/${newsId}.html`;
+    // --- Функция отображения списка новостей ---
+    function displayNews(newsArray) {
+        newsContainer.innerHTML = ''; // Очищаем контейнер перед добавлением новых новостей
+
+        if (!newsArray || newsArray.length === 0) {
+            newsContainer.innerHTML = '<p>Новостей по данной категории не найдено.</p>';
+            return;
+        }
+
+        newsArray.forEach(newsItem => {
+            const newsElement = document.createElement('div');
+            newsElement.classList.add('news-item'); // Класс для стилизации карточки
+
+            // Форматирование даты (пример, можно улучшить)
+            const formattedDate = new Date(newsItem.date).toLocaleDateString('ru-RU', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+            });
+
+            newsElement.innerHTML = `
+                <div class="news-card">
+                    <img src="${newsItem.image}" alt="${newsItem.title}" class="news-image">
+                    <div class="news-content">
+                        <h3 class="news-title">${newsItem.title}</h3>
+                        <p class="news-date">${formattedDate}</p>
+                        <p class="news-description">${newsItem.description}</p>
+                        <a href="#" class="read-more" data-id="${newsItem.id}">Читать далее</a>
+                    </div>
+                </div>
+            `;
+            newsContainer.appendChild(newsElement);
+        });
     }
 
-    // --- Категории ---
-    const menuElement = document.getElementById('menu');
+    // --- Фильтрация по категориям ---
+    categoryButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            // Снимаем класс 'active' со всех кнопок
+            categoryButtons.forEach(btn => btn.classList.remove('active'));
+            // Добавляем класс 'active' к нажатой кнопке
+            button.classList.add('active');
 
-    function handleCategoryClick(e) {
-        if (!e.target.classList.contains('category-btn')) return;
-        
-        document.querySelectorAll('.category-btn').forEach(b => b.classList.remove('active'));
-        e.target.classList.add('active');
-        
-        const cat = e.target.dataset.category;
-        if (cat === 'all') {
-            renderNews(allNews);
+            currentCategory = button.getAttribute('data-category');
+            filterNews();
+        });
+    });
+
+    // --- Функция фильтрации новостей ---
+    function filterNews() {
+        let filteredNews = [];
+        if (currentCategory === 'all') {
+            filteredNews = allNewsData;
         } else {
-            renderNews(allNews.filter(n => n.category === cat));
+            filteredNews = allNewsData.filter(item => item.category === currentCategory);
         }
+        displayNews(filteredNews);
     }
 
-    if (menuElement) menuElement.addEventListener('click', handleCategoryClick);
-
-    // --- Утилиты ---
-    function getCategoryClass(category) {
-        if (!category) return 'cat-default';
-        const cat = category.toLowerCase();
-
-        if (cat.includes('сво')) return 'cat-svo';
-        if (cat.includes('политика') || cat.includes('госдума') || cat.includes('президент') || cat.includes('власть')) return 'cat-politics';
-        if (cat.includes('государство')) return 'cat-state';
-        if (cat.includes('геополитика')) return 'cat-geopolitics';
-        if (cat.includes('происшествие') || cat.includes('чп') || cat.includes('авария')) return 'cat-incidents';
-        if (cat.includes('общество')) return 'cat-society';
-        if (cat.includes('регионы') || cat.includes('регион')) return 'cat-regions';
-        if (cat.includes('криминал')) return 'cat-crime';
-        if (cat.includes('коррупция')) return 'cat-corruption';
-        if (cat.includes('культура') || cat.includes('искусство')) return 'cat-culture';
-        if (cat.includes('наука') || cat.includes('технологии')) return 'cat-science';
-        if (cat.includes('стиль') || cat.includes('мода')) return 'cat-style';
-        if (cat.includes('спорт')) return 'cat-sports';
-        if (cat.includes('шоу-бизнес') || cat.includes('знаменитости')) return 'cat-showbiz';
-
-        return 'cat-default';
-    }
-
-    // --- Прогресс бар и скролл ---
-    window.addEventListener('scroll', () => {
-        const scrollTop = window.scrollY;
-        const docHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-        const scrollPercent = (scrollTop / docHeight) * 100;
-        const indicator = document.getElementById('top-scroll-indicator');
-        if (indicator) indicator.style.width = scrollPercent + '%';
-
-        // Показ кнопок внизу
-        const btn = document.getElementById('scrollToTop');
-        const floatBtns = document.querySelector('.floating-buttons');
-        
-        if (btn) {
-            if (window.scrollY > 300) {
-                btn.style.display = 'flex';
-                btn.style.opacity = '0.7';
-                btn.style.bottom = '30px'; 
-                btn.style.right = '30px';
-            } else {
-                btn.style.display = 'none';
-            }
-        }
-
-        if (floatBtns) {
-             if (window.scrollY > 100) {
-                floatBtns.style.opacity = '1';
-                floatBtns.style.visibility = 'visible';
-             } else {
-                floatBtns.style.opacity = '0';
-                floatBtns.style.visibility = 'hidden';
-             }
+    // --- Поиск (базовая реализация) ---
+    searchInput.addEventListener('input', () => {
+        const query = searchInput.value.toLowerCase().trim();
+        if (query.length > 1) { // Начинаем поиск после ввода 2 символов
+            const filteredNews = allNewsData.filter(item =>
+                item.title.toLowerCase().includes(query) ||
+                item.description.toLowerCase().includes(query) ||
+                item.content.toLowerCase().includes(query) ||
+                item.tags.some(tag => tag.toLowerCase().includes(query))
+            );
+            // Пока просто отображаем найденные новости в общем контейнере
+            // Для полноценного поиска может потребоваться отдельный блок результатов
+            displayNews(filteredNews);
+        } else if (query.length === 0) {
+            // Если поле поиска пустое, отображаем новости текущей категории
+            filterNews();
         }
     });
 
-    function scrollToTop() {
-        window.scrollTo({
-            top: 0,
-            behavior: 'smooth'
-        });
-    }
-    window.scrollToTop = scrollToTop;
+    // --- Прокрутка наверх ---
+    window.onscroll = function() {
+        scrollFunction();
+        progressBarScroll();
+    };
 
-    loadNews();
+    function scrollFunction() {
+        if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+            scrollToTopButton.style.display = "block";
+        } else {
+            scrollToTopButton.style.display = "none";
+        }
+    }
+
+    function scrollToTop() {
+        document.body.scrollTop = 0; // Для Safari
+        document.documentElement.scrollTop = 0; // Для Chrome, Firefox, IE и Opera
+    }
+
+    // --- Индикатор прогресса прокрутки ---
+    function progressBarScroll() {
+        const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+        const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+        const scrolled = (winScroll / height) * 100;
+        progressBar.style.width = scrolled + '%';
+    }
+
+    // --- Переключение темы (пример, требует реализации в CSS) ---
+    // Предполагается, что у вас есть функция toggleTheme() в другом скрипте или здесь
+    // window.toggleTheme = function() { ... }
+    // Для примера, добавим простую логику:
+    const themeToggleBtn = document.querySelector('.theme-toggle');
+    themeToggleBtn.addEventListener('click', () => {
+        document.body.classList.toggle('dark-theme');
+        // Здесь можно добавить сохранение темы в localStorage
+    });
+
+    // --- Обработка кликов по ссылкам "Читать далее" ---
+    newsContainer.addEventListener('click', (event) => {
+        if (event.target.classList.contains('read-more')) {
+            event.preventDefault();
+            const newsId = event.target.getAttribute('data-id');
+            // Здесь можно реализовать:
+            // 1. Поиск новости по newsId в allNewsData
+            // 2. Отображение полной статьи (например, в модальном окне или переход на другую страницу)
+            const selectedNews = allNewsData.find(item => item.id === newsId);
+            if (selectedNews) {
+                alert(`Вы кликнули по новости: ${selectedNews.title}\nID: ${selectedNews.id}`);
+                // Пример: displayFullArticle(selectedNews);
+            }
+        }
+    });
+
+    // --- Инициализация при загрузке ---
+    // (Загрузка данных уже происходит выше)
 });
+
+// --- Пример функции toggleTheme, если она не подключена отдельно ---
+// Если у вас есть отдельный скрипт для темы, эту функцию можно удалить
+if (typeof toggleTheme === 'undefined') {
+    window.toggleTheme = () => {
+        document.body.classList.toggle('dark-theme');
+        // Можно добавить сохранение темы в localStorage
+        if (document.body.classList.contains('dark-theme')) {
+            localStorage.setItem('theme', 'dark');
+        } else {
+            localStorage.setItem('theme', 'light');
+        }
+    };
+    // При загрузке страницы проверяем сохраненную тему
+    const savedTheme = localStorage.getItem('theme');
+    if (savedTheme === 'dark') {
+        document.body.classList.add('dark-theme');
+    }
+}
