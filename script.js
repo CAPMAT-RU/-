@@ -1,3 +1,9 @@
+fetch('news.json')
+ 
+
+Полный обновленный  script.js  с этим изменением:
+
+ 
 document.addEventListener('DOMContentLoaded', () => {
     const newsContainer = document.getElementById('news-container');
     const loader = document.getElementById('loader');
@@ -12,7 +18,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let currentCategory = 'all'; // Текущая выбранная категория
 
     // --- Загрузка данных из JSON ---
-    fetch('data.json')
+    fetch('news.json') // <--- ИЗМЕНЕНО ЗДЕСЬ
         .then(response => {
             if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);
@@ -47,15 +53,15 @@ document.addEventListener('DOMContentLoaded', () => {
                     <h2 class="featured-news-title">${newsItem.title}</h2>
                     <p class="featured-news-date">${newsItem.date}</p>
                     <p class="featured-news-description">${newsItem.description}</p>
-                    <a href="#" class="read-more-featured">Читать полностью</a>
+                    <a href="#" class="read-more-featured" data-id="${newsItem.id}">Читать полностью</a>
                 </div>
             </div>
         `;
-        // Можно добавить обработчик для кнопки "Читать полностью"
+        // Добавляем обработчик для кнопки "Читать полностью"
         featuredNewsContainer.querySelector('.read-more-featured').addEventListener('click', (e) => {
             e.preventDefault();
-            // Логика для перехода к полной статье или открытия модального окна
-            alert('Переход к полной статье: ' + newsItem.title);
+            const newsId = e.target.getAttribute('data-id');
+            handleReadMoreClick(newsId); // Используем общую функцию обработки клика
         });
     }
 
@@ -137,6 +143,31 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
+    // --- Обработка кликов по ссылкам "Читать далее" и "Читать полностью" ---
+    // Объединяем обработчики для разных кнопок
+    function handleReadMoreClick(newsId) {
+        const selectedNews = allNewsData.find(item => item.id === newsId);
+        if (selectedNews) {
+            alert(`Вы кликнули по новости: ${selectedNews.title}\nID: ${selectedNews.id}`);
+            // Здесь вы можете реализовать:
+            // 1. Отображение полной статьи (например, в модальном окне)
+            // 2. Переход на другую страницу с полной статьей (если она есть)
+            // Пример: displayFullArticle(selectedNews);
+        }
+    }
+
+    newsContainer.addEventListener('click', (event) => {
+        if (event.target.classList.contains('read-more')) {
+            event.preventDefault();
+            const newsId = event.target.getAttribute('data-id');
+            handleReadMoreClick(newsId);
+        }
+    });
+
+    // Обработчик для кнопки "Читать полностью" в главной новости
+    // (уже добавлен в displayFeaturedNews)
+
+
     // --- Прокрутка наверх ---
     window.onscroll = function() {
         scrollFunction();
@@ -165,50 +196,24 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // --- Переключение темы (пример, требует реализации в CSS) ---
-    // Предполагается, что у вас есть функция toggleTheme() в другом скрипте или здесь
-    // window.toggleTheme = function() { ... }
-    // Для примера, добавим простую логику:
     const themeToggleBtn = document.querySelector('.theme-toggle');
     themeToggleBtn.addEventListener('click', () => {
         document.body.classList.toggle('dark-theme');
         // Здесь можно добавить сохранение темы в localStorage
-    });
-
-    // --- Обработка кликов по ссылкам "Читать далее" ---
-    newsContainer.addEventListener('click', (event) => {
-        if (event.target.classList.contains('read-more')) {
-            event.preventDefault();
-            const newsId = event.target.getAttribute('data-id');
-            // Здесь можно реализовать:
-            // 1. Поиск новости по newsId в allNewsData
-            // 2. Отображение полной статьи (например, в модальном окне или переход на другую страницу)
-            const selectedNews = allNewsData.find(item => item.id === newsId);
-            if (selectedNews) {
-                alert(`Вы кликнули по новости: ${selectedNews.title}\nID: ${selectedNews.id}`);
-                // Пример: displayFullArticle(selectedNews);
-            }
-        }
-    });
-
-    // --- Инициализация при загрузке ---
-    // (Загрузка данных уже происходит выше)
-});
-
-// --- Пример функции toggleTheme, если она не подключена отдельно ---
-// Если у вас есть отдельный скрипт для темы, эту функцию можно удалить
-if (typeof toggleTheme === 'undefined') {
-    window.toggleTheme = () => {
-        document.body.classList.toggle('dark-theme');
-        // Можно добавить сохранение темы в localStorage
         if (document.body.classList.contains('dark-theme')) {
             localStorage.setItem('theme', 'dark');
         } else {
             localStorage.setItem('theme', 'light');
         }
-    };
-    // При загрузке страницы проверяем сохраненную тему
+    });
+
+    // --- Инициализация при загрузке ---
+    // Проверяем сохраненную тему при загрузке
     const savedTheme = localStorage.getItem('theme');
     if (savedTheme === 'dark') {
         document.body.classList.add('dark-theme');
+    } else {
+        // По умолчанию или если тема не сохранена, применяем светлую тему
+        document.body.classList.add('light-theme'); // Предполагая, что у вас есть класс light-theme или стили по умолчанию
     }
-}
+});
