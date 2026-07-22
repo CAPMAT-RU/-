@@ -345,29 +345,32 @@
         }
 
         .footer {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            height: 70px;
-            background: var(--footer-bg);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            border-top: 1px solid var(--accent);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 1001;
-        }
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 60px; /* Было 70px, уменьшил до 60px. Меняй на 50px если нужно еще меньше */
+    background: var(--footer-bg);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-top: 1px solid var(--accent);
+    
+    /* Центрирование содержимого */
+    display: flex;
+    justify-content: center;       /* Иконки по горизонтали строго в центре */
+    align-items: center;           /* Иконки по вертикали строго в центре высоты футера */
+    
+    z-index: 1001;
+}
 
         .social-icons {
             display: flex;
-            gap: 35px;
+            gap: 25px;
         }
 
         .social-icons img {
-            width: 40px;
-            height: 40px;
+            width: 36px;
+            height: 36px;
         }
 
         .mobile-menu-button {
