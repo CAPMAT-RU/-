@@ -23,10 +23,19 @@
     
     <!-- ПОДКЛЮЧЕНИЕ ВНЕШНЕГО CSS -->
     <link rel="stylesheet" href="style.css">
+
+    <!-- Переменные для точного позиционирования (чтобы панель встала ровно под шапкой) -->
+    <style>
+        :root {
+            --header-height: 60px; /* Высота вашей шапки + отступы */
+        }
+    </style>
 </head>
 <body>
-    <h1>Актуальные новости Ракурс NEWS</h1>
+    <h1 style="display: none;">Актуальные новости Ракурс NEWS</h1>
+    
     <div id="progress-bar"></div>
+
     <header>
         <div class="logo-wrapper">
             <img src="images/logo.png" alt="Logo">
@@ -52,22 +61,30 @@
             </button>
         </div>
     </header>
-        <button class="category-btn active" data-category="all">Все новости</button>
-        <button class="category-btn" data-category="СВО">СВО</button>
-        <button class="category-btn" data-category="Общество">Общество</button>
-        <button class="category-btn" data-category="Регионы">Регионы</button>
-        <button class="category-btn" data-category="Государство">Государство</button>
-        <button class="category-btn" data-category="Происшествия">Происшествия</button>
-        <button class="category-btn" data-category="Криминал">Криминал</button>
-        <button class="category-btn" data-category="Политика">Политика</button>
-        <button class="category-btn" data-category="Геополитика">Геополитика</button>
-        <button class="category-btn" data-category="Коррупция">Коррупция</button>
-        <button class="category-btn" data-category="Шоу-бизнес">Шоу-бизнес</button>
-        <button class="category-btn" data-category="Спорт">Спорт</button>
-        <button class="category-btn" data-category="Наука">Наука</button>
-        <button class="category-btn" data-category="Стиль">Стиль</button>
-        <button class="category-btn" data-category="Культура">Культура</button>
+
+    <!-- НОВАЯ ПАНЕЛЬ КАТЕГОРИЙ -->
+    <!-- Высота 30px, прозрачность, горизонтальный скролл -->
+    <div class="categories-panel">
+        <div class="categories-wrapper" id="menu">
+            <button class="category-btn active" data-category="all">Все новости</button>
+            <button class="category-btn" data-category="СВО">СВО</button>
+            <button class="category-btn" data-category="Общество">Общество</button>
+            <button class="category-btn" data-category="Регионы">Регионы</button>
+            <button class="category-btn" data-category="Государство">Государство</button>
+            <button class="category-btn" data-category="Происшествия">Происшествия</button>
+            <button class="category-btn" data-category="Криминал">Криминал</button>
+            <button class="category-btn" data-category="Политика">Политика</button>
+            <button class="category-btn" data-category="Геополитика">Геополитика</button>
+            <button class="category-btn" data-category="Коррупция">Коррупция</button>
+            <button class="category-btn" data-category="Шоу-бизнес">Шоу-бизнес</button>
+            <button class="category-btn" data-category="Спорт">Спорт</button>
+            <button class="category-btn" data-category="Наука">Наука</button>
+            <button class="category-btn" data-category="Стиль">Стиль</button>
+            <button class="category-btn" data-category="Культура">Культура</button>
+        </div>
     </div>
+    <!-- КОНЕЦ НОВОЙ ПАНЕЛИ -->
+
     <div id="top-scroll-indicator" style="
         position: fixed;
         top: 0;
@@ -77,19 +94,23 @@
         background: var(--accent);
         z-index: 2001;
     "></div>
+
     <div id="loader" style="text-align:center; padding: 20px;">Загрузка новостей...</div>
     <div id="main-news" class="featured-news" style="display: none;"></div>
     <div id="news-container" class="news-grid" style="padding-bottom: 80px;"></div>
+
     <button id="scrollToTop" onclick="scrollToTop()" aria-label="Вернуться наверх" role="button">
         <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin: auto;">
             <line x1="12" y1="19" x2="12" y2="5"></line>
             <polyline points="5 12 12 5 19 12"></polyline>
         </svg>
     </button>
+
     <div class="floating-buttons" id="floatingButtons">
         <a href="https://vk.ru/rakurs_news" target="_blank"><img src="images/VK.png" alt="VK"></a>
         <a href="https://t.me/RAKURS_NEWS_RU" target="_blank"><img src="images/Telegram.png" alt="Telegram"></a>
     </div>
+
     <div class="footer">
         <div class="social-icons">
             <a href="https://vk.ru/rakurs_news" target="_blank"><img src="images/VK.png" alt="VK"></a>
