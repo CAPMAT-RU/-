@@ -81,6 +81,17 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
+        // Словарь для перевода русских категорий в английские (для цветов)
+        const categoryMap = {
+            'спорт': 'sport',
+            'политика': 'politics',
+            'экономика': 'economy',
+            'технологии': 'tech',
+            'культура': 'culture',
+            'наука': 'science',
+            'мир': 'world'
+        };
+
         newsArray.forEach(newsItem => {
             let formattedDate = '';
             if (newsItem.date) {
@@ -91,24 +102,25 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             }
 
-            // --- ЛОГИКА КАТЕГОРИИ (Новое) ---
-            // Получаем категорию. Если её нет, ставим 'other'
-            const category = newsItem.category ? newsItem.category.toLowerCase() : 'other';
+            // --- ЛОГИКА ПЕРЕВОДА КАТЕГОРИЙ ---
+            let rawCategory = newsItem.category || '';
+            let displayText = rawCategory; // Текст для плашки (оставляем как есть: "Спорт")
             
-            // Формируем класс для цвета (category-sport, category-tech и т.д.)
-            const categoryClass = `category-${category}`;
+            // Приводим к нижнему регистру и убираем лишние пробелы для поиска в словаре
+            const key = rawCategory.toLowerCase().trim();
             
-            // Текст для отображения (можно оставить как есть, или сделать маппинг: sport -> "Спорт")
-            const categoryText = newsItem.category || 'Разное';
-            // ---------------------------------
+            // Ищем английское название для цвета. Если не нашли - ставим 'other' (серый)
+            const colorClass = categoryMap[key] || 'other';
+            const finalClass = `category-${colorClass}`;
+            // -----------------------------------
             
             const newsElement = document.createElement('div');
             newsElement.classList.add('news-item');
             
             newsElement.innerHTML = `
                 <div class="news-card">
-                    <!-- Плашка категории -->
-                    <span class="news-category-badge ${categoryClass}">${categoryText}</span>
+                    <!-- Плашка: текст русский, класс английский -->
+                    <span class="news-category-badge ${finalClass}">${displayText}</span>
                     
                     <img src="${newsItem.image}" alt="${newsItem.title}" class="news-image">
                     <div class="news-content">
