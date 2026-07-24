@@ -1,14 +1,18 @@
 /* =========================================
    1. ПЕРЕМЕННЫЕ И БАЗА
    ========================================= */
-:root {
+   :root {
     --bg: #ffffff;
     --card: #f9f9f9;
     --text: #1a1a1a;
-    --accent: #ff9800; /* ОРАНЖЕВЫЙ ЦВЕТ ДЛЯ ВСЕХ КНОПОК */
+    --accent: #ff9800;
     --meta: #666;
     --mobile-menu-bg: var(--card);
     --mobile-menu-text: var(--text);
+    --mobile-menu-border: var(--accent);
+    --footer-bg: rgba(255, 255, 255, 0.3);
+    --categories-bg-light: rgba(255, 255, 255, 0.3);
+    --categories-bg-dark: rgba(30, 30, 30, 0.8);
 }
 
 body.dark-theme {
@@ -36,10 +40,11 @@ body {
     top: 0;
     left: 0;
     width: 0%;
-    height: 4px;
+    height: 3px;
     background: var(--accent);
     z-index: 2000;
 }
+#top-scroll-indicator { height: 4px; }
 
 header {
     background: var(--card);
@@ -61,9 +66,17 @@ header {
     font-size: 20px;
     margin-left: 5px;
 }
-.logo-wrapper img { width: 30px; height: 30px; }
 
-.controls-wrapper { display: flex; align-items: center; gap: 10px; }
+.logo-wrapper img {
+    width: 30px;
+    height: 30px;
+}
+
+.controls-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
 
 #searchInput {
     height: 32px;
@@ -75,7 +88,10 @@ header {
     border-radius: 2px;
     box-sizing: border-box;
 }
-@media (max-width: 500px) { #searchInput { width: 90px; } }
+
+@media (max-width: 500px) {
+    #searchInput { width: 90px; }
+}
 
 .search-wrapper { position: relative; }
 #search-results {
@@ -101,9 +117,9 @@ header {
 .highlight { background: var(--accent); color: #000; }
 
 /* =========================================
-   3. ПАНЕЛЬ КАТЕГОРИЙ
+   3. ПАНЕЛЬ КАТЕГОРИЙ (ЛИПКАЯ)
    ========================================= */
-.categories-panel {
+   .categories-panel {
     height: 40px;
     width: 100%;
     background-color: rgba(255, 255, 255, 0.3);
@@ -114,11 +130,28 @@ header {
     z-index: 1001;
     display: flex;
     align-items: center;
-    overflow-x: auto;
-    scrollbar-width: none;
+    
+    /* --- ИСПРАВЛЕНИЕ ЗДЕСЬ --- */
+    overflow-x: auto;           /* Разрешает горизонтальный скролл */
+    overscroll-behavior-x: contain; /* ГЛАВНОЕ: говорит браузеру "крути меня, а не страницу" */
+    scrollbar-width: none;      /* Скрывает скроллбар в Firefox */
+    
     padding: 0;
     margin: 0;
 }
+
+/* Скрываем скроллбар в Chrome/Safari/Edge */
+.categories-panel::-webkit-scrollbar { 
+    display: none; 
+}
+
+.categories-wrapper {
+    display: flex;
+    gap: 15px;
+    flex-shrink: 0;
+    padding: 0 10px;
+}
+
 .categories-panel::-webkit-scrollbar { display: none; }
 .categories-wrapper {
     display: flex;
@@ -153,11 +186,10 @@ header {
 .category-btn:hover:not(.active) { color: var(--accent); }
 
 /* =========================================
-   4. ЛЕНТА НОВОСТЕЙ (ИСПРАВЛЕННАЯ СЕТКА)
+   4. ЛЕНТА НОВОСТЕЙ
    ========================================= */
 .news-grid {
     display: grid;
-    /* Автоматически подстраивается под ширину экрана */
     grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
     gap: 24px;
     padding: 20px 20px 80px 20px;
@@ -178,7 +210,6 @@ header {
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
 }
 
-/* Растягиваем каждую вторую карточку на 2 колонки */
 .news-grid .news-item:nth-child(2n) {
     grid-column: span 2;
 }
@@ -187,14 +218,10 @@ header {
     width: 100%;
     object-fit: cover;
     display: block;
-    height: 220px; /* Стандартная высота */
 }
-/* Высокая карточка для широкой новости */
-.news-grid .news-item:nth-child(2n) .news-image { 
-    height: 300px; 
-}
+.news-item .news-image { height: 220px; }
+.news-grid .news-item:nth-child(2n) .news-image { height: 300px; }
 
-/* БЕЙДЖ КАТЕГОРИИ */
 .news-category-badge {
     position: absolute;
     top: 16px;
@@ -211,7 +238,6 @@ header {
     white-space: nowrap;
 }
 
-/* Цвета бейджей */
 .category-сво { background-color: #d32f2f; }
 .category-общество { background-color: #f57c00; }
 .category-регионы { background-color: #ffab40; }
@@ -261,11 +287,9 @@ header {
     -webkit-box-orient: vertical;
     overflow: hidden;
 }
-
-/* --- КНОПКИ "ЧИТАТЬ ДАЛЕЕ" (ИСПРАВЛЕНО: ТЕПЕРЬ ВСЕ ОРАНЖЕВЫЕ) --- */
-.read-more, .read-more-featured {
+.read-more {
     display: inline-block;
-    background: var(--accent); /* Используем переменную, чтобы цвет менялся в темной теме */
+    background: var(--accent);
     color: #fff;
     padding: 8px 15px;
     text-decoration: none;
@@ -274,65 +298,21 @@ header {
     font-weight: bold;
     align-self: flex-start;
     transition: background 0.2s;
-    cursor: pointer; /* Чтобы было понятно, что это кнопка */
 }
-.read-more:hover, .read-more-featured:hover { 
-    background: #e68a00; 
-}
+.read-more:hover { background: #e68a00; }
 
-/* =========================================
-   5. ГЛАВНАЯ НОВОСТЬ (FEATURED)
-   ========================================= */
-#main-news {
-    max-width: 1200px;
-    margin: 0 auto 40px auto;
-    padding: 0 20px;
-}
-.featured-news-card {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 30px;
-    background: var(--card);
-    border-radius: 12px;
-    overflow: hidden;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-}
-.featured-news-image {
-    width: 100%;
-    height: 400px;
-    object-fit: cover;
-}
-.featured-news-content { padding: 30px; display: flex; flex-direction: column; justify-content: center; }
-.featured-news-title { margin: 0 0 15px 0; font-size: 28px; line-height: 1.2; color: var(--text); }
-.news-meta.featured-meta { margin-bottom: 20px; gap: 20px; }
-.featured-news-description { font-size: 16px; color: var(--meta); margin-bottom: 25px; flex-grow: 1; }
-
-@media (max-width: 768px) {
-    .featured-news-card { grid-template-columns: 1fr; }
-    .featured-news-image { height: 250px; }
-}
-
-/* =========================================
-   6. АДАПТИВ (МОБИЛЬНЫЕ) - ГЛАВНОЕ ИСПРАВЛЕНИЕ
-   ========================================= */
 @media (max-width: 768px) {
     .news-grid {
-        grid-template-columns: 1fr; /* Одна колонка */
+        grid-template-columns: 1fr;
         padding: 15px;
     }
-    
-    /* ВАЖНО: Отменяем растяжение на 2 колонки на мобильных! */
     .news-grid .news-item:nth-child(2n) {
-        grid-column: auto !important; 
+        grid-column: auto;
     }
     .news-grid .news-item:nth-child(2n) .news-image {
         height: 220px !important;
     }
-
-    /* Ограничиваем высоту картинки, чтобы не уходила под футер */
-    .news-item .news-image { max-height: 250px; }
 }
-
 @media (max-width: 500px) {
     .news-grid { padding: 10px; }
     .news-item { margin-bottom: 15px; }
@@ -343,18 +323,22 @@ header {
 }
 
 /* =========================================
-   7. ФУТЕР И КНОПКА "НАВЕРХ"
+   5. ДОП. СТИЛИ (ФУТЕР, КНОПКИ)
    ========================================= */
 .footer {
     padding: 40px 20px;
     text-align: center;
     border-top: 1px solid rgba(var(--text), 0.1);
-    max-width: 1200px;
-    margin: 0 auto;
 }
-
-/* УБРАЛ СТИЛИ ДЛЯ ПЛАВУЮЩИХ ИКОНОК (floatingButtons), 
-   если они тебе не нужны. Если нужны в футере - оставь HTML, но убери этот CSS. */
+.social-icons a {
+    margin: 0 10px;
+    display: inline-block;
+}
+.social-icons img {
+    width: 32px;
+    height: 32px;
+    vertical-align: middle;
+}
 #scrollToTop {
     position: fixed;
     bottom: 20px;
@@ -371,55 +355,19 @@ header {
     justify-content: center;
     z-index: 100;
     opacity: 0.9;
-    transition: opacity 0.3s, transform 0.3s;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 }
-
-#scrollToTop:hover {
-    opacity: 1;
-    transform: scale(1.1);
-}
-
-#scrollToTop.hidden {
-    display: none;
-}
-
-/* =========================================
-   8. СОЦИАЛЬНЫЕ ИКОНКИ (ТЕПЕРЬ ТОЛЬКО В ФУТЕРЕ)
-   ========================================= */
-.social-icons {
-    margin-top: 20px;
-    padding-top: 20px;
-    border-top: 1px solid rgba(var(--text), 0.1);
+#scrollToTop:hover { opacity: 1; transform: scale(1.1); }
+#floatingButtons {
+    position: fixed;
+    bottom: 80px;
+    right: 20px;
     display: flex;
-    justify-content: center;
-    gap: 15px;
+    flex-direction: column;
+    gap: 10px;
+    z-index: 99;
 }
-
-.social-icons a {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
+#floatingButtons a img {
     width: 40px;
     height: 40px;
-    background: var(--card);
     border-radius: 50%;
-    color: var(--text);
-    text-decoration: none;
-    transition: all 0.3s ease;
-    box-shadow: inset 0 0 0 1px rgba(var(--text), 0.1);
-}
-
-.social-icons a:hover {
-    background: var(--accent);
-    color: #fff;
-    transform: translateY(-3px);
-    box-shadow: 0 4px 12px rgba(255, 152, 0, 0.4);
-}
-
-.social-icons img {
-    width: 24px;
-    height: 24px;
-    vertical-align: middle;
-    filter: brightness(1.2);
 }
