@@ -5,28 +5,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ракурс NEWS — ироничные новости с экспертным взглядом</title>
 
-    <!-- Иконка на вкладке браузера -->
+    <!-- Иконка и мета -->
     <link rel="icon" type="image/png" href="images/logo.png">
     <link rel="apple-touch-icon" sizes="180x180" href="images/logo.png">
 
-    <!-- Мета для соцсетей (OG) -->
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://rakurs-news.github.io/rakurs-news/">
     <meta property="og:title" content="Ракурс NEWS">
     <meta property="og:description" content="Свежие новости с иронией. Вся правда в иронии">
     <meta property="og:image" content="images/logo.png"> 
-    <meta property="og:image:type" content="image/png">
-    <meta property="og:image:width" content="1200">
-    <meta property="og:image:height" content="630">
 
     <meta name="description" content="Ракурс NEWS: Ироничный взгляд на главные новости политики, общества и мира. Раскрываем правду через сарказм и острый анализ">
     
-    <!-- ПОДКЛЮЧЕНИЕ ВНЕШНЕГО CSS -->
+    <!-- Твой основной стиль -->
     <link rel="stylesheet" href="style.css">
 
+    <!-- Только стили для меню, чтобы не ломать твой дизайн -->
     <style>
-        /* --- Стили выпадающего меню категорий --- */
-        
         .categories-section {
             padding: 0 15px 20px;
         }
@@ -34,8 +29,10 @@
         .categories-dropdown-container {
             position: relative;
             display: inline-block;
+            width: 100%;
         }
 
+        /* Кнопка открытия */
         .dropdown-toggle-btn {
             background: transparent;
             border: none;
@@ -48,16 +45,17 @@
             transition: color 0.2s;
             display: flex;
             align-items: center;
-            gap: 8px;
-            width: 100%; /* Растягиваем на ширину контейнера */
             justify-content: center;
+            gap: 8px;
+            width: 100%;
+            box-sizing: border-box;
         }
 
         .dropdown-toggle-btn:hover {
             color: var(--accent);
         }
 
-        /* Стрелочка вниз */
+        /* Стрелочка */
         .arrow-down {
             width: 0; 
             height: 0; 
@@ -75,13 +73,13 @@
             transform: rotate(180deg);
         }
 
-        /* Само выпадающее меню */
+        /* Выпадающее меню */
         .dropdown-menu {
             display: none; 
             position: absolute;
             top: calc(100% + 10px);
             left: 50%;
-            transform: translateX(-50%); /* Центрируем меню по кнопке */
+            transform: translateX(-50%);
             background: var(--card);
             min-width: 280px;
             box-shadow: 0 10px 25px rgba(0,0,0,0.15);
@@ -90,7 +88,7 @@
             padding: 8px 0;
             z-index: 2000;
             max-height: 300px;
-            overflow-y: auto; /* Включаем прокрутку контента */
+            overflow-y: auto;
             backdrop-filter: blur(4px);
         }
 
@@ -98,7 +96,7 @@
             border-color: rgba(255,255,255,0.2);
         }
 
-        /* Кнопка внутри выпадающего меню */
+        /* Элементы списка */
         .category-dropdown-item {
             display: block;
             width: 100%;
@@ -134,34 +132,26 @@
             animation: fadeInDown 0.2s ease-out;
         }
 
-        /* --- СТИЛИЗАЦИЯ СКРОЛЛБАРА (Акцентная полоска) --- */
-        /* Скрываем стандартный скроллбар */
+        /* СКРОЛЛБАР: Тонкая полоска акцентного цвета */
         .dropdown-menu::-webkit-scrollbar {
-            width: 4px; /* Тонкая полоска */
+            width: 4px; 
         }
-
-        /* Фон скроллбара (почти прозрачный) */
         .dropdown-menu::-webkit-scrollbar-track {
             background: transparent; 
         }
-
-        /* Ползунок (Акцентный цвет) */
         .dropdown-menu::-webkit-scrollbar-thumb {
-            background-color: var(--accent); /* Цвет совпадает с темой сайта */
-            border-radius: 4px;
-            border: 2px solid transparent; /* Чтобы цвет был чистым */
-        }
-
-        .dropdown-menu::-webkit-scrollbar-thumb:hover {
             background-color: var(--accent); 
+            border-radius: 4px;
         }
     </style>
 </head>
 <body>
+    <!-- Скрытый заголовок для SEO -->
     <h1 style="display: none;">Актуальные новости Ракурс NEWS</h1>
     
     <div id="progress-bar"></div>
 
+    <!-- ШАПКА -->
     <header>
         <div class="logo-wrapper">
             <img src="images/logo.png" alt="Logo">
@@ -188,7 +178,7 @@
         </div>
     </header>
 
-    <!-- БЛОК КАТЕГОРИЙ: Сразу под шапкой -->
+    <!-- БЛОК КАТЕГОРИЙ (сразу под шапкой) -->
     <div class="categories-section">
         <div class="categories-dropdown-container">
             <button id="catToggleBtn" class="dropdown-toggle-btn" aria-haspopup="true" aria-expanded="false">
@@ -197,7 +187,7 @@
             </button>
             
             <div id="catDropdownMenu" class="dropdown-menu" role="menu">
-                <!-- Категория "Все" тоже здесь, чтобы можно было сбросить фильтр -->
+                <!-- Категория "Все" тоже здесь -->
                 <button type="button" class="category-dropdown-item active" data-category="all">Все новости</button>
                 <button type="button" class="category-dropdown-item category-svo" data-category="СВО">СВО</button>
                 <button type="button" class="category-dropdown-item category-society" data-category="Общество">Общество</button>
@@ -216,8 +206,8 @@
             </div>
         </div>
     </div>
-    <!-- КОНЕЦ БЛОКА КАТЕГОРИЙ -->
 
+    <!-- ИНДИКАТОР СКРОЛЛА -->
     <div id="top-scroll-indicator" style="
         position: fixed;
         top: 0;
@@ -228,10 +218,12 @@
         z-index: 2001;
     "></div>
 
+    <!-- КОНТЕНТ -->
     <div id="loader" style="text-align:center; padding: 20px;">Загрузка новостей...</div>
     <div id="main-news" class="featured-news" style="display: none;"></div>
     <div id="news-container" class="news-grid" style="padding-bottom: 80px;"></div>
 
+    <!-- КНОПКА ВВЕРХ -->
     <button id="scrollToTop" onclick="scrollToTop()" aria-label="Вернуться наверх" role="button">
         <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin: auto;">
             <line x1="12" y1="19" x2="12" y2="5"></line>
@@ -239,13 +231,14 @@
         </svg>
     </button>
 
+    <!-- ПЛАВАЮЩИЕ КНОПКИ -->
     <div class="floating-buttons" id="floatingButtons">
         <a href="https://vk.ru/rakurs_news" target="_blank"><img src="images/VK.png" alt="VK"></a>
         <a href="https://t.me/RAKURS_NEWS_RU" target="_blank"><img src="images/Telegram.png" alt="Telegram"></a>
     </div>
 
+    <!-- ПОДВАЛ -->
     <div class="footer">
-        <!-- Разделительная линия -->
         <div style="width: 100%; height: 1px; background: var(--accent); margin-bottom: 15px;"></div>
         
         <div class="social-icons" style="display: flex; justify-content: center; gap: 25px;">
@@ -254,73 +247,83 @@
         </div>
     </div>
 
-    <!-- ЛОГИКА МЕНЮ (ИСПРАВЛЕННАЯ) -->
+    <!-- ЛОГИКА МЕНЮ (САМАЯ НАДЕЖНАЯ ВЕРСИЯ) -->
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const toggleBtn = document.getElementById('catToggleBtn');
             const dropdownMenu = document.getElementById('catDropdownMenu');
             const categoryItems = document.querySelectorAll('.category-dropdown-item');
 
-            // 1. Открытие/закрытие меню
-            toggleBtn.addEventListener('click', (e) => {
-                e.stopPropagation(); // Важно: предотвращаем всплытие, чтобы клик не закрывал меню сразу
-                const isOpen = dropdownMenu.classList.contains('show');
-                
-                if (isOpen) {
-                    closeMenu();
-                } else {
-                    openMenu();
-                }
-            });
-
-            function openMenu() {
-                dropdownMenu.classList.add('show');
-                toggleBtn.setAttribute('aria-expanded', 'true');
-                toggleBtn.classList.add('active');
-            }
-
+            // Функция закрытия
             function closeMenu() {
-                dropdownMenu.classList.remove('show');
-                toggleBtn.setAttribute('aria-expanded', 'false');
-                toggleBtn.classList.remove('active');
+                if(dropdownMenu) {
+                    dropdownMenu.classList.remove('show');
+                }
+                if(toggleBtn) {
+                    toggleBtn.setAttribute('aria-expanded', 'false');
+                    toggleBtn.classList.remove('active');
+                }
             }
 
-            // 2. Выбор категории
+            // Функция открытия
+            function openMenu() {
+                if(dropdownMenu) {
+                    dropdownMenu.classList.add('show');
+                }
+                if(toggleBtn) {
+                    toggleBtn.setAttribute('aria-expanded', 'true');
+                    toggleBtn.classList.add('active');
+                }
+            }
+
+            // Переключение кнопки
+            if(toggleBtn) {
+                toggleBtn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    const isOpen = dropdownMenu && dropdownMenu.classList.contains('show');
+                    isOpen ? closeMenu() : openMenu();
+                });
+            }
+
+            // Выбор категории
             categoryItems.forEach(item => {
                 item.addEventListener('click', () => {
                     const selectedCategory = item.getAttribute('data-category');
                     const selectedText = item.textContent.trim();
                     
                     // Обновляем текст кнопки
-                    toggleBtn.firstChild.nodeValue = selectedText + " "; // Добавляем пробел, чтобы span не прилипал
+                    if(toggleBtn && toggleBtn.firstChild) {
+                        toggleBtn.firstChild.nodeValue = selectedText + " ";
+                    }
                     
-                    // Сбрасываем активный класс у всех и ставим текущему
+                    // Актив класс
                     categoryItems.forEach(cat => cat.classList.remove('active'));
                     item.classList.add('active');
                     
-                    // Закрываем меню
                     closeMenu();
 
-                    // Вызываем функцию фильтрации
+                    // Вызов функции фильтрации (если она есть в script.js)
                     if (typeof filterNewsByCategory === 'function') {
                         filterNewsByCategory(selectedCategory);
                     } else {
-                        console.log(`Выбрана категория: ${selectedCategory}`);
-                        // Если функции нет, можно добавить заглушку или логику здесь
+                        console.log(`Категория выбрана: ${selectedCategory}. Функция filterNewsByCategory не найдена в script.js`);
                     }
                 });
             });
 
-            // 3. Закрытие при клике вне меню
+            // Закрытие по клику вне
             document.addEventListener('click', (e) => {
-                if (!dropdownMenu.contains(e.target) && !toggleBtn.contains(e.target)) {
+                const isClickInside = dropdownMenu ? dropdownMenu.contains(e.target) : false;
+                const isClickOnBtn = toggleBtn ? toggleBtn.contains(e.target) : false;
+                
+                if (!isClickInside && !isClickOnBtn) {
                     closeMenu();
                 }
             });
         });
     </script>
 
-    <!-- ПОДКЛЮЧЕНИЕ ОСНОВНОГО JS -->
+    <!-- ТВОЙ ОСНОВНОЙ СКРИПТ -->
     <script src="script.js" defer></script>
 </body>
 </html>
