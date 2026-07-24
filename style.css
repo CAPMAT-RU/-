@@ -734,3 +734,11 @@ header {
     font-weight: 600;     /* Полужирный */
     margin-bottom: 0;
 }
+/* Чередование карточек в сетке */
+.news-grid .news-item:nth-child(2n) {
+    grid-column: span 2; /* Каждая вторая карточка занимает 2 колонки */
+}
+
+.news-grid .news-item:nth-child(2n) .news-image {
+    height: 240px; /* Чуть выше для акцента */
+}
