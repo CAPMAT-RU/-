@@ -72,7 +72,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    function displayNews(newsArray) {
+        function displayNews(newsArray) {
         if (!newsContainer) return;
 
         newsContainer.innerHTML = ''; 
@@ -89,7 +89,11 @@ document.addEventListener('DOMContentLoaded', () => {
             'технологии': 'tech',
             'культура': 'culture',
             'наука': 'science',
-            'мир': 'world'
+            'мир': 'world',
+            // Добавь сюда остальные категории из твоего JSON, если они есть
+            'сво': 'svo', 
+            'общество': 'society',
+            'регионы': 'regions'
         };
 
         newsArray.forEach(newsItem => {
@@ -102,38 +106,40 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             }
 
-            // --- ЛОГИКА ПЕРЕВОДА КАТЕГОРИЙ ---
+            // --- ЛОГИКА КАТЕГОРИЙ (ОСТАВЛЯЕМ КАК ЕСТЬ) ---
             let rawCategory = newsItem.category || '';
-            let displayText = rawCategory; // Текст для плашки (оставляем как есть: "Спорт")
-            
-            // Приводим к нижнему регистру и убираем лишние пробелы для поиска в словаре
+            let displayText = rawCategory; 
             const key = rawCategory.toLowerCase().trim();
-            
-            // Ищем английское название для цвета. Если не нашли - ставим 'other' (серый)
             const colorClass = categoryMap[key] || 'other';
             const finalClass = `category-${colorClass}`;
-            // -----------------------------------
-            
+            // ---------------------------------------------
+
+            // ВАЖНО: Создаем сразу div с классом news-card. 
+            // Убираем лишний news-item, чтобы CSS position:relative сработал правильно.
             const newsElement = document.createElement('div');
-            newsElement.classList.add('news-item');
+            newsElement.classList.add('news-card'); 
             
+            // Теперь data-category вешаем прямо на news-card (для фильтрации, если понадобится)
+            if (rawCategory) {
+                newsElement.setAttribute('data-category', rawCategory);
+            }
+
             newsElement.innerHTML = `
-                <div class="news-card">
-                    <!-- Плашка: текст русский, класс английский -->
-                    <span class="news-category-badge ${finalClass}">${displayText}</span>
-                    
-                    <img src="${newsItem.image}" alt="${newsItem.title}" class="news-image">
-                    <div class="news-content">
-                        <h3 class="news-title">${newsItem.title}</h3>
-                        <p class="news-date">${formattedDate}</p>
-                        <p class="news-description">${newsItem.description}</p>
-                        <a href="#" class="read-more" data-id="${newsItem.id}">Читать далее</a>
-                    </div>
+                <!-- Плашка: текст русский, класс английский -->
+                <span class="news-category-badge ${finalClass}">${displayText}</span>
+                
+                <img src="${newsItem.image}" alt="${newsItem.title}" class="news-image">
+                <div class="news-content">
+                    <h3 class="news-title">${newsItem.title}</h3>
+                    <p class="news-date">${formattedDate}</p>
+                    <p class="news-description">${newsItem.description}</p>
+                    <a href="#" class="read-more" data-id="${newsItem.id}">Читать далее</a>
                 </div>
             `;
             newsContainer.appendChild(newsElement);
         });
     }
+
 
     // --- ФИЛЬТРАЦИЯ И ПОИСК ---
     categoryButtons.forEach(button => {
