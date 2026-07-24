@@ -1,0 +1,828 @@
+:root {
+    --bg: #ffffff;
+    --card: #f9f9f9;
+    --text: #1a1a1a;
+    --accent: #ff9800;
+    --meta: #666;
+    --mobile-menu-bg: var(--card);
+    --mobile-menu-text: var(--text);
+    --mobile-menu-border: var(--accent);
+    --footer-bg: rgba(255, 255, 255, 0.3);
+    --categories-bg-light: rgba(255, 255, 255, 0.3); /* Фон категорий для светлой темы */
+    --categories-bg-dark: rgba(30, 30, 30, 0.8); /* Фон категорий для темной темы */
+}
+
+body.dark-theme {
+    --bg: #121212;
+    --card: #1e1e1e;
+    --text: #e0e0e0;
+    --accent: #ff9800;
+    --meta: #aaa;
+    --mobile-menu-bg: #000000;
+    --mobile-menu-text: var(--text);
+    --mobile-menu-border: var(--accent);
+    --footer-bg: rgba(18, 18, 18, 0.3);
+}
+
+body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: sans-serif;
+    margin: 0;
+    transition: background 0.3s, color 0.3s;
+}
+
+#progress-bar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 0%;
+    height: 3px;
+    background: var(--accent);
+    z-index: 2000;
+}
+
+header {
+    background: var(--card);
+    padding: 15px 5px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--accent);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+.logo-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: bold;
+    font-size: 20px;
+    margin-left: 5px;
+}
+
+.logo-wrapper img {
+    width: 30px;
+    height: 30px;
+}
+
+.controls-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+#searchInput {
+    height: 32px;
+    width: 150px;
+    padding: 0 10px;
+    border: 1px solid var(--accent);
+    background: var(--bg);
+    color: var(--text);
+    border-radius: 2px;
+    box-sizing: border-box;
+}
+
+@media (max-width: 500px) {
+    #searchInput {
+        width: 90px;
+    }
+}
+
+/* Панель под шапкой */
+.categories-panel {
+    height: 30px;
+    width: 100%;
+    background-color: rgba(255, 255, 255, 0.3);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    position: sticky;
+    top: calc(var(--header-height, 60px)); /* Замените 60px на реальную высоту header при необходимости */
+    z-index: 1001;
+    display: flex;
+    align-items: center;
+    overflow-x: auto;
+    white-space: nowrap;
+    scrollbar-width: none;
+}
+
+body.dark-theme .categories-panel {
+    background-color: rgba(30, 30, 30, 0.3);
+}
+
+.categories-panel::-webkit-scrollbar {
+    display: none;
+}
+
+/* Блок категорий с горизонтальным скроллом и адаптивным фоном */
+.categories-wrapper {
+    padding: 0 10px;
+    display: flex;
+    gap: 20px;
+    flex-shrink: 0;
+}
+
+.category-btn {
+    background: none;
+    border: none;
+    color: var(--text);
+    cursor: pointer;
+    text-transform: uppercase;
+    font-size: 13px;
+    font-weight: bold;
+    position: relative;
+    padding-bottom: 8px;
+    transition: color 0.2s;
+    white-space: nowrap;
+}
+
+.category-btn::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0%;
+    height: 2px;
+    background-color: var(--accent);
+    transition: width 0.2s ease-in-out;
+}
+
+.category-btn.active {
+    color: var(--accent);
+}
+
+.category-btn.active::after {
+    width: 100%;
+}
+
+.category-btn:hover:not(.active) {
+    color: var(--accent);
+}
+
+.search-wrapper {
+    position: relative;
+}
+
+#search-results {
+    position: absolute;
+    top: 40px;
+    right: 0;
+    width: 250px;
+    max-height: 400px;
+    overflow-y: auto;
+    background: var(--card);
+    border: 1px solid var(--accent);
+    z-index: 1500;
+    display: none;
+}
+
+.result-item {
+    display: flex;
+    padding: 10px;
+    gap: 10px;
+    border-bottom: 1px solid var(--accent);
+    cursor: pointer;
+    align-items: center;
+}
+
+.highlight {
+    background: var(--accent);
+    color: #000;
+}
+
+.breadcrumbs {
+    padding: 10px 20px;
+    font-size: 12px;
+    color: var(--meta);
+}
+
+.featured-news {
+    background: var(--card);
+    padding: 15px;
+    border-bottom: 2px solid var(--accent);
+}
+
+.news-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+    padding: 20px;
+}
+
+.card {
+    background: var(--card);
+    padding: 15px;
+    border-left: 4px solid var(--accent);
+    transition: transform 0.2s, opacity 0.6s;
+    cursor: pointer;
+    opacity: 0;
+    transform: translateY(30px);
+    animation: fadeInUp 0.6s ease forwards;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+}
+
+.meta-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+.meta-date {
+    color: var(--accent);
+    font-size: 13px;
+}
+
+.meta-author {
+    color: var(--accent);
+    font-size: 13px;
+    font-weight: bold;
+    white-space: nowrap;
+}
+
+.desc {
+    font-size: 14px;
+    color: var(--meta);
+    margin-top: 8px;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.theme-toggle {
+    cursor: pointer;
+    background: transparent;
+    border: 1px solid var(--accent);
+    color: var(--text);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 2px;
+    transition: all 0.3s;
+    height: 32px;
+    width: 32px;
+    padding: 0;
+}
+
+.theme-toggle:hover {
+    background: var(--accent);
+    color: #000;
+}
+
+#scrollToTop {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    background: var(--accent);
+    color: #fff;
+    border: none;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    cursor: pointer;
+    z-index: 9999; /* Поднял выше, чтобы ничего не перекрывало */
+    display: flex; /* Важно: flex позволяет центрировать SVG внутри */
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+    
+    /* Скрываем через opacity и visibility, а не через display:none */
+    opacity: 0;       
+    visibility: hidden; 
+    transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+/* Этот класс добавляет JS, чтобы показать кнопку */
+#scrollToTop.visible {
+    opacity: 1;
+    visibility: visible;
+}
+
+#scrollToTop:hover {
+    transform: scale(1.1);
+    opacity: 1; /* При наведении делаем полностью видимой */
+}
+
+@media (max-width: 500px) {
+    #scrollToTop {
+        width: 44px;
+        height: 44px;
+        bottom: 90px; /* Чуть выше, чтобы не мешать мобильным кнопкам */
+        right: 20px;
+    }
+}
+
+.floating-buttons {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 10px;
+    transition: opacity 0.3s;
+    opacity: 0;
+    visibility: hidden;
+    z-index: 998;
+}
+
+.floating-buttons img {
+    width: 40px;
+    height: 40px;
+}
+
+@media (max-width: 500px) {
+    #scrollToTop {
+        width: 44px;
+        height: 44px;
+        bottom: 90px;
+        right: 20px;
+    }
+    .floating-buttons img {
+        width: 30px;
+        height: 30px;
+    }
+}
+
+.card-image {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+    border-radius: 4px 4px 0 0;
+    margin-bottom: 12px;
+    background-color: #333;
+}
+
+.footer {
+    position: static;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: auto;
+    min-height: 60px;
+    background: var(--footer-bg);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-top: 1px solid var(--accent);
+    
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px 0;
+    z-index: 1001;
+}
+
+.social-icons {
+    display: flex;
+    gap: 25px;
+}
+
+.social-icons img {
+    width: 36px;
+    height: 36px;
+}
+
+.mobile-menu-button {
+    display: none;
+}
+
+.mobile-menu {
+    display: none;
+}
+
+.page-title-wrapper {
+    padding: 15px 20px;
+    border-bottom: 1px solid var(--accent);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.page-title-indicator {
+    width: 4px;
+    height: 20px;
+    background-color: var(--accent);
+}
+
+.page-title {
+    font-size: 20px;
+    font-weight: bold;
+    margin: 0;
+}
+
+@media (max-width: 768px) {
+    .page-title-wrapper {
+        padding: 10px 15px;
+        gap: 8px;
+    }
+    .page-title {
+        font-size: 18px;
+    }
+    .page-title-indicator {
+        height: 18px;
+    }
+}
+
+.scroll-indicator-track {
+    position: fixed;
+    right: 4px;
+    top: 0;
+    width: 4px;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.08);
+    pointer-events: none;
+    z-index: 999;
+}
+
+.scroll-indicator-thumb {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 0%;
+    background: var(--accent);
+    border-radius: 2px;
+    pointer-events: none;
+}
+
+@keyframes fadeInUp {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.card-image-wrapper {
+    position: relative;
+    display: block;
+}
+
+.hot-badge {
+    background-color: #ff4444;
+    color: #ffffff;
+    padding: 6px 12px;
+    font-size: 11px;
+    font-weight: bold;
+    border-radius: 0 4px 4px 0;
+    position: absolute;
+    top: 10px;
+    left: 0;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    z-index: 10;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.category-badge {
+    position: absolute;
+    top: 15px;
+    right: 0px;
+    padding: 6px 12px;
+    font-size: 11px;
+    font-weight: bold;
+    color: white;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    border-radius: 2px;
+    z-index: 20;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
+    pointer-events: none;
+    line-height: 1;
+}
+
+.cat-svo { background-color: #d32f2f; }
+.cat-politics { background-color: #1976d2; }
+.cat-state { background-color: #2e7d32; }
+.cat-geopolitics { background-color: #4a148c; }
+.cat-society { background-color: #f57c00; }
+.cat-regions { background-color: #ffab40; }
+.cat-crime { background-color: #7b1fa2; }
+.cat-corruption { background-color: #c62828; }
+.cat-culture { background-color: #388e3c; }
+.cat-science { background-color: #00897b; }
+.cat-style { background-color: #ec407a; }
+.cat-incidents { background-color: #b71c1c; }
+.cat-sports { background-color: #e91e63; }
+.cat-showbiz { background-color: #fbc02d; }
+.cat-default {
+    background-color: #555;
+}
+.news-item {
+    /* Общий контейнер для одной новости */
+    display: flex; /* Чтобы контент внутри карточки выравнивался */
+    flex-direction: column; /* Располагаем элементы друг под другом */
+    background: var(--card);
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+    overflow: hidden; /* Обрезаем все, что выходит за границы */
+    cursor: pointer;
+}
+
+.news-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.news-card {
+    /* Конкретная карточка новости */
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    height: 100%; /* Чтобы карточки в сетке были одинаковой высоты */
+}
+
+.news-image {
+    width: 100%;
+    height: 200px; /* Фиксированная высота изображения */
+    object-fit: cover; /* Масштабирует изображение, сохраняя пропорции и обрезая лишнее */
+    display: block; /* Убирает лишний отступ под изображением */
+    background-color: #333; /* Цвет фона, пока изображение загружается */
+}
+
+.news-content {
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1; /* Позволяет блоку контента растягиваться */
+}
+
+.news-title {
+    font-size: 18px;
+    margin-top: 0;
+    margin-bottom: 10px;
+    color: var(--text);
+    display: -webkit-box; /* Для обрезки заголовка, если он слишком длинный */
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.news-date {
+    font-size: 12px;
+    color: var(--accent);
+    margin-bottom: 10px;
+    font-weight: bold;
+}
+
+.news-description {
+    font-size: 14px;
+    color: var(--meta);
+    margin-bottom: 15px;
+    flex-grow: 1; /* Позволяет описанию занять доступное пространство */
+    display: -webkit-box; /* Для обрезки описания */
+    -webkit-line-clamp: 3; /* Количество строк для описания */
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.read-more {
+    display: inline-block;
+    background: var(--accent);
+    color: #fff;
+    padding: 8px 15px;
+    text-decoration: none;
+    border-radius: 4px;
+    font-size: 13px;
+    font-weight: bold;
+    text-align: center;
+    transition: background 0.2s ease-in-out;
+    margin-top: auto; /* Прижимает кнопку к низу, если контент не заполняет блок */
+}
+
+.read-more:hover {
+    background: #e68a00; /* Более темный оттенок акцента */
+}
+
+/* --- Стили для главной новости (featured-news) --- */
+.featured-news-card {
+    background: var(--card);
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    display: flex;
+    gap: 20px;
+    padding: 20px;
+    align-items: center;
+    margin-bottom: 30px;
+    border-left: 5px solid var(--accent);
+}
+
+.featured-news-image {
+    width: 40%; /* Или другая ширина */
+    height: 250px;
+    object-fit: cover;
+    border-radius: 4px;
+    flex-shrink: 0;
+}
+
+.featured-news-content {
+    flex-grow: 1;
+}
+
+.featured-news-title {
+    font-size: 28px;
+    margin-top: 0;
+    margin-bottom: 12px;
+    color: var(--text);
+}
+
+.featured-news-date {
+    font-size: 13px;
+    color: var(--accent);
+    margin-bottom: 15px;
+    font-weight: bold;
+}
+
+.featured-news-description {
+    font-size: 16px;
+    color: var(--meta);
+    margin-bottom: 20px;
+    line-height: 1.5;
+}
+
+.read-more-featured {
+    display: inline-block;
+    background: var(--accent);
+    color: #fff;
+    padding: 10px 20px;
+    text-decoration: none;
+    border-radius: 4px;
+    font-size: 14px;
+    font-weight: bold;
+    transition: background 0.2s ease-in-out;
+}
+
+.read-more-featured:hover {
+    background: #e68a00;
+}
+
+/* --- Адаптивность для карточек --- */
+@media (max-width: 768px) {
+    .news-grid {
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+        padding: 15px;
+    }
+    .featured-news-card {
+        flex-direction: column;
+        padding: 15px;
+    }
+    .featured-news-image {
+        width: 100%;
+        height: 200px;
+        margin-bottom: 15px;
+    }
+    .featured-news-title {
+        font-size: 24px;
+    }
+}
+
+@media (max-width: 500px) {
+    .news-grid {
+        grid-template-columns: 1fr; /* Одна колонка на очень маленьких экранах */
+        padding: 10px;
+    }
+    .news-item {
+        margin-bottom: 15px;
+    }
+    .news-content {
+        padding: 10px;
+    }
+    .news-title {
+        font-size: 16px;
+    }
+    .news-description {
+        font-size: 13px;
+    }
+    .read-more {
+        padding: 6px 12px;
+        font-size: 12px;
+    }
+    .featured-news-title {
+        font-size: 20px;
+    }
+    .featured-news-description {
+        font-size: 14px;
+    }
+}
+
+/* --- Дополнительные стили, если они нужны --- */
+/* Например, для класса .active на кнопках категорий */
+.category-btn.active {
+    color: var(--accent);
+    font-weight: bold;
+}
+
+/* Стили для .card, если вы хотите использовать их вместо .news-item */
+.card {
+    background: var(--card);
+    padding: 15px;
+    border-left: 4px solid var(--accent);
+    transition: transform 0.2s, opacity 0.6s;
+    cursor: pointer;
+    border-radius: 4px;
+}
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+.card-image { /* Используйте этот класс для изображений в карточках .card */
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+    border-radius: 4px 4px 0 0;
+    margin-bottom: 12px;
+    background-color: #333;
+}
+.meta-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+    font-size: 12px;
+    color: var(--meta);
+}
+.meta-date { color: var(--accent); }
+.meta-author { color: var(--accent); font-weight: bold; }
+.desc {
+    font-size: 14px;
+    color: var(--meta);
+    margin-top: 8px;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+function scrollToTop() {
+    window.scrollTo({
+        top: 0,
+        behavior: 'smooth' // Плавная прокрутка
+    });
+}
+/* --- СТИЛИ ДЛЯ МЕТКИ КАТЕГОРИИ --- */
+.news-category-badge {
+    position: relative;
+    top: 10px;
+    right: 10px;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: 600;
+    color: #fff;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    z-index: 10;
+}
+
+/* Цвета для разных категорий (меняй значения hex на свои) */
+.category-sport { background-color: #ff4757; }       /* Красный */
+.category-politics { background-color: #2f3542; }   /* Темно-серый */
+.category-economy { background-color: #1e90ff; }    /* Голубой */
+.category-tech { background-color: #ffa502; }      /* Оранжевый */
+.category-culture { background-color: #a29bfe; }    /* Фиолетовый */
+.category-science { background-color: #00d2d3; }   /* Бирюзовый */
+.category-world { background-color: #57606f; }     /* Серый */
+
+/* Если категория неизвестна, будет нейтральная */
+.category-other { background-color: #95a5a6; }
+/* 1. Обязательно: делаем карточку "контейнером" для плашки */
+.news-card {
+    position: relative; /* Без этого плашка улетит в угол экрана */
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+/* 2. Стили самой плашки (яркие, непрозрачные) */
+.news-category-badge {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    padding: 6px 10px;
+    border-radius: 6px;
+    font-size: 11px;
+    font-weight: 700;
+    color: #ffffff; /* Белый текст */
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15); /* Легкая тень для объема */
+    z-index: 10;
+    /* Нет прозрачности, сплошной цвет берется из следующего блока */
+}
+
+/* 3. Яркие цвета для категорий (сплошные, без прозрачности) */
+.category-sport { background-color: #ff4757; }       /* Красный */
+.category-politics { background-color: #2f3542; }   /* Темно-серый */
+.category-economy { background-color: #1e90ff; }    /* Голубой */
+.category-tech { background-color: #ffa502; }      /* Оранжевый */
+.category-culture { background-color: #a29bfe; }   /* Фиолетовый */
+.category-science { background-color: #00d2d3; }  /* Бирюзовый */
+.category-world { background-color: #57606f; }     /* Серый */
+
+/* Если категория не найдена или пустая - нейтральный цвет */
+.category-other { background-color: #95a5a6; }
