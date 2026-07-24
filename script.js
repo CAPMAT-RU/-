@@ -95,53 +95,28 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         newsArray.forEach(newsItem => {
-            // --- ГЛАВНОЕ ИСПРАВЛЕНИЕ КАТЕГОРИЙ ---
-            // 1. Берем категорию из JSON
+            // --- НОРМАЛИЗАЦИЯ КАТЕГОРИЙ ---
             let rawCategory = (newsItem.category || '').trim();
-            
-            // 2. Приводим к нижнему регистру и убираем лишние пробелы
             let key = rawCategory.toLowerCase();
 
-            // 3. Нормализуем названия, чтобы "Государство", "гос", "Гос" стали одним ключом
-            if (['государство', 'гос'].includes(key)) {
-                key = 'государство';
-            } else if (['сво'].includes(key)) {
-                key = 'сво';
-            } else if (['общество'].includes(key)) {
-                key = 'общество';
-            } else if (['регионы'].includes(key)) {
-                key = 'регионы';
-            } else if (['происшествия', 'чп'].includes(key)) {
-                key = 'происшествия';
-            } else if (['криминал'].includes(key)) {
-                key = 'криминал';
-            } else if (['политика'].includes(key)) {
-                key = 'политика';
-            } else if (['геополитика'].includes(key)) {
-                key = 'геополитика';
-            } else if (['коррупция'].includes(key)) {
-                key = 'коррупция';
-            } else if (['шоу-бизнес', 'шоу бизнес'].includes(key)) {
-                key = 'шоу-бизнес';
-            } else if (['спорт'].includes(key)) {
-                key = 'спорт';
-            } else if (['наука'].includes(key)) {
-                key = 'наука';
-            } else if (['стиль', 'мода'].includes(key)) {
-                key = 'стиль';
-            } else if (['культура'].includes(key)) {
-                key = 'культура';
-            } else if (['экономика'].includes(key)) {
-                key = 'экономика';
-            } else if (['технологии', 'it', 'tech'].includes(key)) {
-                key = 'технологии';
-            } else if (['мир', 'международное'].includes(key)) {
-                key = 'мир';
-            } 
-            // Если категории нет в списке - ставим 'other'
-            else {
-                key = 'other';
-            }
+            if (['государство', 'гос'].includes(key)) key = 'государство';
+            else if (['сво'].includes(key)) key = 'сво';
+            else if (['общество'].includes(key)) key = 'общество';
+            else if (['регионы'].includes(key)) key = 'регионы';
+            else if (['происшествия', 'чп'].includes(key)) key = 'происшествия';
+            else if (['криминал'].includes(key)) key = 'криминал';
+            else if (['политика'].includes(key)) key = 'политика';
+            else if (['геополитика'].includes(key)) key = 'геополитика';
+            else if (['коррупция'].includes(key)) key = 'коррупция';
+            else if (['шоу-бизнес', 'шоу бизнес'].includes(key)) key = 'шоу-бизнес';
+            else if (['спорт'].includes(key)) key = 'спорт';
+            else if (['наука'].includes(key)) key = 'наука';
+            else if (['стиль', 'мода'].includes(key)) key = 'стиль';
+            else if (['культура'].includes(key)) key = 'культура';
+            else if (['экономика'].includes(key)) key = 'экономика';
+            else if (['технологии', 'it', 'tech'].includes(key)) key = 'технологии';
+            else if (['мир', 'международное'].includes(key)) key = 'мир';
+            else key = 'other';
             // --------------------------------------
 
             const displayText = rawCategory || 'Разное';
@@ -192,13 +167,10 @@ document.addEventListener('DOMContentLoaded', () => {
         const filtered = currentCategory === 'all' 
             ? allNewsData 
             : allNewsData.filter(item => {
-                // Нормализация для фильтра такая же, как при отрисовке
                 const itemCat = (item.category || '').toLowerCase().trim();
                 const filterCat = currentCategory.toLowerCase().trim();
 
-                // Проверка на синонимы (Гос/Государство)
                 if (['гос', 'государство'].includes(itemCat) && ['гос', 'государство'].includes(filterCat)) return true;
-                
                 return itemCat === filterCat;
             });
         displayNews(filtered);
@@ -279,4 +251,34 @@ document.addEventListener('DOMContentLoaded', () => {
     } else {
         document.body.classList.remove('dark-theme');
     }
+
+    // ============================================================
+    // !!! ГЛАВНОЕ ИСПРАВЛЕНИЕ ДЛЯ СКРОЛЛА КАТЕГОРИЙ !!!
+    // Вставь этот блок в конец, перед закрывающей скобкой });
+    // ============================================================
+    
+    function fixCategoryScroll() {
+        const panel = document.querySelector('.categories-panel');
+        
+        if (!panel) {
+            console.warn('.categories-panel не найден в DOM. Проверь HTML.');
+            return;
+        }
+
+        panel.addEventListener('wheel', (event) => {
+            // Если крутим колесико (deltaY != 0), двигаем панель
+            if (event.deltaY !== 0) {
+                // Двигаем влево/вправо
+                panel.scrollLeft += event.deltaY;
+                
+                // ВАЖНО: Блокируем прокрутку всей страницы, пока мышь над панелью
+                event.preventDefault(); 
+            }
+        }, { passive: false }); // passive: false обязательно, иначе preventDefault не сработает
+    }
+
+    // Запускаем функцию сразу после загрузки DOM
+    fixCategoryScroll();
+
 });
+
