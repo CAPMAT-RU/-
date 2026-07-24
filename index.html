@@ -5,153 +5,37 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ракурс NEWS — ироничные новости с экспертным взглядом</title>
 
-    <!-- Иконка и мета -->
+    <!-- Иконка на вкладке браузера -->
     <link rel="icon" type="image/png" href="images/logo.png">
     <link rel="apple-touch-icon" sizes="180x180" href="images/logo.png">
 
+    <!-- Мета для соцсетей (OG) -->
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://rakurs-news.github.io/rakurs-news/">
     <meta property="og:title" content="Ракурс NEWS">
     <meta property="og:description" content="Свежие новости с иронией. Вся правда в иронии">
     <meta property="og:image" content="images/logo.png"> 
+    <meta property="og:image:type" content="image/png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
 
     <meta name="description" content="Ракурс NEWS: Ироничный взгляд на главные новости политики, общества и мира. Раскрываем правду через сарказм и острый анализ">
     
-    <!-- Твой основной стиль -->
+    <!-- ПОДКЛЮЧЕНИЕ ВНЕШНЕГО CSS -->
     <link rel="stylesheet" href="style.css">
 
-    <!-- Только стили для меню, чтобы не ломать твой дизайн -->
+    <!-- Переменные для точного позиционирования (чтобы панель встала ровно под шапкой) -->
     <style>
-        .categories-section {
-            padding: 0 15px 20px;
-        }
-
-        .categories-dropdown-container {
-            position: relative;
-            display: inline-block;
-            width: 100%;
-        }
-
-        /* Кнопка открытия */
-        .dropdown-toggle-btn {
-            background: transparent;
-            border: none;
-            color: var(--text);
-            font-size: 14px;
-            font-weight: 600;
-            cursor: pointer;
-            padding: 12px 20px;
-            text-transform: uppercase;
-            transition: color 0.2s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            width: 100%;
-            box-sizing: border-box;
-        }
-
-        .dropdown-toggle-btn:hover {
-            color: var(--accent);
-        }
-
-        /* Стрелочка */
-        .arrow-down {
-            width: 0; 
-            height: 0; 
-            border-left: 5px solid transparent;
-            border-right: 5px solid transparent;
-            border-top: 6px solid var(--text); 
-            transition: transform 0.3s ease;
-        }
-        
-        body.dark-theme .arrow-down {
-            border-top-color: var(--meta);
-        }
-
-        .dropdown-toggle-btn.active .arrow-down {
-            transform: rotate(180deg);
-        }
-
-        /* Выпадающее меню */
-        .dropdown-menu {
-            display: none; 
-            position: absolute;
-            top: calc(100% + 10px);
-            left: 50%;
-            transform: translateX(-50%);
-            background: var(--card);
-            min-width: 280px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
-            border: 1px solid var(--accent);
-            border-radius: 8px;
-            padding: 8px 0;
-            z-index: 2000;
-            max-height: 300px;
-            overflow-y: auto;
-            backdrop-filter: blur(4px);
-        }
-
-        body.dark-theme .dropdown-menu {
-            border-color: rgba(255,255,255,0.2);
-        }
-
-        /* Элементы списка */
-        .category-dropdown-item {
-            display: block;
-            width: 100%;
-            padding: 12px 20px;
-            text-align: left;
-            background: none;
-            border: none;
-            color: var(--text);
-            cursor: pointer;
-            font-size: 14px;
-            text-transform: none;
-            transition: background 0.2s, color 0.2s;
-        }
-
-        .category-dropdown-item:hover {
-            background-color: var(--accent);
-            color: #000;
-        }
-
-        .category-dropdown-item.active {
-            background-color: var(--accent);
-            color: #000;
-            font-weight: bold;
-        }
-
-        /* Анимация появления */
-        @keyframes fadeInDown {
-            from { opacity: 0; transform: translateY(-10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        .dropdown-menu.show {
-            display: block;
-            animation: fadeInDown 0.2s ease-out;
-        }
-
-        /* СКРОЛЛБАР: Тонкая полоска акцентного цвета */
-        .dropdown-menu::-webkit-scrollbar {
-            width: 4px; 
-        }
-        .dropdown-menu::-webkit-scrollbar-track {
-            background: transparent; 
-        }
-        .dropdown-menu::-webkit-scrollbar-thumb {
-            background-color: var(--accent); 
-            border-radius: 4px;
+        :root {
+            --header-height: 60px; /* Высота вашей шапки + отступы */
         }
     </style>
 </head>
 <body>
-    <!-- Скрытый заголовок для SEO -->
     <h1 style="display: none;">Актуальные новости Ракурс NEWS</h1>
     
     <div id="progress-bar"></div>
 
-    <!-- ШАПКА -->
     <header>
         <div class="logo-wrapper">
             <img src="images/logo.png" alt="Logo">
@@ -178,36 +62,29 @@
         </div>
     </header>
 
-    <!-- БЛОК КАТЕГОРИЙ (сразу под шапкой) -->
-    <div class="categories-section">
-        <div class="categories-dropdown-container">
-            <button id="catToggleBtn" class="dropdown-toggle-btn" aria-haspopup="true" aria-expanded="false">
-                Все новости
-                <span class="arrow-down"></span>
-            </button>
-            
-            <div id="catDropdownMenu" class="dropdown-menu" role="menu">
-                <!-- Категория "Все" тоже здесь -->
-                <button type="button" class="category-dropdown-item active" data-category="all">Все новости</button>
-                <button type="button" class="category-dropdown-item category-svo" data-category="СВО">СВО</button>
-                <button type="button" class="category-dropdown-item category-society" data-category="Общество">Общество</button>
-                <button type="button" class="category-dropdown-item category-regions" data-category="Регионы">Регионы</button>
-                <button type="button" class="category-dropdown-item category-state" data-category="Государство">Государство</button>
-                <button type="button" class="category-dropdown-item category-incidents" data-category="Происшествия">Происшествия</button>
-                <button type="button" class="category-dropdown-item category-crime" data-category="Криминал">Криминал</button>
-                <button type="button" class="category-dropdown-item category-politics" data-category="Политика">Политика</button>
-                <button type="button" class="category-dropdown-item category-geopolitics" data-category="Геополитика">Геополитика</button>
-                <button type="button" class="category-dropdown-item category-corruption" data-category="Коррупция">Коррупция</button>
-                <button type="button" class="category-dropdown-item category-showbiz" data-category="Шоу-бизнес">Шоу-бизнес</button>
-                <button type="button" class="category-dropdown-item category-sport" data-category="Спорт">Спорт</button>
-                <button type="button" class="category-dropdown-item category-science" data-category="Наука">Наука</button>
-                <button type="button" class="category-dropdown-item category-style" data-category="Стиль">Стиль</button>
-                <button type="button" class="category-dropdown-item category-culture" data-category="Культура">Культура</button>
-            </div>
+    <!-- НОВАЯ ПАНЕЛЬ КАТЕГОРИЙ -->
+    <!-- Высота 30px, прозрачность, горизонтальный скролл -->
+    <div class="categories-panel">
+        <div class="categories-wrapper" id="menu">
+            <button class="category-btn active" data-category="all">Все новости</button>
+            <button class="category-btn" data-category="СВО">СВО</button>
+            <button class="category-btn" data-category="Общество">Общество</button>
+            <button class="category-btn" data-category="Регионы">Регионы</button>
+            <button class="category-btn" data-category="Государство">Государство</button>
+            <button class="category-btn" data-category="Происшествия">Происшествия</button>
+            <button class="category-btn" data-category="Криминал">Криминал</button>
+            <button class="category-btn" data-category="Политика">Политика</button>
+            <button class="category-btn" data-category="Геополитика">Геополитика</button>
+            <button class="category-btn" data-category="Коррупция">Коррупция</button>
+            <button class="category-btn" data-category="Шоу-бизнес">Шоу-бизнес</button>
+            <button class="category-btn" data-category="Спорт">Спорт</button>
+            <button class="category-btn" data-category="Наука">Наука</button>
+            <button class="category-btn" data-category="Стиль">Стиль</button>
+            <button class="category-btn" data-category="Культура">Культура</button>
         </div>
     </div>
+    <!-- КОНЕЦ НОВОЙ ПАНЕЛИ -->
 
-    <!-- ИНДИКАТОР СКРОЛЛА -->
     <div id="top-scroll-indicator" style="
         position: fixed;
         top: 0;
@@ -218,12 +95,10 @@
         z-index: 2001;
     "></div>
 
-    <!-- КОНТЕНТ -->
     <div id="loader" style="text-align:center; padding: 20px;">Загрузка новостей...</div>
     <div id="main-news" class="featured-news" style="display: none;"></div>
     <div id="news-container" class="news-grid" style="padding-bottom: 80px;"></div>
 
-    <!-- КНОПКА ВВЕРХ -->
     <button id="scrollToTop" onclick="scrollToTop()" aria-label="Вернуться наверх" role="button">
         <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin: auto;">
             <line x1="12" y1="19" x2="12" y2="5"></line>
@@ -231,99 +106,19 @@
         </svg>
     </button>
 
-    <!-- ПЛАВАЮЩИЕ КНОПКИ -->
     <div class="floating-buttons" id="floatingButtons">
         <a href="https://vk.ru/rakurs_news" target="_blank"><img src="images/VK.png" alt="VK"></a>
         <a href="https://t.me/RAKURS_NEWS_RU" target="_blank"><img src="images/Telegram.png" alt="Telegram"></a>
     </div>
 
-    <!-- ПОДВАЛ -->
     <div class="footer">
-        <div style="width: 100%; height: 1px; background: var(--accent); margin-bottom: 15px;"></div>
-        
-        <div class="social-icons" style="display: flex; justify-content: center; gap: 25px;">
+        <div class="social-icons">
             <a href="https://vk.ru/rakurs_news" target="_blank"><img src="images/VK.png" alt="VK"></a>
             <a href="https://t.me/RAKURS_NEWS_RU" target="_blank"><img src="images/Telegram.png" alt="Telegram"></a>
         </div>
     </div>
 
-    <!-- ЛОГИКА МЕНЮ (САМАЯ НАДЕЖНАЯ ВЕРСИЯ) -->
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const toggleBtn = document.getElementById('catToggleBtn');
-            const dropdownMenu = document.getElementById('catDropdownMenu');
-            const categoryItems = document.querySelectorAll('.category-dropdown-item');
-
-            // Функция закрытия
-            function closeMenu() {
-                if(dropdownMenu) {
-                    dropdownMenu.classList.remove('show');
-                }
-                if(toggleBtn) {
-                    toggleBtn.setAttribute('aria-expanded', 'false');
-                    toggleBtn.classList.remove('active');
-                }
-            }
-
-            // Функция открытия
-            function openMenu() {
-                if(dropdownMenu) {
-                    dropdownMenu.classList.add('show');
-                }
-                if(toggleBtn) {
-                    toggleBtn.setAttribute('aria-expanded', 'true');
-                    toggleBtn.classList.add('active');
-                }
-            }
-
-            // Переключение кнопки
-            if(toggleBtn) {
-                toggleBtn.addEventListener('click', (e) => {
-                    e.stopPropagation();
-                    const isOpen = dropdownMenu && dropdownMenu.classList.contains('show');
-                    isOpen ? closeMenu() : openMenu();
-                });
-            }
-
-            // Выбор категории
-            categoryItems.forEach(item => {
-                item.addEventListener('click', () => {
-                    const selectedCategory = item.getAttribute('data-category');
-                    const selectedText = item.textContent.trim();
-                    
-                    // Обновляем текст кнопки
-                    if(toggleBtn && toggleBtn.firstChild) {
-                        toggleBtn.firstChild.nodeValue = selectedText + " ";
-                    }
-                    
-                    // Актив класс
-                    categoryItems.forEach(cat => cat.classList.remove('active'));
-                    item.classList.add('active');
-                    
-                    closeMenu();
-
-                    // Вызов функции фильтрации (если она есть в script.js)
-                    if (typeof filterNewsByCategory === 'function') {
-                        filterNewsByCategory(selectedCategory);
-                    } else {
-                        console.log(`Категория выбрана: ${selectedCategory}. Функция filterNewsByCategory не найдена в script.js`);
-                    }
-                });
-            });
-
-            // Закрытие по клику вне
-            document.addEventListener('click', (e) => {
-                const isClickInside = dropdownMenu ? dropdownMenu.contains(e.target) : false;
-                const isClickOnBtn = toggleBtn ? toggleBtn.contains(e.target) : false;
-                
-                if (!isClickInside && !isClickOnBtn) {
-                    closeMenu();
-                }
-            });
-        });
-    </script>
-
-    <!-- ТВОЙ ОСНОВНОЙ СКРИПТ -->
+    <!-- ПОДКЛЮЧЕНИЕ ВНЕШНЕГО JS С ОТЛОЖЕННОЙ ЗАГРУЗКОЙ -->
     <script src="script.js" defer></script>
 </body>
 </html>
