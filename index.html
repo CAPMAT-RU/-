@@ -24,75 +24,10 @@
     <!-- ПОДКЛЮЧЕНИЕ ВНЕШНЕГО CSS -->
     <link rel="stylesheet" href="style.css">
 
-    <!-- Переменные для точного позиционирования (чтобы панель встала ровно под шапкой) -->
+    <!-- Переменные для точного позиционирования -->
     <style>
         :root {
             --header-height: 60px;
-            --cat-bg: rgba(255, 255, 255, 0.85);
-            --cat-bg-dark: rgba(30, 30, 30, 0.9);
-        }
-
-        [data-theme="dark"] {
-            --cat-bg: var(--cat-bg-dark);
-        }
-
-        .categories-wrapper {
-            position: sticky;
-            top: var(--header-height);
-            z-index: 100;
-            background: var(--cat-bg);
-            backdrop-filter: blur(10px);
-            padding: 8px 0;
-            overflow-x: auto;
-            white-space: nowrap;
-            scrollbar-width: thin;
-        }
-
-        .categories {
-            display: flex;
-            gap: 8px;
-            padding: 0 16px;
-            justify-content: flex-start;
-        }
-
-        .category-btn {
-            border: none;
-            padding: 8px 16px;
-            border-radius: 24px;
-            font-size: 14px;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            min-width: 90px;
-            text-align: center;
-            white-space: nowrap;
-        }
-
-        /* Разные цвета для категорий */
-        .cat-all { background-color: #e0e0e0; color: #1a1a1a; }
-        .cat-svo { background-color: #ffeb3b; color: #000; }
-        .cat-society { background-color: #4caf50; color: #fff; }
-        .cat-regions { background-color: #2196f3; color: #fff; }
-        .cat-state { background-color: #9c27b0; color: #fff; }
-        .cat-incidents { background-color: #f44336; color: #fff; }
-        .cat-crime { background-color: #607d8b; color: #fff; }
-        .cat-politics { background-color: #ff9800; color: #000; }
-        .cat-geopolitics { background-color: #00bcd4; color: #000; }
-        .cat-corruption { background-color: #795548; color: #fff; }
-        .cat-showbiz { background-color: #ec407a; color: #fff; }
-        .cat-sport { background-color: #ff5722; color: #fff; }
-        .cat-science { background-color: #5d4037; color: #fff; }
-        .cat-style { background-color: #8bc34a; color: #000; }
-        .cat-culture { background-color: #d81b60; color: #fff; }
-
-        .category-btn.active {
-            transform: scale(1.05);
-            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-            font-weight: 700;
-        }
-
-        .category-btn:hover:not(.active) {
-            filter: brightness(0.9);
-            transform: translateY(-1px);
         }
     </style>
 </head>
@@ -127,27 +62,27 @@
         </div>
     </header>
 
-    <!-- НОВАЯ ПАНЕЛЬ КАТЕГОРИЙ -->
+    <!-- ПАНЕЛЬ КАТЕГОРИЙ -->
     <div class="categories-wrapper" id="catWrapper">
         <nav class="categories" id="catNav">
-            <button class="category-btn active cat-all" data-category="all">Все новости</button>
-            <button class="category-btn cat-svo" data-category="СВО">СВО</button>
-            <button class="category-btn cat-society" data-category="Общество">Общество</button>
-            <button class="category-btn cat-regions" data-category="Регионы">Регионы</button>
-            <button class="category-btn cat-state" data-category="Государство">Государство</button>
-            <button class="category-btn cat-incidents" data-category="Происшествия">Происшествия</button>
-            <button class="category-btn cat-crime" data-category="Криминал">Криминал</button>
-            <button class="category-btn cat-politics" data-category="Политика">Политика</button>
-            <button class="category-btn cat-geopolitics" data-category="Геополитика">Геополитика</button>
-            <button class="category-btn cat-corruption" data-category="Коррупция">Коррупция</button>
-            <button class="category-btn cat-showbiz" data-category="Шоу-бизнес">Шоу-бизнес</button>
-            <button class="category-btn cat-sport" data-category="Спорт">Спорт</button>
-            <button class="category-btn cat-science" data-category="Наука">Наука</button>
-            <button class="category-btn cat-style" data-category="Стиль">Стиль</button>
-            <button class="category-btn cat-culture" data-category="Культура">Культура</button>
+            <button class="category-btn active" data-category="all">Все новости</button>
+            <button class="category-btn category-svo" data-category="СВО">СВО</button>
+            <button class="category-btn category-society" data-category="Общество">Общество</button>
+            <button class="category-btn category-regions" data-category="Регионы">Регионы</button>
+            <button class="category-btn category-state" data-category="Государство">Государство</button>
+            <button class="category-btn category-incidents" data-category="Происшествия">Происшествия</button>
+            <button class="category-btn category-crime" data-category="Криминал">Криминал</button>
+            <button class="category-btn category-politics" data-category="Политика">Политика</button>
+            <button class="category-btn category-geopolitics" data-category="Геополитика">Геополитика</button>
+            <button class="category-btn category-corruption" data-category="Коррупция">Коррупция</button>
+            <button class="category-btn category-showbiz" data-category="Шоу-бизнес">Шоу-бизнес</button>
+            <button class="category-btn category-sport" data-category="Спорт">Спорт</button>
+            <button class="category-btn category-science" data-category="Наука">Наука</button>
+            <button class="category-btn category-style" data-category="Стиль">Стиль</button>
+            <button class="category-btn category-culture" data-category="Культура">Культура</button>
         </nav>
     </div>
-    <!-- КОНЕЦ НОВОЙ ПАНЕЛИ -->
+    <!-- КОНЕЦ ПАНЕЛИ КАТЕГОРИЙ -->
 
     <div id="top-scroll-indicator" style="
         position: fixed;
