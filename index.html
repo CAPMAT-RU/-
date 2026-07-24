@@ -38,7 +38,7 @@
             font-size: 14px;
             font-weight: 600;
             cursor: pointer;
-            padding: 10px 15px;
+            padding: 12px 20px;
             text-transform: uppercase;
             transition: color 0.2s;
             display: flex;
@@ -61,7 +61,7 @@
         }
         
         body.dark-theme .arrow-down {
-            border-top-color: var(--meta); /* Чуть тусклее в темной теме */
+            border-top-color: var(--meta);
         }
 
         .dropdown-toggle-btn.active .arrow-down {
@@ -73,16 +73,17 @@
             display: none; /* Скрыто по умолчанию */
             position: absolute;
             top: calc(100% + 10px);
-            left: 50%;
-            transform: translateX(-50%);
+            left: 0;
+            /* Центрируем относительно кнопки, если кнопка по центру, или оставляем слева */
+            transform: translateX(0); 
             background: var(--card);
-            min-width: 240px;
+            min-width: 260px;
             box-shadow: 0 10px 25px rgba(0,0,0,0.15);
             border: 1px solid var(--accent);
             border-radius: 8px;
             padding: 8px 0;
             z-index: 2000;
-            max-height: 300px;
+            max-height: 350px;
             overflow-y: auto;
             backdrop-filter: blur(4px);
         }
@@ -159,6 +160,36 @@
         </div>
     </header>
 
+    <!-- БЛОК КАТЕГОРИЙ: Сразу под шапкой -->
+    <div class="categories-section" style="padding: 0 15px 20px;">
+        <div class="categories-dropdown-container">
+            <button id="catToggleBtn" class="dropdown-toggle-btn" aria-haspopup="true" aria-expanded="false">
+                Все новости
+                <span class="arrow-down"></span>
+            </button>
+            
+            <div id="catDropdownMenu" class="dropdown-menu" role="menu">
+                <!-- Категория "Все" тоже здесь, чтобы можно было сбросить фильтр -->
+                <button type="button" class="category-dropdown-item active" data-category="all">Все новости</button>
+                <button type="button" class="category-dropdown-item category-svo" data-category="СВО">СВО</button>
+                <button type="button" class="category-dropdown-item category-society" data-category="Общество">Общество</button>
+                <button type="button" class="category-dropdown-item category-regions" data-category="Регионы">Регионы</button>
+                <button type="button" class="category-dropdown-item category-state" data-category="Государство">Государство</button>
+                <button type="button" class="category-dropdown-item category-incidents" data-category="Происшествия">Происшествия</button>
+                <button type="button" class="category-dropdown-item category-crime" data-category="Криминал">Криминал</button>
+                <button type="button" class="category-dropdown-item category-politics" data-category="Политика">Политика</button>
+                <button type="button" class="category-dropdown-item category-geopolitics" data-category="Геополитика">Геополитика</button>
+                <button type="button" class="category-dropdown-item category-corruption" data-category="Коррупция">Коррупция</button>
+                <button type="button" class="category-dropdown-item category-showbiz" data-category="Шоу-бизнес">Шоу-бизнес</button>
+                <button type="button" class="category-dropdown-item category-sport" data-category="Спорт">Спорт</button>
+                <button type="button" class="category-dropdown-item category-science" data-category="Наука">Наука</button>
+                <button type="button" class="category-dropdown-item category-style" data-category="Стиль">Стиль</button>
+                <button type="button" class="category-dropdown-item category-culture" data-category="Культура">Культура</button>
+            </div>
+        </div>
+    </div>
+    <!-- КОНЕЦ БЛОКА КАТЕГОРИЙ -->
+
     <div id="top-scroll-indicator" style="
         position: fixed;
         top: 0;
@@ -189,34 +220,7 @@
         <!-- Разделительная линия -->
         <div style="width: 100%; height: 1px; background: var(--accent); margin-bottom: 15px;"></div>
         
-        <!-- Блок с выпадающим списком категорий -->
-        <div class="categories-dropdown-container">
-            <button id="catToggleBtn" class="dropdown-toggle-btn" aria-haspopup="true" aria-expanded="false">
-                Все новости
-                <span class="arrow-down"></span>
-            </button>
-            
-            <div id="catDropdownMenu" class="dropdown-menu" role="menu">
-                <!-- Категория "Все" тоже здесь, чтобы можно было сбросить фильтр -->
-                <button type="button" class="category-dropdown-item active" data-category="all">Все новости</button>
-                <button type="button" class="category-dropdown-item category-svo" data-category="СВО">СВО</button>
-                <button type="button" class="category-dropdown-item category-society" data-category="Общество">Общество</button>
-                <button type="button" class="category-dropdown-item category-regions" data-category="Регионы">Регионы</button>
-                <button type="button" class="category-dropdown-item category-state" data-category="Государство">Государство</button>
-                <button type="button" class="category-dropdown-item category-incidents" data-category="Происшествия">Происшествия</button>
-                <button type="button" class="category-dropdown-item category-crime" data-category="Криминал">Криминал</button>
-                <button type="button" class="category-dropdown-item category-politics" data-category="Политика">Политика</button>
-                <button type="button" class="category-dropdown-item category-geopolitics" data-category="Геополитика">Геополитика</button>
-                <button type="button" class="category-dropdown-item category-corruption" data-category="Коррупция">Коррупция</button>
-                <button type="button" class="category-dropdown-item category-showbiz" data-category="Шоу-бизнес">Шоу-бизнес</button>
-                <button type="button" class="category-dropdown-item category-sport" data-category="Спорт">Спорт</button>
-                <button type="button" class="category-dropdown-item category-science" data-category="Наука">Наука</button>
-                <button type="button" class="category-dropdown-item category-style" data-category="Стиль">Стиль</button>
-                <button type="button" class="category-dropdown-item category-culture" data-category="Культура">Культура</button>
-            </div>
-        </div>
-
-        <div class="social-icons" style="margin-top: 20px; display: flex; justify-content: center; gap: 25px;">
+        <div class="social-icons" style="display: flex; justify-content: center; gap: 25px;">
             <a href="https://vk.ru/rakurs_news" target="_blank"><img src="images/VK.png" alt="VK"></a>
             <a href="https://t.me/RAKURS_NEWS_RU" target="_blank"><img src="images/Telegram.png" alt="Telegram"></a>
         </div>
@@ -266,7 +270,6 @@
                     filterNewsByCategory(selectedCategory);
                 } else {
                     console.log(`Выбрана категория: ${selectedCategory}`);
-                    // Здесь можно добавить логику обновления контента, если нет отдельной функции
                 }
             });
         });
