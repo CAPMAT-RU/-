@@ -280,15 +280,25 @@ const categoriesPanel = document.querySelector('.categories-panel');
 
 if (categoriesPanel) {
     categoriesPanel.addEventListener('wheel', (event) => {
-        // Если навели мышку на панель категорий
         if (event.target.closest('.categories-panel')) {
+            event.preventDefault(); // Останавливаем скролл страницы
             
-            // Предотвращаем стандартный скролл страницы (чтобы страница не двигалась)
-            event.preventDefault(); 
-            
-            // Двигаем панель категорий горизонтально
-            categoriesPanel.scrollBy({
-                left: event.deltaY, // Используем deltaY для горизонтального движения
+            const scrollAmount = event.deltaY;
+            const currentScroll = categoriesPanel.scrollLeft;
+            const maxScroll = categoriesPanel.scrollWidth - categoriesPanel.clientWidth;
+
+            // Вычисляем новую позицию
+            let newScroll = currentScroll + scrollAmount;
+
+            // Логика "доскроллить до конца": если мы почти уперлись, едем точно в конец
+            if (newScroll >= maxScroll - 10) { 
+                newScroll = maxScroll;
+            } else if (newScroll <= 10) {
+                newScroll = 0;
+            }
+
+            categoriesPanel.scrollTo({
+                left: newScroll,
                 behavior: 'smooth'
             });
         }
