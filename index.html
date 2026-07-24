@@ -25,7 +25,12 @@
     <link rel="stylesheet" href="style.css">
 
     <style>
-        /* Стили специально для выпадающего списка категорий */
+        /* --- Стили выпадающего меню категорий --- */
+        
+        .categories-section {
+            padding: 0 15px 20px;
+        }
+
         .categories-dropdown-container {
             position: relative;
             display: inline-block;
@@ -44,6 +49,8 @@
             display: flex;
             align-items: center;
             gap: 8px;
+            width: 100%; /* Растягиваем на ширину контейнера */
+            justify-content: center;
         }
 
         .dropdown-toggle-btn:hover {
@@ -56,7 +63,7 @@
             height: 0; 
             border-left: 5px solid transparent;
             border-right: 5px solid transparent;
-            border-top: 6px solid var(--text); /* Цвет стрелки зависит от темы */
+            border-top: 6px solid var(--text); 
             transition: transform 0.3s ease;
         }
         
@@ -70,21 +77,20 @@
 
         /* Само выпадающее меню */
         .dropdown-menu {
-            display: none; /* Скрыто по умолчанию */
+            display: none; 
             position: absolute;
             top: calc(100% + 10px);
-            left: 0;
-            /* Центрируем относительно кнопки, если кнопка по центру, или оставляем слева */
-            transform: translateX(0); 
+            left: 50%;
+            transform: translateX(-50%); /* Центрируем меню по кнопке */
             background: var(--card);
-            min-width: 260px;
+            min-width: 280px;
             box-shadow: 0 10px 25px rgba(0,0,0,0.15);
             border: 1px solid var(--accent);
             border-radius: 8px;
             padding: 8px 0;
             z-index: 2000;
-            max-height: 350px;
-            overflow-y: auto;
+            max-height: 300px;
+            overflow-y: auto; /* Включаем прокрутку контента */
             backdrop-filter: blur(4px);
         }
 
@@ -127,6 +133,28 @@
             display: block;
             animation: fadeInDown 0.2s ease-out;
         }
+
+        /* --- СТИЛИЗАЦИЯ СКРОЛЛБАРА (Акцентная полоска) --- */
+        /* Скрываем стандартный скроллбар */
+        .dropdown-menu::-webkit-scrollbar {
+            width: 4px; /* Тонкая полоска */
+        }
+
+        /* Фон скроллбара (почти прозрачный) */
+        .dropdown-menu::-webkit-scrollbar-track {
+            background: transparent; 
+        }
+
+        /* Ползунок (Акцентный цвет) */
+        .dropdown-menu::-webkit-scrollbar-thumb {
+            background-color: var(--accent); /* Цвет совпадает с темой сайта */
+            border-radius: 4px;
+            border: 2px solid transparent; /* Чтобы цвет был чистым */
+        }
+
+        .dropdown-menu::-webkit-scrollbar-thumb:hover {
+            background-color: var(--accent); 
+        }
     </style>
 </head>
 <body>
@@ -161,7 +189,7 @@
     </header>
 
     <!-- БЛОК КАТЕГОРИЙ: Сразу под шапкой -->
-    <div class="categories-section" style="padding: 0 15px 20px;">
+    <div class="categories-section">
         <div class="categories-dropdown-container">
             <button id="catToggleBtn" class="dropdown-toggle-btn" aria-haspopup="true" aria-expanded="false">
                 Все новости
@@ -226,61 +254,69 @@
         </div>
     </div>
 
-    <!-- Логика работы выпадающего списка -->
+    <!-- ЛОГИКА МЕНЮ (ИСПРАВЛЕННАЯ) -->
     <script>
-        const toggleBtn = document.getElementById('catToggleBtn');
-        const dropdownMenu = document.getElementById('catDropdownMenu');
-        const categoryItems = document.querySelectorAll('.category-dropdown-item');
+        document.addEventListener('DOMContentLoaded', () => {
+            const toggleBtn = document.getElementById('catToggleBtn');
+            const dropdownMenu = document.getElementById('catDropdownMenu');
+            const categoryItems = document.querySelectorAll('.category-dropdown-item');
 
-        // Открытие/закрытие меню
-        toggleBtn.addEventListener('click', (e) => {
-            e.stopPropagation(); // Чтобы клик не уходил сразу на document
-            const isOpen = dropdownMenu.classList.contains('show');
-            
-            if (isOpen) {
-                dropdownMenu.classList.remove('show');
-                toggleBtn.setAttribute('aria-expanded', 'false');
-                toggleBtn.classList.remove('active');
-            } else {
+            // 1. Открытие/закрытие меню
+            toggleBtn.addEventListener('click', (e) => {
+                e.stopPropagation(); // Важно: предотвращаем всплытие, чтобы клик не закрывал меню сразу
+                const isOpen = dropdownMenu.classList.contains('show');
+                
+                if (isOpen) {
+                    closeMenu();
+                } else {
+                    openMenu();
+                }
+            });
+
+            function openMenu() {
                 dropdownMenu.classList.add('show');
                 toggleBtn.setAttribute('aria-expanded', 'true');
                 toggleBtn.classList.add('active');
             }
-        });
 
-        // Выбор категории
-        categoryItems.forEach(item => {
-            item.addEventListener('click', () => {
-                const selectedCategory = item.getAttribute('data-category');
-                
-                // Обновляем текст кнопки
-                toggleBtn.firstChild.textContent = item.textContent.trim();
-                
-                // Сбрасываем активный класс у всех и ставим текущему
-                categoryItems.forEach(cat => cat.classList.remove('active'));
-                item.classList.add('active');
-                
-                // Закрываем меню
-                dropdownMenu.classList.remove('show');
-                toggleBtn.setAttribute('aria-expanded', 'false');
-                toggleBtn.classList.remove('active');
-
-                // Вызываем функцию фильтрации (если она есть в script.js)
-                if (typeof filterNewsByCategory === 'function') {
-                    filterNewsByCategory(selectedCategory);
-                } else {
-                    console.log(`Выбрана категория: ${selectedCategory}`);
-                }
-            });
-        });
-
-        // Закрытие при клике вне меню
-        document.addEventListener('click', (e) => {
-            if (!dropdownMenu.contains(e.target) && !toggleBtn.contains(e.target)) {
+            function closeMenu() {
                 dropdownMenu.classList.remove('show');
                 toggleBtn.setAttribute('aria-expanded', 'false');
                 toggleBtn.classList.remove('active');
             }
+
+            // 2. Выбор категории
+            categoryItems.forEach(item => {
+                item.addEventListener('click', () => {
+                    const selectedCategory = item.getAttribute('data-category');
+                    const selectedText = item.textContent.trim();
+                    
+                    // Обновляем текст кнопки
+                    toggleBtn.firstChild.nodeValue = selectedText + " "; // Добавляем пробел, чтобы span не прилипал
+                    
+                    // Сбрасываем активный класс у всех и ставим текущему
+                    categoryItems.forEach(cat => cat.classList.remove('active'));
+                    item.classList.add('active');
+                    
+                    // Закрываем меню
+                    closeMenu();
+
+                    // Вызываем функцию фильтрации
+                    if (typeof filterNewsByCategory === 'function') {
+                        filterNewsByCategory(selectedCategory);
+                    } else {
+                        console.log(`Выбрана категория: ${selectedCategory}`);
+                        // Если функции нет, можно добавить заглушку или логику здесь
+                    }
+                });
+            });
+
+            // 3. Закрытие при клике вне меню
+            document.addEventListener('click', (e) => {
+                if (!dropdownMenu.contains(e.target) && !toggleBtn.contains(e.target)) {
+                    closeMenu();
+                }
+            });
         });
     </script>
 
